@@ -1,14 +1,16 @@
 import React from "react";
 import KOutlinedButton from "./components/kOutlinedButton";
 import JobCard from "./components/JobCard";
-import Footer from "./components/Footer";
 import Hero from "./components/Hero";
-import Navbar from "./components/Navbar";
 
 function HomePage() {
   return (
     <>
-      <Hero />
+      <Hero
+        title="Healthcare jobs & opportunities"
+        subtitle="curated job openings for Physicians, Nurses, Doctors ..."
+        buttonLabel="Search company"
+      />
 
       <div className="px-2">
         <h1 className="font-semibold text-gray-700 text-center mt-10 text-2xl">
@@ -51,8 +53,6 @@ function HomePage() {
       <JobCard />
       <JobCard />
       <JobCard />
-
-      <Footer />
     </>
   );
 }

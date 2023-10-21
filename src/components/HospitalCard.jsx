@@ -1,11 +1,11 @@
 import React from "react";
-import PillTag from "./PillTag";
 import { Link } from "react-router-dom";
+import PillTag from "./PillTag";
 
-function JobCard() {
+function HospitalCard() {
   return (
     <>
-      <Link to="/job-detail">
+      <Link to="/about-company">
         <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
           <div className="md:w-1/6 md:mr-10 flex justify-between items-center mb-4 md:mb-0">
             <img
@@ -21,22 +21,22 @@ function JobCard() {
           <div>
             <div className="flex justify-between">
               <h2 className="text-blue-900 font-medium md:text-[20px] text-sm">
-                Front Office Admin Support - On cology, Bangalore, India
+                UCLA Health
               </h2>
-              <a href="" className="hidden md:block">
+              {/* <a href="" className="hidden md:block">
                 <img src="src/assets/save.svg" alt="" className="ml-2 h-5" />
-              </a>
+              </a> */}
             </div>
 
             <div className="mt-2 flex items-center text-gray-700">
               <div className="flex items-center w-1/2">
-                <img
-                  src="src/assets/hospital.svg"
+                {/* <img
+                  src="src/assets/job.svg"
                   alt="Company Logo"
                   className="h-4"
-                />
+                /> */}
                 <p className="ml-2 font-normal text-[12px] md:text-[15px]">
-                  UCLA Health
+                  201 Job Listings
                 </p>
               </div>
               <div className="flex items-center w-1/2">
@@ -52,17 +52,18 @@ function JobCard() {
             </div>
 
             <h2 className="text-gray-500 mt-4 text-[12px] md:text-[15px] max2lines">
-              Description In this role, you will provide general and
-              administrative support to the staff, physicians and patients of
-              the Oncology Clinic. Schedule new consultations, coordinate and
+              Established in 2004 and headquartered in the metropolitan
+              Washington, DC area, ATS is an award winning, Maryland Dept of
+              Transportation (MDOT) Minority Business Enterprise (MBE), and Dept
+              of Veterans Affairs - CVE verified SDVO/VO small business.
             </h2>
 
-            <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
+            {/* <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
               <PillTag label="Full-Time" />
               <PillTag label="Immediate Joining" />
               <PillTag label="Fresher" />
               <PillTag label="BE or BC" />
-            </div>
+            </div> */}
           </div>
         </div>
       </Link>
@@ -70,4 +71,4 @@ function JobCard() {
   );
 }
 
-export default JobCard;
+export default HospitalCard;

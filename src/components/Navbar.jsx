@@ -55,7 +55,7 @@ function Navbar() {
             id="navbar-sticky"
           >
             <ul className="md:items-center flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white light:bg-gray-800 md:light:bg-gray-900 light:border-gray-700">
-              <li>
+              {/* <li>
                 <Link
                   to="#"
                   className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:light:text-blue-500"
@@ -63,7 +63,7 @@ function Navbar() {
                 >
                   Search by Location
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link
@@ -75,10 +75,10 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="#"
+                  to="/jobs-company"
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
                 >
-                  Search by Profession
+                  Search by Company
                 </Link>
               </li>
 
