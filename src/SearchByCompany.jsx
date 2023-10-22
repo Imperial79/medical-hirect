@@ -11,7 +11,7 @@ function SearchByCompany() {
         buttonLabel="Search company"
       />
       <div className="pb-10 md:px-20 px-5 text-black">
-        <div className="my-5 md:w-[80%]">
+        <div className="my-5 md:w-[80%] mx-auto">
           <h1>Search results for "UCLA Health"</h1>
         </div>
         <HospitalCard />

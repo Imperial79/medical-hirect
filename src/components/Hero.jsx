@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Hero(props) {
   return (
@@ -90,14 +91,15 @@ function Hero(props) {
                 </ul>
               </div>
             </div>
-
             <div className="w-full sm:w-1/5">
-              <button
-                type="button"
-                className="w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium md:rounded-tr-lg md:rounded-br-lg text-sm px-5 py-2.5 mr-2 mb-2 light:focus:ring-yellow-900"
-              >
-                {props.buttonLabel}
-              </button>
+              <Link to="/login">
+                <button
+                  type="button"
+                  className="w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium md:rounded-tr-lg md:rounded-br-lg text-sm px-5 py-2.5 mr-2 mb-2 light:focus:ring-yellow-900"
+                >
+                  {props.buttonLabel}
+                </button>
+              </Link>
             </div>
           </div>
         </div>

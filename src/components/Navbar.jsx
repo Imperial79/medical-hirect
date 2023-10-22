@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <>
-      <nav className="drop-shadow-lg bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0">
+      <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
           <Link to="/" className="flex items-center">
             <img
               src="src/assets/logo.png"
-              className="h-8 mr-3"
+              className="h-5 mr-3"
               alt="Flowbite Logo"
             />
 
-            <span className="self-center text-2xl font-medium whitespace-nowrap light:text-white text-black">
+            <span className="self-center text-[20px] font-medium whitespace-nowrap light:text-white text-black">
               MedHire
             </span>
           </Link>
@@ -83,12 +83,12 @@ function Navbar() {
               </li>
 
               <li>
-                <button
-                  type="button"
-                  className="text-blue-800 bg-blue-200 hover:bg-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
+                <Link
+                  to="/login"
+                  className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
                 >
                   Login
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

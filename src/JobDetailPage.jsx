@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function JobDetailPage() {
   let arr = [1, 2, 3, 5];
   return (
-    <div className="pt-20 pb-10 md:px-20 px-5 md:flex md:gap-4">
+    <div className="pt-20 pb-10 md:px-20 px-5 md:flex md:gap-4 text-black">
       <div className="w-full">
         <div className="justify-start">
           <div className="flex mt-[17px] items-center justify-between">
@@ -37,7 +37,9 @@ function JobDetailPage() {
                     alt="Company Logo"
                     className="h-6"
                   />
-                  <p className="ml-2 font-normal">UCLA Health</p>
+                  <Link to="/about-company">
+                    <p className="ml-2 font-normal">UCLA Health</p>
+                  </Link>
                 </div>
                 <div className="mt-2 flex items-center text-[13px] md:text-[17px]">
                   <img
@@ -110,8 +112,10 @@ function JobDetailPage() {
         </div>
       </div>
 
-      <div className="md:w-1/2 mt-6 md:mt-0">
-        <h1 className="text-black mb-5">Jobs by UCLA Health</h1>
+      <div className="md:w-1/2 mt-6 md:mt-5">
+        <div className="flex items-center justify-between mb-5">
+          <h1>Jobs by UCLA Health</h1>
+        </div>
 
         {arr.map((element) => {
           return (
