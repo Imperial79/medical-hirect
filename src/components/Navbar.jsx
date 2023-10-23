@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 function Navbar() {
   return (
@@ -7,11 +8,7 @@ function Navbar() {
       <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
           <Link to="/" className="flex items-center">
-            <img
-              src="src/assets/logo.png"
-              className="h-5 mr-3"
-              alt="Flowbite Logo"
-            />
+            <img src={logo} className="h-5 mr-3" alt="Flowbite Logo" />
 
             <span className="self-center text-[20px] font-medium whitespace-nowrap light:text-white text-black">
               MedHire

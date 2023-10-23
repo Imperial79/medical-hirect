@@ -1,5 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import job from "./assets/job.svg";
+import hospital from "./assets/hospital.svg";
+import hashTag from "./assets/hash-tag.svg";
+import save from "./assets/save.svg";
+import date from "./assets/date.svg";
+import location from "./assets/location.svg";
 
 function JobDetailPage() {
   let arr = [1, 2, 3, 5];
@@ -15,7 +21,7 @@ function JobDetailPage() {
             />
 
             <a href="" className="md:hidden block">
-              <img src="src/assets/save.svg" alt="" className="ml-10 h-5" />
+              <img src={save} alt="" className="ml-10 h-5" />
             </a>
           </div>
 
@@ -24,7 +30,7 @@ function JobDetailPage() {
               Front Office Admin Support - On cology, Bangalore, India
             </h1>
             <a href="" className="hidden md:block">
-              <img src="src/assets/save.svg" alt="" className="ml-10 h-5" />
+              <img src={save} alt="" className="ml-10 h-5" />
             </a>
           </div>
 
@@ -32,21 +38,13 @@ function JobDetailPage() {
             <div className="flex">
               <div className=" md:w-1/2">
                 <div className="flex items-center">
-                  <img
-                    src="src/assets/hospital.svg"
-                    alt="Company Logo"
-                    className="h-6"
-                  />
+                  <img src={hospital} alt="Company Logo" className="h-6" />
                   <Link to="/about-company">
                     <p className="ml-2 font-normal">UCLA Health</p>
                   </Link>
                 </div>
                 <div className="mt-2 flex items-center text-[13px] md:text-[17px]">
-                  <img
-                    src="src/assets/location.svg"
-                    alt="Company Logo"
-                    className="h-6"
-                  />
+                  <img src={location} alt="Company Logo" className="h-6" />
                   <p className="ml-2 font-normal ">
                     Bangalore, Karnataka, India
                   </p>
@@ -55,19 +53,11 @@ function JobDetailPage() {
 
               <div className="md:w-1/2 justify-end">
                 <div className="flex items-center">
-                  <img
-                    src="src/assets/hash-tag.svg"
-                    alt="Company Logo"
-                    className="h-6"
-                  />
+                  <img src={hashTag} alt="Company Logo" className="h-6" />
                   <p className="ml-2 font-normal">JOB ID: 122345GH</p>
                 </div>
                 <div className="mt-2 flex items-center text-[13px] md:text-[17px]">
-                  <img
-                    src="src/assets/date.svg"
-                    alt="Company Logo"
-                    className="h-6"
-                  />
+                  <img src={date} alt="Company Logo" className="h-6" />
                   <p className="ml-2 font-normal ">Posted On: 29-03-2022</p>
                 </div>
               </div>
@@ -122,11 +112,7 @@ function JobDetailPage() {
             <Link to="/job-detail">
               <div className="border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
                 <div className="flex items-center">
-                  <img
-                    src="src/assets/job.svg"
-                    alt="Company Logo"
-                    className="h-5"
-                  />
+                  <img src={job} alt="Company Logo" className="h-5" />
                   <h2 className="ml-3 text-black font-medium max2lines text-sm">
                     Cardiology - Interventional Physician Job with Tenet
                     Healthcare in Memphis, TN

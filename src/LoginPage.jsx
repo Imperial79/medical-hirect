@@ -1,5 +1,8 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import doctor from "./assets/doctor.svg";
+import logo from "./assets/logo.png";
+import googleLogo from "./assets/google.png";
 
 function LoginPage() {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -25,13 +28,13 @@ function LoginPage() {
       <div className="pt-20 md:px-10 md:pb-10 text-black ">
         <div className="bg-[#f8f8f8] p-2 rounded-[20px] md:w-[60%] md:mx-auto m-5  md:flex">
           <img
-            src="src/assets/doctor.svg"
+            src={doctor}
             alt=""
             className="md:w-[40%] my-20 mx-20 hidden md:block"
           />
 
           <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-1/2">
-            <img src="src/assets/logo.png" alt="" className="h-5 mx-auto" />
+            <img src={logo} alt="" className="h-5 mx-auto" />
             <h1 className="mt-10 text-[25px] font-semibold mx-auto text-center">
               Welcome back!
             </h1>
@@ -93,7 +96,7 @@ function LoginPage() {
               className="mt-5 text-black bg-gray-200 hover:bg-black hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
             >
               <div className="flex justify-center gap-2">
-                <img src="src/assets/google.png" alt="" className="h-5" />
+                <img src={googleLogo} alt="" className="h-5" />
                 <h1 className="">Sign in with Google</h1>
               </div>
             </button>

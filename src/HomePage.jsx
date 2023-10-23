@@ -2,6 +2,7 @@ import React from "react";
 import KOutlinedButton from "./components/kOutlinedButton";
 import JobCard from "./components/JobCard";
 import Hero from "./components/Hero";
+import trendingSearches from "./assets/trending-searches.svg";
 
 function HomePage() {
   return (
@@ -23,11 +24,7 @@ function HomePage() {
 
       <div className="mt-20 flex flex-wrap justify-center">
         <div className="w-full md:w-1/2 p-4">
-          <img
-            className=" h-[300px]"
-            src="src/assets/trending-searches.svg"
-            alt=""
-          />
+          <img className=" h-[300px]" src={trendingSearches} alt="" />
         </div>
         <div className="w-full md:w-1/3 p-4">
           <div className="flex flex-wrap">

@@ -1,6 +1,9 @@
 import React from "react";
 import PillTag from "./PillTag";
 import { Link } from "react-router-dom";
+import save from "../assets/save.svg";
+import hospital from "../assets/hospital.svg";
+import location from "../assets/location.svg";
 
 function JobCard() {
   return (
@@ -14,7 +17,7 @@ function JobCard() {
               className="w-40 "
             />
             <a href="" className="md:hidden block ">
-              <img src="src/assets/save.svg" alt="" className="ml-2 h-5" />
+              <img src={save} alt="" className="ml-2 h-5" />
             </a>
           </div>
 
@@ -24,27 +27,19 @@ function JobCard() {
                 Front Office Admin Support - On cology, Bangalore, India
               </h2>
               <a href="" className="hidden md:block">
-                <img src="src/assets/save.svg" alt="" className="ml-2 h-5" />
+                <img src={save} alt="" className="ml-2 h-5" />
               </a>
             </div>
 
             <div className="mt-2 flex items-center text-gray-700">
               <div className="flex items-center w-1/2">
-                <img
-                  src="src/assets/hospital.svg"
-                  alt="Company Logo"
-                  className="h-4"
-                />
+                <img src={hospital} alt="Company Logo" className="h-4" />
                 <p className="ml-2 font-normal text-[12px] md:text-[15px]">
                   UCLA Health
                 </p>
               </div>
               <div className="flex items-center w-1/2">
-                <img
-                  src="src/assets/location.svg"
-                  alt="Company Logo"
-                  className="h-4"
-                />
+                <img src={location} alt="Company Logo" className="h-4" />
                 <p className="ml-2 font-normal text-[12px] md:text-[15px]">
                   Bangalore, Karnataka, India
                 </p>
