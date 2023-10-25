@@ -4,7 +4,7 @@ import HospitalCard from "./components/HospitalCard";
 
 function SearchByCompany() {
   return (
-    <>
+    <div>
       <Hero
         title="Search Hospitals"
         subtitle="Search by thousands of reputed hospitals"
@@ -19,7 +19,7 @@ function SearchByCompany() {
         <HospitalCard />
         <HospitalCard />
       </div>
-    </>
+    </div>
   );
 }
 
