@@ -6,6 +6,22 @@ import { Link } from "react-router-dom";
 function RegisterForm() {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(""); // State to store the selected option
+
+  const handleOptionSelect = (event) => {
+    setSelectedOption(event.target.textContent); // Set the selected option to the variable
+    closeDropdown(); // Close the dropdown after selection
+  };
+
+  const closeDropdown = () => {
+    const dropdown = document.getElementById("positionTypeDrop");
+    dropdown.classList.add("hidden");
+  };
+
+  const toggleDropdown = () => {
+    const dropdown = document.getElementById("positionTypeDrop");
+    dropdown.classList.toggle("hidden");
+  };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -23,15 +39,15 @@ function RegisterForm() {
     setTags(updatedTags);
   };
 
-  function showDropdownSearch() {
-    let dropdown = document.getElementsByName("positionTypeDrop")[0];
+  // function showDropdownSearch() {
+  //   let dropdown = document.getElementsByName("positionTypeDrop")[0];
 
-    if (dropdown.classList.contains("hidden")) {
-      dropdown.classList.remove("hidden");
-    } else {
-      dropdown.classList.add("hidden");
-    }
-  }
+  //   if (dropdown.classList.contains("hidden")) {
+  //     dropdown.classList.remove("hidden");
+  //   } else {
+  //     dropdown.classList.add("hidden");
+  //   }
+  // }
   return (
     <>
       <div className="pt-20 md:px-10 md:pb-10 text-black">
@@ -199,14 +215,12 @@ function RegisterForm() {
 
               <div className="w-full mb-6">
                 <button
+                  onClick={toggleDropdown}
                   id="dropdownSearchButton"
-                  onClick={showDropdownSearch}
-                  // data-dropdown-toggle="positionTypeDrop"
-                  // data-dropdown-placement="bottom"
-                  className="inline-flex py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  Position Type
+                  {selectedOption || "Position Type"}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -227,74 +241,39 @@ function RegisterForm() {
                 <div
                   id="positionTypeDrop"
                   name="positionTypeDrop"
-                  className="absolute z-10 hidden bg-white rounded-lg shadow md:w-[30%] w-[90%] light:bg-gray-700"
+                  className="absolute z-10 hidden bg-white rounded-lg shadow md:w-[30%] w-[65%] light:bg-gray-700 pt-5"
                 >
-                  <div className="p-3">
-                    {/* <label htmlFor="input-group-search" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                          className="w-4 h-4 text-gray-500 light:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                          />
-                        </svg>
-                      </div>
-                      <input
-                        type="text"
-                        id="input-group-search"
-                        className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 light:bg-gray-600 light:border-gray-500 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500"
-                        placeholder="Search user"
-                      />
-                    </div> */}
-                  </div>
                   <ul
-                    className=" px-3 pb-3 overflow-y-auto text-sm text-gray-700 light:text-gray-200"
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
                     aria-labelledby="dropdownSearchButton"
                   >
                     <li>
-                      <div className="flex items-center pl-2 rounded hover:bg-gray-100 light:hover:bg-gray-600">
-                        <label
-                          htmlFor="checkbox-item-11"
-                          className="w-full py-2 ml-2 text-sm font-medium text-gray-900 rounded light:text-gray-300"
-                        >
-                          Bonnie Green
-                        </label>
+                      <div
+                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                        onClick={handleOptionSelect}
+                      >
+                        Bonnie Green
                       </div>
                     </li>
                     <li>
-                      <div className="flex items-center pl-2 rounded hover:bg-gray-100 light:hover:bg-gray-600">
-                        <label
-                          htmlFor="checkbox-item-12"
-                          className="w-full py-2 ml-2 text-sm font-medium text-gray-900 rounded light:text-gray-300"
-                        >
-                          Jese Leos
-                        </label>
+                      <div
+                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                        onClick={handleOptionSelect}
+                      >
+                        Jese Leos
                       </div>
                     </li>
                     <li>
-                      <div className="flex items-center pl-2 rounded hover:bg-gray-100 light:hover:bg-gray-600">
-                        <label
-                          htmlFor="checkbox-item-13"
-                          className="w-full py-2 ml-2 text-sm font-medium text-gray-900 rounded light:text-gray-300"
-                        >
-                          Michael Gough
-                        </label>
+                      <div
+                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                        onClick={handleOptionSelect}
+                      >
+                        Michael Gough
                       </div>
                     </li>
                   </ul>
                 </div>
+                <p>Selected option: {selectedOption}</p>
               </div>
 
               <div className="relative w-full mb-6">
