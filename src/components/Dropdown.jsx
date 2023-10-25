@@ -42,7 +42,7 @@ const Dropdown = () => {
       </button>
       <div
         id="dropdown"
-        className="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow md:w-44 w-[100%] light:bg-gray-700"
+        className="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow md:w-44 w-[65%] light:bg-gray-700"
       >
         <ul
           className="py-2 text-sm text-gray-700 light:text-gray-200"
