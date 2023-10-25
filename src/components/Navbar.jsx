@@ -1,18 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpg";
 
 function Navbar() {
+  function onNavOpen() {
+    let navBar = document.getElementById("navbar-sticky");
+
+    if (navBar.classList.contains("hidden")) {
+      navBar.classList.remove("hidden");
+    } else {
+      navBar.classList.add("hidden");
+    }
+  }
   return (
     <>
       <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
           <Link to="/" className="flex items-center">
-            <img src={logo} className="h-5 mr-3" alt="Flowbite Logo" />
+            <img src={logo} className="h-10 mr-3" alt="Flowbite Logo" />
 
-            <span className="self-center text-[20px] font-medium whitespace-nowrap light:text-white text-black">
+            {/* <span className="self-center text-[20px] font-medium whitespace-nowrap light:text-white text-black">
               MedHire
-            </span>
+            </span> */}
           </Link>
           <div className="flex md:order-2">
             <Link
@@ -25,6 +34,7 @@ function Navbar() {
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
+              onClick={onNavOpen}
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 light:text-gray-400 light:hover:bg-gray-700 light:focus:ring-gray-600"
               aria-controls="navbar-sticky"
               aria-expanded="false"

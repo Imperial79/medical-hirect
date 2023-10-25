@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import doctor from "./assets/doctor.svg";
-import logo from "./assets/logo.png";
+import logo from "./assets/logo.jpg";
 import googleLogo from "./assets/google.png";
 
 function LoginPage() {

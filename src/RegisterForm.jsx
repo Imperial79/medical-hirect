@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import doctor from "./assets/doctor.svg";
 import close from "./assets/close.svg";
+import { Link } from "react-router-dom";
 
 function RegisterForm() {
   const [inputValue, setInputValue] = useState("");
@@ -21,6 +22,16 @@ function RegisterForm() {
     const updatedTags = tags.filter((tag) => tag !== tagToRemove);
     setTags(updatedTags);
   };
+
+  function showDropdownSearch() {
+    let dropdown = document.getElementsByName("positionTypeDrop")[0];
+
+    if (dropdown.classList.contains("hidden")) {
+      dropdown.classList.remove("hidden");
+    } else {
+      dropdown.classList.add("hidden");
+    }
+  }
   return (
     <>
       <div className="pt-20 md:px-10 md:pb-10 text-black">
@@ -189,8 +200,9 @@ function RegisterForm() {
               <div className="w-full mb-6">
                 <button
                   id="dropdownSearchButton"
-                  data-dropdown-toggle="dropdownSearch"
-                  data-dropdown-placement="bottom"
+                  onClick={showDropdownSearch}
+                  // data-dropdown-toggle="positionTypeDrop"
+                  // data-dropdown-placement="bottom"
                   className="inline-flex py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
@@ -213,11 +225,12 @@ function RegisterForm() {
                 </button>
 
                 <div
-                  id="dropdownSearch"
-                  className="z-10 hidden bg-white rounded-lg shadow md:w-[30%] w-[90%] light:bg-gray-700"
+                  id="positionTypeDrop"
+                  name="positionTypeDrop"
+                  className="absolute z-10 hidden bg-white rounded-lg shadow md:w-[30%] w-[90%] light:bg-gray-700"
                 >
                   <div className="p-3">
-                    <label htmlFor="input-group-search" className="sr-only">
+                    {/* <label htmlFor="input-group-search" className="sr-only">
                       Search
                     </label>
                     <div className="relative">
@@ -244,10 +257,10 @@ function RegisterForm() {
                         className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 light:bg-gray-600 light:border-gray-500 light:placeholder-gray-400 light:text-white light:focus:ring-blue-500 light:focus:border-blue-500"
                         placeholder="Search user"
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <ul
-                    className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 light:text-gray-200"
+                    className=" px-3 pb-3 overflow-y-auto text-sm text-gray-700 light:text-gray-200"
                     aria-labelledby="dropdownSearchButton"
                   >
                     <li>
@@ -326,13 +339,14 @@ function RegisterForm() {
                   </span>
                 ))}
               </div>
-
-              <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-              >
-                Proceed
-              </button>
+              <Link to="/dashboard">
+                <button
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
+                >
+                  Proceed
+                </button>
+              </Link>
             </form>
           </div>
         </div>
