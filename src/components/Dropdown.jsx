@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Dropdown = () => {
   function onDropdownOpen() {
@@ -48,36 +49,36 @@ const Dropdown = () => {
           aria-labelledby="dropdownDefaultButton"
         >
           <li>
-            <a
-              href="#"
+            <Link
+              to="#"
               className="block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
             >
               Bangalore, India
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="#"
               className="block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
             >
               Bangalore, India
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="#"
               className="block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
             >
               Bangalore, India
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to="#"
               className="block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
             >
               Bangalore, India
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

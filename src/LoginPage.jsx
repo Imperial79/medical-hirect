@@ -34,7 +34,7 @@ function LoginPage() {
           />
 
           <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-1/2">
-            <img src={logo} alt="" className="h-5 mx-auto" />
+            <img src={logo} alt="" className="md:w-full w-[200px] mx-auto" />
             <h1 className="mt-10 text-[25px] font-semibold mx-auto text-center">
               Welcome back!
             </h1>

@@ -20,18 +20,18 @@ function JobDetailPage() {
               className="md:w-80 w-[50%]"
             />
 
-            <a href="" className="md:hidden block">
+            <Link to="" className="md:hidden block">
               <img src={save} alt="" className="ml-10 h-5" />
-            </a>
+            </Link>
           </div>
 
           <div className="flex mt-10 items-center">
             <h1 className="md:w-[60%] text-blue-900 font-medium md:text-[25px] text-[17px]">
               Front Office Admin Support - On cology, Bangalore, India
             </h1>
-            <a href="" className="hidden md:block">
+            <Link to="" className="hidden md:block">
               <img src={save} alt="" className="ml-10 h-5" />
-            </a>
+            </Link>
           </div>
 
           <div className="mt-2 items-center text-gray-700 text-[13px] md:text-[17px]">

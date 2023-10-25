@@ -16,9 +16,9 @@ function JobCard() {
               alt=""
               className="w-40 "
             />
-            <a href="" className="md:hidden block ">
+            <Link to="" className="md:hidden block ">
               <img src={save} alt="" className="ml-2 h-5" />
-            </a>
+            </Link>
           </div>
 
           <div>
@@ -26,9 +26,9 @@ function JobCard() {
               <h2 className="text-blue-900 font-medium md:text-[20px] text-sm">
                 Front Office Admin Support - On cology, Bangalore, India
               </h2>
-              <a href="" className="hidden md:block">
+              <Link to="" className="hidden md:block">
                 <img src={save} alt="" className="ml-2 h-5" />
-              </a>
+              </Link>
             </div>
 
             <div className="mt-2 flex items-center text-gray-700">
