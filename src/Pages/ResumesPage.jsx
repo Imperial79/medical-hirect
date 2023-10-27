@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from "./components/Sidebar";
-import BottomNavbar from "./components/BottomNavbar";
+import Sidebar from "../components/Sidebar";
+import BottomNavbar from "../components/BottomNavbar";
 
 function ResumesPage() {
   return (

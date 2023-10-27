@@ -1,8 +1,8 @@
 import React from "react";
-import KOutlinedButton from "./components/kOutlinedButton";
-import JobCard from "./components/JobCard";
-import Hero from "./components/Hero";
-import trendingSearches from "./assets/trending-searches.svg";
+import KOutlinedButton from "../components/kOutlinedButton";
+import JobCard from "../components/JobCard";
+import Hero from "../components/Hero";
+import trendingSearches from "../assets/trending-searches.svg";
 
 function HomePage() {
   return (

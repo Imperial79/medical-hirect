@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import job from "./assets/job.svg";
-import hospital from "./assets/hospital.svg";
-import hashTag from "./assets/hash-tag.svg";
-import save from "./assets/save.svg";
-import date from "./assets/date.svg";
-import location from "./assets/location.svg";
+import job from "../assets/job.svg";
+import hospital from "../assets/hospital.svg";
+import hashTag from "../assets/hash-tag.svg";
+import save from "../assets/save.svg";
+import date from "../assets/date.svg";
+import location from "../assets/location.svg";
 
 function JobDetailPage() {
   let arr = [1, 2, 3, 5];

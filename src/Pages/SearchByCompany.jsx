@@ -1,6 +1,6 @@
 import React from "react";
-import Hero from "./components/Hero";
-import HospitalCard from "./components/HospitalCard";
+import Hero from "../components/Hero";
+import HospitalCard from "../components/HospitalCard";
 
 function SearchByCompany() {
   return (

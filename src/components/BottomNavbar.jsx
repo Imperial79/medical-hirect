@@ -1,6 +1,7 @@
 import React from "react";
 import resume from "../assets/resume.svg";
 import profile from "../assets/profile.svg";
+import job from "../assets/job.svg";
 import { Link } from "react-router-dom";
 
 function BottomNavbar(props) {
@@ -16,7 +17,7 @@ function BottomNavbar(props) {
             }`}
           >
             <img src={profile} alt="" className="h-5 mb-2" />
-            <span className="  text-sm text-gray-500 light:text-gray-400">
+            <span className="text-center text-xs text-gray-500 light:text-gray-400">
               Profile
             </span>
           </Link>
@@ -28,8 +29,8 @@ function BottomNavbar(props) {
               props.activeButton === 1 ? "bg-blue-100" : ""
             }`}
           >
-            <img src={resume} alt="" className="h-5 mb-2" />
-            <span className="  text-sm text-gray-500 light:text-gray-400">
+            <img src={job} alt="" className="h-5 mb-2" />
+            <span className="text-center text-xs text-gray-500 light:text-gray-400">
               Applied Jobs
             </span>
           </Link>
@@ -41,7 +42,7 @@ function BottomNavbar(props) {
             }`}
           >
             <img src={resume} alt="" className="h-5 mb-2" />
-            <span className="  text-sm text-gray-500 light:text-gray-400">
+            <span className="text-center text-xs text-gray-500 light:text-gray-400">
               Resumes
             </span>
           </Link>

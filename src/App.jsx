@@ -1,15 +1,15 @@
-import HomePage from "./HomePage";
+import HomePage from "./Pages/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import JobDetailPage from "./JobDetailPage";
+import JobDetailPage from "./Pages/JobDetailPage";
 import Footer from "./components/Footer";
-import SearchByCompany from "./SearchByCompany";
-import AboutCompany from "./AboutCompany";
-import LoginPage from "./LoginPage";
-import RegisterForm from "./RegisterForm";
-import ProfilePage from "./ProfilePage";
-import ResumesPage from "./ResumesPage";
-import AppliedJobsPage from "./AppliedJobsPage";
+import SearchByCompany from "./Pages/SearchByCompany";
+import AboutCompany from "./Pages/AboutCompany";
+import LoginPage from "./Pages/LoginPage";
+import RegisterForm from "./Pages/RegisterForm";
+import ProfilePage from "./Pages/ProfilePage";
+import ResumesPage from "./Pages/ResumesPage";
+import AppliedJobsPage from "./Pages/AppliedJobsPage";
 
 function App() {
   return (

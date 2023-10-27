@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import doctor from "./assets/doctor.svg";
-import close from "./assets/close.svg";
+import Sidebar from "../components/Sidebar";
+import BottomNavbar from "../components/BottomNavbar";
 import { Link } from "react-router-dom";
+import close from "../assets/close.svg";
 
-function RegisterForm() {
+function ProfilePage() {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [selectedOption, setSelectedOption] = useState(""); // State to store the selected option
@@ -38,26 +39,35 @@ function RegisterForm() {
     const updatedTags = tags.filter((tag) => tag !== tagToRemove);
     setTags(updatedTags);
   };
-
-  // function showDropdownSearch() {
-  //   let dropdown = document.getElementsByName("positionTypeDrop")[0];
-
-  //   if (dropdown.classList.contains("hidden")) {
-  //     dropdown.classList.remove("hidden");
-  //   } else {
-  //     dropdown.classList.add("hidden");
-  //   }
-  // }
   return (
     <>
-      <div className="pt-20 md:px-10 md:pb-10 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] md:w-[80%] md:mx-auto m-5  md:flex">
-          <img
-            src={doctor}
-            alt=""
-            className="md:w-[40%] my-20 mx-20 hidden md:block sticky"
-          />
-          <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-1/2">
+      <div className="pt-20 text-black md:flex content-center">
+        <Sidebar activeButton={2} />
+        <BottomNavbar activeButton={2} />
+
+        {/* Main Content */}
+        <div className="md:p-[20px] md:grid md:grid-cols-10 md:gap-20">
+          <h1 className="md:text-[40px] text-[20px] font-semibold mb-5 md:col-span-2 text-center">
+            My Profile
+          </h1>
+          <div className="md:mt-[80px] md:fixed mb-[20px]">
+            <div className="shadow-2xl mb-5 my-2 fit rounded-full h-[80px] w-[80px] bg-gray-300 md:mx-0 mx-auto">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D"
+                alt="profile image"
+                className="w-full h-full rounded-full object-cover"
+              />
+            </div>
+
+            <h3 className="text-xs font-normal md:text-start text-center">
+              Name
+            </h3>
+            <h3 className="text-xl font-medium md:text-start text-center">
+              Vivek Verma
+            </h3>
+          </div>
+
+          <div className="md:w-[50%] w-screen md:col-span-8 bg-gray-50 p-6 rounded-xl mx-auto">
             <h1 className="text-[20px] mb-4">Enter your details</h1>
 
             <form>
@@ -323,7 +333,7 @@ function RegisterForm() {
                   type="submit"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
                 >
-                  Proceed
+                  Update
                 </button>
               </Link>
             </form>
@@ -334,4 +344,4 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+export default ProfilePage;

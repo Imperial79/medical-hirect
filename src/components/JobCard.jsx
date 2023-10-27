@@ -9,7 +9,7 @@ function JobCard() {
   return (
     <>
       <Link to="/job-detail">
-        <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
+        <div className="bg-white border p-5 md:mx-auto md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
           <div className="md:w-1/6 md:mr-10 flex justify-between items-center mb-4 md:mb-0">
             <img
               src="https://hospitalcareers.com/files/pictures/emp_logo_2858.jpg"
