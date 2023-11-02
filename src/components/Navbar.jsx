@@ -12,10 +12,11 @@ function Navbar() {
       navBar.classList.add("hidden");
     }
   }
+
   return (
     <>
       <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
+        <div className="w-full flex flex-wrap items-center justify-between p-4">
           <Link to="/" className="flex items-center">
             <img src={logo} className="h-10 mr-3" alt="Flowbite Logo" />
 
@@ -25,7 +26,8 @@ function Navbar() {
           </Link>
           <div className="flex md:order-2">
             <Link
-              to="/"
+              to="https://recruiter.shapon.tech"
+              target="_blank"
               className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center light:bg-teal-600 light:hover:bg-teal-700 light:focus:ring-teal-800"
             >
               Post Job
@@ -100,7 +102,7 @@ function Navbar() {
             </ul>
           </div>
         </div>
-      </nav>
+      </nav >
     </>
   );
 }

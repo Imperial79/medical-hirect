@@ -31,6 +31,8 @@ function App() {
                 element={<AppliedJobsPage />}
               />
               <Route path="/dashboard/resumes" element={<ResumesPage />} />
+
+              {/* <Route path='/recruiter' render={() => (window.location.href = 'https://recruiter.shapon.tech')} /> */}
             </Routes>
           </div>
         </div>

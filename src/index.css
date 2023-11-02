@@ -16,8 +16,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
-
 .max2lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;
