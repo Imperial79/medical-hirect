@@ -121,8 +121,7 @@ function Footer() {
           </div>
           <div className="px-4 py-6 bg-gray-700 md:flex md:items-center md:justify-between">
             <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
-              © 2023 <Link to="https://flowbite.com/">MedHire™</Link>. All
-              Rights Reserved.
+              © 2023 <Link to="">Medilink™</Link>. All Rights Reserved.
             </span>
             <div className="flex mt-4 space-x-5 sm:justify-center md:mt-0">
               <Link
