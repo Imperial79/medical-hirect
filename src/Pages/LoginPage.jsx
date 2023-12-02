@@ -4,13 +4,14 @@ import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
 import googleLogo from "../assets/google.png";
 import { auth, googleProvider } from "../Helper/firebase-config";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithCredential, signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 
 function LoginPage() {
   const { setUser, setAlert } = useContext(Context);
   const navigator = useNavigate();
+
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -19,9 +20,47 @@ function LoginPage() {
 
   const signInWithGoogle = async () => {
     try {
+      await signOut(auth);
       const data = await signInWithPopup(auth, googleProvider);
+      const formData = new FormData();
+      formData.append("email", data?.user?.email);
+      formData.append("guid", data?.user?.uid);
+      formData.append("fcmToken", "");
+
+      const response = await dbObject.post(
+        "/users/login-with-google.php",
+        formData
+      );
+      if (!response.data.error) {
+        setUser(response.data.response);
+        navigator("/", {
+          replace: true,
+        });
+      } else {
+        if (response.data.action === "Register") {
+          navigator("/register", {
+            replace: true,
+            state: {
+              type: "Email",
+              phone: "",
+              otp: "",
+              email: data?.user.email,
+              guid: data?.user.uid,
+            },
+          });
+        } else {
+          setAlert({
+            content: response.data.message,
+            isDanger: response.data.error,
+          });
+        }
+      }
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      setAlert({
+        content: error,
+        isDanger: true,
+      });
     }
   };
 
@@ -66,7 +105,16 @@ function LoginPage() {
       );
       if (!response.data.error) {
         if (isRegister) {
-          navigator("/register");
+          navigator("/register", {
+            replace: true,
+            state: {
+              type: "Phone",
+              phone: phone,
+              otp: otp,
+              email: "",
+              guid: "",
+            },
+          });
         } else {
           loginWithPhone();
         }

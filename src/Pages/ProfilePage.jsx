@@ -308,7 +308,7 @@ function ProfilePage() {
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeWidth="2"
                       d="M12 4v16m8-8H4"
                     />
                   </svg>

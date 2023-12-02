@@ -1,31 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import doctor from "../assets/doctor.svg";
 import close from "../assets/close.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { dbObject } from "../Helper/Constants";
 
 function RegisterForm() {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [roleList, setroleList] = useState([
+    {
+      id: 1,
+      title: "Select Role",
+      subRole: [
+        {
+          id: 1,
+          subRoleTitle: "Select Sub Role",
+        },
+      ],
+      subPost: [
+        {
+          id: 1,
+          subPostTitle: "Select Post",
+        },
+      ],
+    },
+  ]);
+  const location = useLocation();
 
-  const handleOptionSelect = (event) => {
-    setSelectedOption(event.target.textContent);
-    closeDropdown();
+  const [dropdownData, setDropdownData] = useState({
+    gender: "Select Gender",
+    role: 0,
+    subRole: "Select Sub-Role",
+    state: "Select State",
+    employmentType: "Select Employment Type",
+  });
+
+  const [isDropdownOpen, setDropdownOpen] = useState({
+    gender: false,
+    role: false,
+    subRole: false,
+    state: false,
+    employmentType: false,
+  });
+
+  const handleDropdownChange = (dropdownName, value) => {
+    setDropdownOpen((prevValues) => ({
+      ...prevValues,
+      [dropdownName]: value,
+    }));
   };
 
-  const closeDropdown = () => {
-    const dropdown = document.getElementById("positionTypeDrop");
-    dropdown.classList.add("hidden");
+  const handleDropdownData = (dropdownName, value) => {
+    setDropdownData((prevValues) => ({
+      ...prevValues,
+      [dropdownName]: value,
+    }));
   };
 
-  const toggleDropdown = () => {
-    const dropdown = document.getElementById("positionTypeDrop");
-    dropdown.classList.toggle("hidden");
-  };
+  // ---------------functions----------------->
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  useEffect(() => {
+    fetchRole();
+  }, []);
+
+  async function fetchRole() {
+    const response = await dbObject.get("/role/fetch-roles.php");
+    if (!response.data.error) {
+      setroleList(response.data.response);
+    }
+  }
+
+  // -------------------------------->
 
   const handleTagAdd = () => {
     if (inputValue.trim() !== "") {
@@ -39,19 +84,268 @@ function RegisterForm() {
     setTags(updatedTags);
   };
 
+  function handleInputChange(e) {
+    setInputValue(e.target.value);
+  }
   return (
     <>
       <div className="pt-20 md:px-10 md:pb-10 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] md:w-[80%] md:mx-auto m-5  md:flex">
+        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5  md:flex">
           <img
             src={doctor}
             alt=""
             className="md:w-[40%] my-20 mx-20 hidden md:block sticky"
           />
           <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-1/2">
-            <h1 className="text-[20px] mb-4">Enter your details</h1>
+            <h1 className="text-[20px] mb-4">Register as a job finder</h1>
 
-            <form>
+            <form
+              method="POST"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="floating_first_name"
+                    id="floating_first_name"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    htmlFor="floating_first_name"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    First name
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    name="floating_last_name"
+                    id="floating_last_name"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    htmlFor="floating_last_name"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Last name
+                  </label>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="date"
+                    name="dob"
+                    id="dob"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    htmlFor="dob"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    DOB
+                  </label>
+                </div>
+                <div className="w-full mb-6">
+                  <button
+                    onClick={() => {
+                      handleDropdownChange("gender", !isDropdownOpen.gender);
+                    }}
+                    id="genderDropdownBtn"
+                    className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                    type="button"
+                  >
+                    {dropdownData.gender === "M"
+                      ? "Male"
+                      : dropdownData.gender === "F"
+                      ? "Female"
+                      : "Others"}
+                    <svg
+                      className="w-2.5 h-2.5 ml-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 4 4 4-4"
+                      />
+                    </svg>
+                  </button>
+
+                  <div
+                    id="genderDropdown"
+                    name="genderDropdown"
+                    className={`${
+                      isDropdownOpen.gender ? "absolute" : "hidden"
+                    } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                  >
+                    <ul
+                      className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                      aria-labelledby="dropdownSearchButton"
+                    >
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "M");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Male
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "F");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Female
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "O");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Others
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full mb-6">
+                <button
+                  onClick={() => {
+                    handleDropdownChange("role", !isDropdownOpen.role);
+                  }}
+                  id="roleDropdownBtn"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  type="button"
+                >
+                  {roleList[dropdownData.role].title}
+                  <svg
+                    className="w-2.5 h-2.5 ml-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+
+                <div
+                  id="roleDropdown"
+                  name="roleDropdown"
+                  className={`${
+                    isDropdownOpen.role ? "absolute" : "hidden"
+                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                >
+                  <ul
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                    aria-labelledby="dropdownSearchButton"
+                  >
+                    {roleList.map((data, index) => (
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("role", index);
+                            handleDropdownChange("role", false);
+                          }}
+                        >
+                          {data.title}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="w-full mb-6">
+                <button
+                  onClick={() => {
+                    handleDropdownChange("subRole", !isDropdownOpen.subRole);
+                  }}
+                  id="subRoleDropdownBtn"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  type="button"
+                >
+                  {roleList[dropdownData.role].title}
+                  <svg
+                    className="w-2.5 h-2.5 ml-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+
+                <div
+                  id="subRoleDropdown"
+                  name="subRoleDropdown"
+                  className={`${
+                    isDropdownOpen.subRole ? "absolute" : "hidden"
+                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                >
+                  <ul
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                    aria-labelledby="dropdownSearchButton"
+                  >
+                    {roleList[dropdownData.role].subRole.map((data, index) => (
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("role", index);
+                            handleDropdownChange("role", false);
+                          }}
+                        >
+                          {data.title}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="email"
@@ -100,53 +394,20 @@ function RegisterForm() {
                   Confirm password
                 </label>
               </div>
+
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    maxLength={10}
+                    name="phone"
+                    id="phone"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
-                    htmlFor="floating_first_name"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    First name
-                  </label>
-                </div>
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="floating_last_name"
-                    id="floating_last_name"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_last_name"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Last name
-                  </label>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="tel"
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    name="floating_phone"
-                    id="floating_phone"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_phone"
+                    htmlFor="phone"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Phone number
@@ -204,69 +465,6 @@ function RegisterForm() {
                 </label>
               </div>
 
-              <div className="w-full mb-6">
-                <button
-                  onClick={toggleDropdown}
-                  id="dropdownSearchButton"
-                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  type="button"
-                >
-                  {selectedOption || "Position Type"}
-                  <svg
-                    className="w-2.5 h-2.5 ml-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-
-                <div
-                  id="positionTypeDrop"
-                  name="positionTypeDrop"
-                  className="absolute z-10 hidden bg-white rounded-lg shadow md:w-[30%] w-[65%] light:bg-gray-700 pt-5"
-                >
-                  <ul
-                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                    aria-labelledby="dropdownSearchButton"
-                  >
-                    <li>
-                      <div
-                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                        onClick={handleOptionSelect}
-                      >
-                        Bonnie Green
-                      </div>
-                    </li>
-                    <li>
-                      <div
-                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                        onClick={handleOptionSelect}
-                      >
-                        Jese Leos
-                      </div>
-                    </li>
-                    <li>
-                      <div
-                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                        onClick={handleOptionSelect}
-                      >
-                        Michael Gough
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <p>Selected option: {selectedOption}</p>
-              </div>
-
               <div className="relative w-full mb-6">
                 <input
                   type="text"
@@ -289,7 +487,7 @@ function RegisterForm() {
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeWidth="2"
                       d="M12 4v16m8-8H4"
                     />
                   </svg>
