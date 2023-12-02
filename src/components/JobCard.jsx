@@ -8,16 +8,20 @@ import location from "../assets/location.svg";
 function JobCard({ data }) {
   return (
     <>
-      <Link to="/job-detail">
+      <Link to={`/job-detail?vacancy-id=${data.id}`}>
         <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
           <div className="md:mr-10 flex justify-between items-center mb-4 md:mb-0">
             <div className="h-[100px] w-[100px] mx-auto">
-              <img src={data.companyImage} alt="" className="w-full h-full " />
+              <img
+                src={data.companyImage}
+                alt="CompanyImage"
+                className="w-full h-full "
+              />
             </div>
 
-            <Link to="" className="md:hidden block">
+            <button type="button" className="md:hidden block">
               <img src={save} alt="" className="ml-2 h-5" />
-            </Link>
+            </button>
           </div>
 
           <div>
@@ -25,12 +29,12 @@ function JobCard({ data }) {
               <h2 className="text-blue-900 font-medium md:text-[20px] text-sm">
                 {data.roleTitle}
               </h2>
-              <Link
-                to=""
+              <button
+                type="button"
                 className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
               >
                 <img src={save} alt="" className="h-5" />
-              </Link>
+              </button>
             </div>
 
             <div className="mt-2 flex items-center text-gray-700">

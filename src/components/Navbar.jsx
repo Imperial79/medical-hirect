@@ -1,8 +1,15 @@
-import React from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
+import { Context } from "../Helper/ContextProvider";
+import { dbObject } from "../Helper/Constants";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const { user } = useContext(Context);
+  const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
+  const navigator = useNavigate();
+
   function onNavOpen() {
     let navBar = document.getElementById("navbar-sticky");
 
@@ -13,19 +20,21 @@ function Navbar() {
     }
   }
 
+  async function logOut() {
+    await dbObject.get("/users/logout.php");
+    navigator("/login", { replace: true });
+  }
+
   return (
     <>
       <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0 items-center">
         <div className="w-full flex flex-wrap items-center justify-between p-4">
           <Link to="/" className="flex items-center">
-            <img src={logo} className="h-10 mr-3" alt="Flowbite Logo" />
-
-            {/* <span className="self-center text-[20px] font-medium whitespace-nowrap light:text-white text-black">
-              MedHire
-            </span> */}
+            <img src={logo} className="w-32 mr-3" alt="Flowbite Logo" />
           </Link>
           <div className="flex md:order-2">
             <Link
+              id="post-job"
               to="https://recruiter.shapon.tech"
               target="_blank"
               className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center light:bg-teal-600 light:hover:bg-teal-700 light:focus:ring-teal-800"
@@ -81,14 +90,77 @@ function Navbar() {
                 </Link>
               </li>
 
-              <li>
-                <Link
-                  to="/login"
-                  className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
-                >
-                  Login
-                </Link>
-              </li>
+              {user != null ? (
+                <li>
+                  <button
+                    onClick={() => {
+                      setisProfileDropOpen(!isProfileDropOpen);
+                    }}
+                    type="button"
+                    className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom"
+                  >
+                    <span className="sr-only">Open user menu</span>
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={user.image}
+                      alt="user photo"
+                    />
+                  </button>
+                  <ProfileMenu
+                    isProfileDropOpen={isProfileDropOpen}
+                    user={user}
+                  >
+                    <ul className="py-2" aria-labelledby="user-menu-button">
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+                        >
+                          Dashboard
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+                        >
+                          Settings
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+                        >
+                          Earnings
+                        </a>
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          onClick={logOut}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+                        >
+                          Sign out
+                        </button>
+                      </li>
+                    </ul>
+                  </ProfileMenu>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    to="/login"
+                    className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
+                  >
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -98,3 +170,24 @@ function Navbar() {
 }
 
 export default Navbar;
+
+function ProfileMenu({ isProfileDropOpen, user, children }) {
+  return (
+    <div
+      className={`${
+        isProfileDropOpen ? "absolute" : "hidden"
+      } z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow light:bg-gray-700 light:divide-gray-600`}
+      id="user-dropdown"
+    >
+      <div className="px-4 py-3">
+        <span className="block text-sm text-gray-900 light:text-white">
+          {user.firstName} {user.lastName}
+        </span>
+        <span className="block text-sm  text-gray-500 truncate light:text-gray-400">
+          {user.email}
+        </span>
+      </div>
+      {children}
+    </div>
+  );
+}

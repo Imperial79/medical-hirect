@@ -1,17 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import job from "../assets/job.svg";
 import hospital from "../assets/hospital.svg";
 import hashTag from "../assets/hash-tag.svg";
 import save from "../assets/save.svg";
 import date from "../assets/date.svg";
 import location from "../assets/location.svg";
+import { dbObject } from "../Helper/Constants";
 
 function JobDetailPage() {
   let arr = [1, 2, 3, 5];
+  let query = new URLSearchParams(useLocation().search);
+  const [vacancyData, setvacancyData] = useState({});
+
+  // ------------------->
+
+  async function fetchJobDetails() {
+    const formData = new FormData();
+    formData.append("vacancyId", query.get("vacancy-id"));
+    const response = await dbObject.post(
+      "/vacancy/fetch-vacancy-details.php",
+      formData
+    );
+    if (!response.data.error) {
+      setvacancyData(response.data.response);
+    }
+  }
+
+  useEffect(() => {
+    fetchJobDetails();
+  }, []);
+
   return (
-    <div className="pt-20 pb-10 md:px-20 px-5 md:flex md:gap-4 text-black">
-      <div className="w-full">
+    <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 md:grid md:grid-cols-6 md:gap-5 text-black">
+      <div className="col-span-4 w-full">
         <div className="justify-start">
           <div className="flex mt-[17px] items-center justify-between">
             <img
@@ -35,29 +57,29 @@ function JobDetailPage() {
           </div>
 
           <div className="mt-2 items-center text-gray-700 text-[13px] md:text-[17px]">
-            <div className="flex">
-              <div className=" md:w-1/2">
+            <div className="grid grid-cols-2">
+              <div>
                 <div className="flex items-center">
-                  <img src={hospital} alt="Company Logo" className="h-6" />
+                  <img src={hospital} alt="Company Logo" className="h-5" />
                   <Link to="/about-company">
                     <p className="ml-2 font-normal">UCLA Health</p>
                   </Link>
                 </div>
                 <div className="mt-2 flex items-center text-[13px] md:text-[17px]">
-                  <img src={location} alt="Company Logo" className="h-6" />
-                  <p className="ml-2 font-normal ">
+                  <img src={location} alt="Company Logo" className="h-5" />
+                  <p className="ml-2 font-normal">
                     Bangalore, Karnataka, India
                   </p>
                 </div>
               </div>
 
-              <div className="md:w-1/2 justify-end">
+              <div>
                 <div className="flex items-center">
-                  <img src={hashTag} alt="Company Logo" className="h-6" />
+                  <img src={hashTag} alt="Company Logo" className="h-5" />
                   <p className="ml-2 font-normal">JOB ID: 122345GH</p>
                 </div>
                 <div className="mt-2 flex items-center text-[13px] md:text-[17px]">
-                  <img src={date} alt="Company Logo" className="h-6" />
+                  <img src={date} alt="Company Logo" className="h-5" />
                   <p className="ml-2 font-normal ">Posted On: 29-03-2022</p>
                 </div>
               </div>
@@ -68,8 +90,8 @@ function JobDetailPage() {
             >
               Apply Now
             </button>
-            <h1 className="mt-5 font-semibold"> Job Description</h1>
-            <h2 className="mt-3 md:text-[15px] text-sm">
+            <h1 className="mt-5 font-semibold text-[20px]">Job Description</h1>
+            <h2 className="mt-3 md:text-[15px] text-sm bg-gray-100 p-5 rounded-xl">
               Come to Memphis and join a very busy practice seeking to replace a
               retiring physician. We seek a well-trained interventional
               cardiologist for a full-time, employed position. Due to tremendous
@@ -96,20 +118,20 @@ function JobDetailPage() {
               for this position.
             </h2>
 
-            <h1 className="mt-5 font-semibold">Emploment Type</h1>
+            <h1 className="mt-5 font-semibold text-[20px]">Emploment Type</h1>
             <h2 className="mt-3 md:text-[15px] text-sm">Full-Time</h2>
           </div>
         </div>
       </div>
 
-      <div className="md:w-1/2 mt-6 md:mt-5">
+      <div className="col-span-2 mt-6 md:mt-5">
         <div className="flex items-center justify-between mb-5">
           <h1>Jobs by UCLA Health</h1>
         </div>
 
-        {arr.map((element) => {
+        {arr.map((element, index) => {
           return (
-            <Link to="/job-detail">
+            <Link key={index} to="/job-detail">
               <div className="border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
                 <div className="flex items-center">
                   <img src={job} alt="Company Logo" className="h-5" />

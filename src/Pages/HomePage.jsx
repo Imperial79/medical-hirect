@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import KOutlinedButton from "../components/kOutlinedButton";
 import JobCard from "../components/JobCard";
 import Hero from "../components/Hero";
@@ -8,7 +8,7 @@ import Dropdown from "../components/Dropdown";
 import filterIcon from "../assets/filter.svg";
 
 function HomePage() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [rolesList, setRolesList] = useState([]);
   const [vacancyList, setvacancyList] = useState([]);
   const [statesList, setstatesList] = useState([]);
@@ -18,7 +18,6 @@ function HomePage() {
       // setLoading(true);
 
       const response = await dbObject.get("/role/fetch-roles.php");
-      // console.log(response);
       if (!response.data.error) {
         setRolesList(response.data.response);
       }
@@ -32,16 +31,16 @@ function HomePage() {
     try {
       // setLoading(true);
       const formData = new FormData();
-      formData.append("pageNo", "0");
+      formData.append("pageNo", 0);
       formData.append("searchKey", "");
       formData.append("city", "");
       formData.append("state", "");
       formData.append("distanceRange", "");
+      formData.append("roleId", "1");
       const response = await dbObject.post(
-        "/vacancy/fetch-common-vacancies.php",
+        "/vacancy/fetch-vacancies.php",
         formData
       );
-      console.log(response);
       if (!response.data.error) {
         setvacancyList(response.data.response);
       }
@@ -90,7 +89,7 @@ function HomePage() {
         <div className="p-4 rounded-xl">
           <h2 className="mt-5 mb-2 text-black">Filter speciality</h2>
           <div className="flex flex-wrap">
-            {rolesList.map((data, index) => (
+            {rolesList.map((data) => (
               <div key={data.id}>
                 <KOutlinedButton label={data.title} />
               </div>
@@ -129,7 +128,7 @@ function HomePage() {
         Recent Openings
       </h2>
 
-      {vacancyList.map((data, index) => (
+      {vacancyList.map((data) => (
         <div key={data.id}>
           <JobCard data={data} />
         </div>

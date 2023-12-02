@@ -3,21 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Hero(props) {
-  // const [statesList, setstatesList] = useState([]);
-  // async function fetchStates() {
-  //   try {
-  //     const response = await dbObject.get("/states/fetch-states.php");
-  //     if (!response.data.error) {
-  //       console.log(response);
-  //       setstatesList(response.data.response);
-  //     }
-  //   } catch (error) {}
-  // }
-
-  // useEffect(() => {
-  //   fetchStates();
-  // }, []);
-
   return (
     <div className="bg-blue-500 px-5 pt-20 min-w-full">
       <h1 className="mt-10 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-white">

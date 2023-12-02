@@ -10,12 +10,15 @@ import RegisterForm from "./Pages/RegisterForm";
 import ProfilePage from "./Pages/ProfilePage";
 import ResumesPage from "./Pages/ResumesPage";
 import AppliedJobsPage from "./Pages/AppliedJobsPage";
+import ContextProvider from "./Helper/ContextProvider";
+import Alert from "./components/Alert";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <div>
+        <ContextProvider>
+          <Alert />
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -33,7 +36,7 @@ function App() {
 
             {/* <Route path='/recruiter' render={() => (window.location.href = 'https://recruiter.shapon.tech')} /> */}
           </Routes>
-        </div>
+        </ContextProvider>
 
         <Footer />
       </BrowserRouter>

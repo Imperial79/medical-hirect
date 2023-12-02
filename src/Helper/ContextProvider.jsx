@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { dbObject } from "./Constants";
 
 export const Context = React.createContext();
 
-function ContextProvider(props) {
+function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [alert, setAlert] = useState({
     content: "",
     isDanger: false,
   });
-  // const [parameter, setParameter] = useState({
-  //   origin: "",
-  //   body: {},
-  // });
+  const location = new useLocation();
 
   const [signupDetails, setsignupDetails] = useState({
     fullname: "",
@@ -31,28 +30,26 @@ function ContextProvider(props) {
     fcmToken: "",
   });
 
-  // const navigator = useNavigate();
+  const navigator = useNavigate();
+  const auth = async () => {
+    setAuthLoading(true);
+    try {
+      const response = await dbObject.post("/users/auth.php");
 
-  // const auth = async () => {
-  //   setAuthLoading(true);
-  //   try {
-  //     const response = await dbObject.post("/users/auth.php");
-  //     if (!response.data["error"]) {
-  //       setUser(response.data.response);
-  //       navigator("/dashboard");
-  //     } else {
-  //       navigator("/");
-  //     }
-  //   } catch (error) {}
-  //   setAuthLoading(false);
-  // };
+      if (!response.data["error"]) {
+        setUser(response.data.response);
+      }
+      navigator(location.pathname + location.search);
+    } catch (error) {}
+    setAuthLoading(false);
+  };
 
   const _id = (el) => {
     return document.getElementById(el);
   };
 
   useEffect(() => {
-    // auth();
+    auth();
   }, []);
 
   return (
@@ -63,13 +60,12 @@ function ContextProvider(props) {
         alert,
         setAlert,
         _id,
-        // authLoading,
-        // auth,
+        authLoading,
         signupDetails,
         setsignupDetails,
       }}
     >
-      {props.children}
+      {children}
     </Context.Provider>
   );
 }
