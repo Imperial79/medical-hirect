@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
@@ -7,16 +7,47 @@ import { auth, googleProvider } from "../Helper/firebase-config";
 import { signInWithCredential, signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
+import FullScreenLoading from "../components/FullScrenLoading";
+import Scaffold from "../components/Scaffold";
 
 function LoginPage() {
   const { setUser, setAlert } = useContext(Context);
   const navigator = useNavigate();
-
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [loading, setloading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+
+  const [timer, setTimer] = useState(60); // Initial timer value in seconds
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  // Function to start the timer
+  const startTimer = () => {
+    setTimer(60);
+    setIsTimerRunning(true);
+  };
+
+  // Effect to handle the timer countdown
+  useEffect(() => {
+    let countdown;
+    if (isTimerRunning && timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(countdown);
+    };
+  }, [isTimerRunning, timer]);
+
+  // Effect to handle the timer reaching zero
+  useEffect(() => {
+    if (timer === 0) {
+      setIsTimerRunning(false);
+    }
+  }, [timer]);
 
   const signInWithGoogle = async () => {
     try {
@@ -75,6 +106,7 @@ function LoginPage() {
       );
       if (!response.data.error) {
         setIsOtpSent(true);
+        startTimer();
 
         if (response.data.action == "Register") {
           setIsRegister(true);
@@ -153,7 +185,7 @@ function LoginPage() {
   }
 
   return (
-    <>
+    <Scaffold isLoading={loading}>
       <div className="pt-20 md:px-10 p-5 text-black">
         <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[70%] md:w-full w-[100%] mx-auto md:flex">
           <img
@@ -184,7 +216,8 @@ function LoginPage() {
 
               <div className="mt-5 relative z-0 w-full mb-6 group">
                 <input
-                  type="phone"
+                  type="text"
+                  maxLength={10}
                   name="floating_phone"
                   id="floating_phone"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -222,16 +255,22 @@ function LoginPage() {
                   OTP
                 </label>
               </div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  sendOTP();
-                }}
-                type="button"
-                className="text-blue-700 font-medium hover:text-blue-400 hover:underline rounded-full"
-              >
-                Send OTP
-              </button>
+              {isTimerRunning ? (
+                <h1 className="text-sm text-gray-500 font-medium">
+                  Resend OTP in {timer} secs
+                </h1>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    sendOTP();
+                  }}
+                  type="button"
+                  className="text-blue-700 font-medium hover:text-blue-400 hover:underline rounded-full"
+                >
+                  Send OTP
+                </button>
+              )}
 
               <button
                 type="submit"
@@ -265,7 +304,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
-    </>
+    </Scaffold>
   );
 }
 

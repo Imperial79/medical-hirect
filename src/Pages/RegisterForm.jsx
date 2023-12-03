@@ -89,14 +89,14 @@ function RegisterForm() {
   }
   return (
     <>
-      <div className="pt-20 md:px-10 md:pb-10 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5  md:flex">
+      <div className="pt-20 md:pb-10 text-black">
+        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5 md:flex">
           <img
             src={doctor}
             alt=""
-            className="md:w-[40%] my-20 mx-20 hidden md:block sticky"
+            className="lg:w-[30%] md:w-[30%] my-20 mx-20 hidden md:block "
           />
-          <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-1/2">
+          <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-full">
             <h1 className="text-[20px] mb-4">Register as a job finder</h1>
 
             <form
@@ -236,7 +236,7 @@ function RegisterForm() {
                 </div>
               </div>
 
-              <div className="w-full mb-6">
+              {/* <div className="w-full mb-6">
                 <button
                   onClick={() => {
                     handleDropdownChange("role", !isDropdownOpen.role);
@@ -289,9 +289,9 @@ function RegisterForm() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="w-full mb-6">
+              {/* <div className="w-full mb-6">
                 <button
                   onClick={() => {
                     handleDropdownChange("subRole", !isDropdownOpen.subRole);
@@ -344,7 +344,7 @@ function RegisterForm() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
               <div className="relative z-0 w-full mb-6 group">
                 <input

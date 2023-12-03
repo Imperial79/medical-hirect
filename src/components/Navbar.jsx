@@ -120,7 +120,7 @@ function Navbar() {
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Dashboard
+                          Applied Jobs
                         </a>
                       </li>
                       <li>
@@ -128,7 +128,7 @@ function Navbar() {
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Settings
+                          Saved Jobs
                         </a>
                       </li>
                       <li>
@@ -136,14 +136,14 @@ function Navbar() {
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Earnings
+                          My Profile
                         </a>
                       </li>
                       <li>
                         <button
                           type="button"
                           onClick={logOut}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+                          className="w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
                           Sign out
                         </button>
