@@ -89,18 +89,21 @@ function JobDetailPage() {
                 />
               </div>
 
-              <Link to="" className="md:hidden flex gap-2 items-center">
+              <button className="md:hidden flex gap-2 items-center">
                 <img src={save} alt="" className="ml-10 h-5" />
-              </Link>
+              </button>
             </div>
 
             <div className="flex mt-10 items-center">
               <h1 className="md:w-[60%] text-blue-900 font-medium md:text-[25px] text-[17px]">
                 {vacancyData.roleTitle} | {vacancyData.companyName}
               </h1>
-              <Link to="" className="hidden md:block">
-                <img src={save} alt="" className="ml-10 h-5" />
-              </Link>
+              <button
+                type="button"
+                className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
+              >
+                <img src={save} alt="" className="h-5" />
+              </button>
             </div>
 
             <div className="mt-2 items-center text-gray-700 text-[13px] md:text-[17px]">
