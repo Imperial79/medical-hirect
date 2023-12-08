@@ -4,7 +4,7 @@ import job from "../assets/job.svg";
 import date from "../assets/date.svg";
 import location from "../assets/location.svg";
 
-function AboutCompany() {
+function AboutRecruiter() {
   let arr = [1, 2, 3, 5];
   return (
     <>
@@ -109,4 +109,4 @@ function AboutCompany() {
   );
 }
 
-export default AboutCompany;
+export default AboutRecruiter;

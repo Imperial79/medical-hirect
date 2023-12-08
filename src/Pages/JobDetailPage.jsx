@@ -106,10 +106,10 @@ function JobDetailPage() {
               </button>
             </div>
 
-            <div className="mt-2 items-center text-gray-700 text-[13px] md:text-[17px]">
+            <div className="mt-2 items-center text-gray-700 text-[15px] md:text-[17px]">
               <div className="lg:grid md:grid lg:grid-cols-2 md:grid-cols-2">
                 <>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 md:mb-0 mb-4">
                     <img src={hospital} alt="Company Logo" className="h-5" />
 
                     <Link to={vacancyData.website} target="_blank">
@@ -120,7 +120,7 @@ function JobDetailPage() {
                     </Link>
                   </div>
 
-                  <div className="mt-2 gap-2 flex items-center text-[13px] md:text-[17px]">
+                  <div className="mt-2 gap-2 flex items-center md:mb-0 mb-4">
                     <img src={location} alt="Company Logo" className="h-5" />
                     <p className="font-normal">
                       {vacancyData.companyCity}, {vacancyData.companyState}
@@ -129,11 +129,11 @@ function JobDetailPage() {
                 </>
 
                 <>
-                  <div className="flex items-center gap-2 md:mt-0 mt-2">
+                  <div className="flex items-center gap-2 md:mb-0 mb-4">
                     <img src={hashTag} alt="Company Logo" className="h-5" />
                     <p className="font-normal">JOB ID: {vacancyData.id}</p>
                   </div>
-                  <div className="mt-2 flex gap-2 items-center text-[13px] md:text-[17px]">
+                  <div className="mt-2 flex gap-2 items-center md:mb-0 mb-4">
                     <img src={date} alt="Company Logo" className="h-5" />
 
                     <p className="font-normal ">

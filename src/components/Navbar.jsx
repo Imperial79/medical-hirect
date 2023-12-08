@@ -78,15 +78,15 @@ function Navbar() {
                   to="#"
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
                 >
-                  Search by Profession
+                  Search Job Profile
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/jobs-company"
+                  to="/jobs-recruiter"
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
                 >
-                  Search by Company
+                  Search Recruiters
                 </Link>
               </li>
 
@@ -120,7 +120,7 @@ function Navbar() {
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Applied Jobs
+                          Bookmarked Applications
                         </a>
                       </li>
                       <li>
@@ -128,16 +128,16 @@ function Navbar() {
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Saved Jobs
+                          Applied Applications
                         </a>
                       </li>
                       <li>
-                        <a
-                          href="#"
+                        <Link
+                          to="/dashboard/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          My Profile
-                        </a>
+                          Edit Profile
+                        </Link>
                       </li>
                       <li>
                         <button
@@ -145,7 +145,7 @@ function Navbar() {
                           onClick={logOut}
                           className="w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
-                          Sign out
+                          Log out
                         </button>
                       </li>
                     </ul>

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 function Hero(props) {
   return (
@@ -13,7 +12,7 @@ function Hero(props) {
       </h1>
 
       <div className="border-b-[1px] mt-10 bg-white rounded-tl-lg rounded-tr-lg p-10 md:w-[70%] w-[90%] mx-auto">
-        <div className="flex flex-wrap sm:flex-nowrap items-center">
+        <div className="md:flex md:gap-4 items-center">
           <div className="w-full">
             <input
               type="text"
@@ -23,14 +22,12 @@ function Hero(props) {
             />
           </div>
 
-          <Link to="/login" className="md:w-auto w-full">
-            <button
-              type="button"
-              className="w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 md:ml-4 light:focus:ring-yellow-900 overflow-hidden whitespace-nowrap text-ellipsis lg:mt-0 md:mt-0 mt-5"
-            >
-              {props.buttonLabel}
-            </button>
-          </Link>
+          <button
+            type="button"
+            className="w-auto focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 light:focus:ring-yellow-900 whitespace-nowrap text-ellipsis"
+          >
+            {props.buttonLabel}
+          </button>
         </div>
       </div>
     </div>

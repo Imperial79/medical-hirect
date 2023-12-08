@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import JobDetailPage from "./Pages/JobDetailPage";
 import Footer from "./components/Footer";
-import SearchByCompany from "./Pages/SearchByCompany";
-import AboutCompany from "./Pages/AboutCompany";
 import LoginPage from "./Pages/LoginPage";
 import RegisterForm from "./Pages/RegisterForm";
 import ProfilePage from "./Pages/ProfilePage";
@@ -12,6 +10,8 @@ import ResumesPage from "./Pages/ResumesPage";
 import AppliedJobsPage from "./Pages/AppliedJobsPage";
 import ContextProvider from "./Helper/ContextProvider";
 import Alert from "./components/Alert";
+import SearchRecruiters from "./Pages/SearchRecruiters";
+import AboutRecruiter from "./Pages/AboutRecruiter";
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/job-detail" element={<JobDetailPage />} />
-            <Route path="/jobs-company" element={<SearchByCompany />} />
-            <Route path="/about-company" element={<AboutCompany />} />
+            <Route path="/jobs-recruiter" element={<SearchRecruiters />} />
+            <Route path="/about-recruiter" element={<AboutRecruiter />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
             <Route
               path="/dashboard/applied-jobs"
