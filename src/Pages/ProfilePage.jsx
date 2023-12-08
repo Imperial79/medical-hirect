@@ -400,6 +400,7 @@ function ProfilePage() {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
+                    value={user.phone}
                   />
                   <label
                     htmlFor="phone"
@@ -416,6 +417,7 @@ function ProfilePage() {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
+                    value={user.companyName}
                   />
                   <label
                     htmlFor="floating_company"
@@ -480,8 +482,8 @@ function ProfilePage() {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       strokeWidth="2"
                       d="M12 4v16m8-8H4"
                     />

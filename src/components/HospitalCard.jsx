@@ -6,7 +6,7 @@ import job from "../assets/job.svg";
 function HospitalCard({ data }) {
   return (
     <>
-      <Link to={`/about-recruiter?recruiter-id=${data.id}`}>
+      <Link to={data.website} target="_blank">
         <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex md:gap-5 items-center mb-7 hover:drop-shadow-xl transition duration-400">
           <div className="h-[100px] w-[100px] mx-auto">
             <img

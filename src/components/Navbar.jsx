@@ -116,24 +116,33 @@ function Navbar() {
                   >
                     <ul className="py-2" aria-labelledby="user-menu-button">
                       <li>
-                        <a
-                          href="#"
+                        <Link
+                          to="#"
+                          onClick={() => {
+                            setisProfileDropOpen(false);
+                          }}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
                           Bookmarked Applications
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a
-                          href="#"
+                        <Link
+                          to="#"
+                          onClick={() => {
+                            setisProfileDropOpen(false);
+                          }}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
                           Applied Applications
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <Link
                           to="/dashboard/profile"
+                          onClick={() => {
+                            setisProfileDropOpen(false);
+                          }}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
                         >
                           Edit Profile

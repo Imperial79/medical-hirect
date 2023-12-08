@@ -42,9 +42,9 @@ function SearchRecruiters() {
   return (
     <Scaffold isLoading={loading}>
       <Hero
-        title="Search Hospitals"
-        subtitle="Search by thousands of reputed hospitals"
-        buttonLabel="Search company"
+        title="Search Recruiters"
+        subtitle="Search by thousands of reputed recruiters"
+        buttonLabel="Search recruiter"
       />
       <div className="pb-10 md:px-20 px-5 text-black">
         <div className="my-5 md:w-[80%] mx-auto">

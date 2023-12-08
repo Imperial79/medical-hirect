@@ -15,23 +15,24 @@ import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
 import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
+import uploadIcon from "../assets/upload.svg";
 
 function JobDetailPage() {
-  const { user } = useContext(Context);
+  const { user, setAlert } = useContext(Context);
   const [loading, setloading] = useState(false);
-  let arr = [1, 2, 3, 5];
   let query = new URLSearchParams(useLocation().search);
   const [vacancyData, setvacancyData] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [isUploadResumeModalOpen, setIsUploadResumeModalOpen] = useState(false);
   const [resumeList, setresumeList] = useState([]);
   const [selectedResume, setselectedResume] = useState(0);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const toggleApplyModal = () => {
+    setIsApplyModalOpen(!isApplyModalOpen);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const toggleResumeModal = () => {
+    setIsUploadResumeModalOpen(!isUploadResumeModalOpen);
   };
 
   // ------------------->
@@ -45,7 +46,6 @@ function JobDetailPage() {
         "/vacancy/fetch-vacancy-details.php",
         formData
       );
-      console.log(response.data);
       if (!response.data.error) {
         setvacancyData(response.data.response);
       }
@@ -62,8 +62,11 @@ function JobDetailPage() {
 
       if (!response.data.error) {
         setresumeList(response.data.response);
-        console.log(resumeList);
-        openModal();
+        if (resumeList.length === 0) {
+          toggleResumeModal();
+        } else {
+          toggleApplyModal();
+        }
       }
       setloading(false);
     } catch (error) {
@@ -203,7 +206,9 @@ function JobDetailPage() {
 
               <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
                 {vacancyData?.tags?.split("#").map((data, index) => (
-                  <PillTag label={data} />
+                  <div key={index}>
+                    <PillTag label={data} />
+                  </div>
                 ))}
               </div>
 
@@ -234,53 +239,39 @@ function JobDetailPage() {
             <h1>Jobs by {vacancyData.companyName}</h1>
           </div>
 
-          {arr.map((element, index) => {
-            return (
-              <Link key={index} to="/job-detail">
-                <div className="border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
-                  <div className="flex items-center">
-                    <img src={job} alt="Company Logo" className="h-5" />
-                    <h2 className="ml-3 text-black font-medium max2lines text-sm">
-                      Cardiology - Interventional Physician Job with Tenet
-                      Healthcare in Memphis, TN
-                    </h2>
-                  </div>
+          <Link>
+            <div className="border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
+              <div className="flex items-center">
+                <img src={job} alt="Company Logo" className="h-5" />
+                <h2 className="ml-3 text-black font-medium max2lines text-sm">
+                  Cardiology - Interventional Physician Job with Tenet
+                  Healthcare in Memphis, TN
+                </h2>
+              </div>
 
-                  <h2 className="mt-2 text-black text-sm">Memphis, TN</h2>
-                  <h2 className="mt-1 text-black text-sm">
-                    Posted on: 29-03-2022
-                  </h2>
-                </div>
-              </Link>
-            );
-          })}
+              <h2 className="mt-2 text-black text-sm">Memphis, TN</h2>
+              <h2 className="mt-1 text-black text-sm">Posted on: 29-03-2022</h2>
+            </div>
+          </Link>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2
-          className="font-medium text-lg mb-4 flex justify-between items-center
-        "
-        >
-          Select a resume
-          <span
-            onClick={closeModal}
-            className="hover:bg-gray-100 p-2 rounded-full"
-          >
-            <img src={closeIcon} alt="close-icon" className="h-5" />
-          </span>
-        </h2>
-        {resumeList.map((data, index) => (
-          <div key={data.id}>
-            <ResumeCard
-              onClick={() => {
-                setselectedResume(data.id);
-              }}
-              data={data}
-              selectedResume={selectedResume}
-            />
-          </div>
-        ))}
-      </Modal>
+      <ApplyJobModal
+        isModalOpen={isApplyModalOpen}
+        toggleModal={toggleApplyModal}
+        setLoading={setloading}
+        setAlert={setAlert}
+        resumeList={resumeList}
+        selectedResume={selectedResume}
+        setselectedResume={setselectedResume}
+        vacancyId={query.get("vacancy-id")}
+      />
+
+      <UploadResumeModal
+        isModalOpen={isUploadResumeModalOpen}
+        toggleModal={toggleResumeModal}
+        setLoading={setloading}
+        setAlert={setAlert}
+      />
     </Scaffold>
   );
 }
@@ -312,5 +303,172 @@ function ResumeCard({ onClick, data, selectedResume }) {
       {/* <svg ></svg> */}
       {data.resumeName}
     </button>
+  );
+}
+
+function ApplyJobModal({
+  isModalOpen,
+  toggleModal,
+  setLoading,
+  setAlert,
+  resumeList,
+  selectedResume,
+  setselectedResume,
+  vacancyId,
+}) {
+  async function applyJob() {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+
+      formData.append("vacancyId", vacancyId);
+      formData.append("resumeId", selectedResume);
+      const response = await dbObject.post(
+        "/application/apply-for-vacancy.php",
+        formData
+      );
+      console.log(response.data);
+      if (!response.data.error) {
+        toggleModal();
+      }
+      setAlert({
+        content: response.data.message,
+        isDanger: response.data.error,
+      });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Modal isOpen={isModalOpen} onClose={toggleModal}>
+      <h2
+        className="font-medium text-lg mb-4 flex justify-between items-center
+    "
+      >
+        Select a resume
+        <span
+          onClick={toggleModal}
+          className="hover:bg-gray-100 p-2 rounded-full"
+        >
+          <img src={closeIcon} alt="close-icon" className="h-5" />
+        </span>
+      </h2>
+      {resumeList.map((data, index) => (
+        <div key={data.id}>
+          <ResumeCard
+            onClick={() => {
+              setselectedResume(data.id);
+            }}
+            data={data}
+            selectedResume={selectedResume}
+          />
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={applyJob}
+        className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
+      >
+        Apply
+      </button>
+    </Modal>
+  );
+}
+
+function UploadResumeModal({ isModalOpen, toggleModal, setLoading, setAlert }) {
+  const [selectedResume, setselectedResume] = useState(null);
+
+  async function uploadResume() {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("mediaFile", selectedResume);
+      formData.append("resumeName", selectedResume.name);
+      const response = await dbObject.post(
+        "/resume/upload-resume.php",
+        formData
+      );
+      if (!response.data.error) {
+        setAlert({
+          content: response.data.message,
+          isDanger: response.data.error,
+        });
+        toggleModal();
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Modal isOpen={isModalOpen} onClose={toggleModal}>
+      <h2
+        className="font-medium text-lg mb-4 flex justify-between items-center
+  "
+      >
+        Upload a resume
+        <span
+          onClick={toggleModal}
+          className="hover:bg-gray-100 p-2 rounded-full"
+        >
+          <img src={closeIcon} alt="close-icon" className="h-5" />
+        </span>
+      </h2>
+      <input
+        type="file"
+        name="selectedResume"
+        id="selectedResume"
+        accept=".pdf, .doc, .docx"
+        className="hidden"
+        onChange={(e) => {
+          setselectedResume(e.target.files[0]);
+          console.log(selectedResume);
+        }}
+      />
+      {selectedResume === null ? (
+        <>
+          <div
+            onClick={() => {
+              document.getElementById("selectedResume").click();
+            }}
+            className="mx-auto p-5 w-[70px] h-[70px] bg-gray-50 cursor-pointer"
+          >
+            <img src={uploadIcon} alt="" />
+          </div>
+          <h3 className="mx-auto text-center text-sm mt-1">Select resume</h3>
+        </>
+      ) : (
+        <>
+          <div className="bg-gray-100 rounded-xl flex gap-1 items-center">
+            <div className="w-full flex p-5 gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
+              <img src={resumeIcon} alt="" className="h-6" />
+              <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+                {selectedResume.name}
+              </h1>
+            </div>
+
+            <img
+              src={closeIcon}
+              alt="close-icon"
+              onClick={() => {
+                setselectedResume(null);
+              }}
+              className="h-6 rounded-full mr-5 object-contain cursor-pointer"
+            />
+          </div>
+        </>
+      )}
+
+      <button
+        type="button"
+        onClick={uploadResume}
+        className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
+      >
+        Upload resume
+      </button>
+    </Modal>
   );
 }
