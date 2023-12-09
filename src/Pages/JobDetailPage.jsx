@@ -26,6 +26,7 @@ function JobDetailPage() {
   const [isUploadResumeModalOpen, setIsUploadResumeModalOpen] = useState(false);
   const [resumeList, setresumeList] = useState([]);
   const [selectedResume, setselectedResume] = useState(0);
+  const vacancyId = query.get("vacancy-id");
 
   const toggleApplyModal = () => {
     setIsApplyModalOpen(!isApplyModalOpen);
@@ -41,7 +42,7 @@ function JobDetailPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("vacancyId", query.get("vacancy-id"));
+      formData.append("vacancyId", vacancyId);
       const response = await dbObject.post(
         "/vacancy/fetch-vacancy-details.php",
         formData
@@ -62,12 +63,33 @@ function JobDetailPage() {
 
       if (!response.data.error) {
         setresumeList(response.data.response);
-        if (resumeList.length === 0) {
-          toggleResumeModal();
-        } else {
-          toggleApplyModal();
-        }
+        setTimeout(() => {
+          if (resumeList.length === 0) {
+            toggleResumeModal();
+          } else {
+            toggleApplyModal();
+          }
+          setloading(false);
+        }, 600);
       }
+    } catch (error) {
+      setloading(false);
+    }
+  }
+
+  async function bookmarkVacancy() {
+    try {
+      setloading(true);
+      const formData = new FormData();
+      formData.append("vacancyId", vacancyId);
+      const response = await dbObject.post(
+        "/vacancy/bookmark-vacancy.php",
+        formData
+      );
+      setAlert({
+        content: response.data.message,
+        isDanger: response.data.error,
+      });
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -87,13 +109,16 @@ function JobDetailPage() {
               <div className="md:h-28 h-20">
                 <img
                   src={vacancyData.companyImage}
-                  alt=""
+                  alt="recruiter-image"
                   className="w-full h-full object-contain"
                 />
               </div>
 
-              <button className="md:hidden flex gap-2 items-center">
-                <img src={save} alt="" className="ml-10 h-5" />
+              <button
+                onClick={bookmarkVacancy}
+                className="md:hidden flex gap-2 items-center"
+              >
+                <img src={save} alt="save-button" className="ml-10 h-5" />
               </button>
             </div>
 
@@ -103,6 +128,7 @@ function JobDetailPage() {
               </h1>
               <button
                 type="button"
+                onClick={bookmarkVacancy}
                 className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
               >
                 <img src={save} alt="" className="h-5" />
@@ -238,21 +264,8 @@ function JobDetailPage() {
           <div className="flex items-center justify-between mb-5">
             <h1>Jobs by {vacancyData.companyName}</h1>
           </div>
-
-          <Link>
-            <div className="border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
-              <div className="flex items-center">
-                <img src={job} alt="Company Logo" className="h-5" />
-                <h2 className="ml-3 text-black font-medium max2lines text-sm">
-                  Cardiology - Interventional Physician Job with Tenet
-                  Healthcare in Memphis, TN
-                </h2>
-              </div>
-
-              <h2 className="mt-2 text-black text-sm">Memphis, TN</h2>
-              <h2 className="mt-1 text-black text-sm">Posted on: 29-03-2022</h2>
-            </div>
-          </Link>
+          <OtherJobsCard />
+          <OtherJobsCard />
         </div>
       </div>
       <ApplyJobModal
@@ -263,7 +276,7 @@ function JobDetailPage() {
         resumeList={resumeList}
         selectedResume={selectedResume}
         setselectedResume={setselectedResume}
-        vacancyId={query.get("vacancy-id")}
+        vacancyId={vacancyId}
       />
 
       <UploadResumeModal
@@ -277,6 +290,26 @@ function JobDetailPage() {
 }
 
 export default JobDetailPage;
+
+function OtherJobsCard() {
+  return (
+    <button>
+      <div className="text-start border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
+        <div className="flex items-start gap-3">
+          <img src={job} alt="Company Logo" className="h-5" />
+          <div>
+            <h2 className="text-black font-medium max2lines text-sm">
+              Cardiology - Interventional Physician Job with Tenet Healthcare in
+              Memphis, TN
+            </h2>
+            <h2 className="mt-2 text-black text-sm">Memphis, TN</h2>
+            <h2 className="mt-1 text-black text-sm">Posted on: 29-03-2022</h2>
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
 
 function DescriptionCard({ title, content }) {
   return (
@@ -299,8 +332,14 @@ function ResumeCard({ onClick, data, selectedResume }) {
           : "bg-gray-50 border border-blue-50 text-gray-500"
       } px-5 py-4 rounded-xl w-full mb-2 inline-flex gap-2 items-center`}
     >
+      <div
+        className={`${
+          selectedResume !== data.id
+            ? "-translate-x-full opacity-0"
+            : "-translate-x-0 opacity-100"
+        } h-[30px] w-[5px] bg-blue-700 rounded-full transition-all`}
+      ></div>
       <img src={resumeIcon} alt="" className="h-5" />
-      {/* <svg ></svg> */}
       {data.resumeName}
     </button>
   );

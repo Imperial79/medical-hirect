@@ -12,6 +12,7 @@ import ContextProvider from "./Helper/ContextProvider";
 import Alert from "./components/Alert";
 import SearchRecruiters from "./Pages/SearchRecruiters";
 import AboutRecruiter from "./Pages/AboutRecruiter";
+import BookmarkedApplications from "./Pages/BookmarkedApplications";
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
               element={<AppliedJobsPage />}
             />
             <Route path="/dashboard/resumes" element={<ResumesPage />} />
+            <Route
+              path="/dashboard/bookmarked-applications"
+              element={<BookmarkedApplications />}
+            />
 
             {/* <Route path='/recruiter' render={() => (window.location.href = 'https://recruiter.shapon.tech')} /> */}
           </Routes>

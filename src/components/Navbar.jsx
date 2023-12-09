@@ -117,7 +117,7 @@ function Navbar() {
                     <ul className="py-2" aria-labelledby="user-menu-button">
                       <li>
                         <Link
-                          to="#"
+                          to="/dashboard/bookmarked-applications"
                           onClick={() => {
                             setisProfileDropOpen(false);
                           }}
