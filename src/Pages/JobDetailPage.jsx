@@ -4,6 +4,7 @@ import job from "../assets/job.svg";
 import hospital from "../assets/hospital.svg";
 import hashTag from "../assets/hash-tag.svg";
 import save from "../assets/save.svg";
+import saveFilled from "../assets/save-filled.svg";
 import date from "../assets/date.svg";
 import location from "../assets/location.svg";
 import openLinkIcon from "../assets/openLink.svg";
@@ -118,7 +119,11 @@ function JobDetailPage() {
                 onClick={bookmarkVacancy}
                 className="md:hidden flex gap-2 items-center"
               >
-                <img src={save} alt="save-button" className="ml-10 h-5" />
+                <img
+                  src={vacancyData.isBookmarked ? saveFilled : save}
+                  alt="save-button"
+                  className="ml-10 h-5"
+                />
               </button>
             </div>
 
@@ -131,7 +136,11 @@ function JobDetailPage() {
                 onClick={bookmarkVacancy}
                 className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
               >
-                <img src={save} alt="" className="h-5" />
+                <img
+                  src={vacancyData.isBookmarked ? saveFilled : save}
+                  alt=""
+                  className="h-5"
+                />
               </button>
             </div>
 
