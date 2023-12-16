@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { Context } from "../Helper/ContextProvider";
@@ -6,7 +6,7 @@ import { dbObject } from "../Helper/Constants";
 import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const { user } = useContext(Context);
+  const { user, setUser } = useContext(Context);
   const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
   const navigator = useNavigate();
 
@@ -24,6 +24,10 @@ function Navbar() {
     await dbObject.get("/users/logout.php");
     navigator("/login", { replace: true });
   }
+
+  useEffect(() => {
+    setUser(null);
+  }, [user]);
 
   return (
     <>

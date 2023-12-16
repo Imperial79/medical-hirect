@@ -2,37 +2,60 @@ import React, { useEffect, useState } from "react";
 import doctor from "../assets/doctor.svg";
 import close from "../assets/close.svg";
 import { Link, useLocation } from "react-router-dom";
-import { dbObject } from "../Helper/Constants";
+import { dbObject, experienceList } from "../Helper/Constants";
+import Select from "react-select";
 
 function RegisterForm() {
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
-  const [roleList, setroleList] = useState([
-    {
-      id: 1,
-      title: "Select Role",
-      subRole: [
-        {
-          id: 1,
-          subRoleTitle: "Select Sub Role",
-        },
-      ],
-      subPost: [
-        {
-          id: 1,
-          subPostTitle: "Select Post",
-        },
-      ],
-    },
-  ]);
-  const location = useLocation();
+  const [roleList, setroleList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+
+  const [subRoleList, setSubRoleList] = useState(["Choose Sub Role"]);
+  // post multi
+  const [postList, setpostList] = useState([]);
+  const [selectedPostList, setselectedPostList] = useState([]);
+
+  // emplo multi
+  const [employmentTypeList, setemploymentTypeList] = useState([]);
+  const [selectedEmploymentTypeList, setselectedEmploymentTypeList] = useState(
+    []
+  );
+  // speci multi
+  const [speciList, setspeciList] = useState([]);
+  const [selectedSpeciList, setselectedSpeciList] = useState([]);
+
+  // work multi
+  const [workSettingList, setworkSettingList] = useState([]);
+  const [selectedWorkSettingList, setselectedWorkSettingList] = useState([]);
+
+  const [graduationTypeList, setgraduationTypeList] = useState([]);
+  const [selectedGraduationTypeList, setselectedGraduationTypeList] = useState(
+    []
+  );
+
+  const handlePostChange = (selectedOptions) => {
+    setselectedPostList(selectedOptions);
+  };
+  const handleEmploChange = (selectedOptions) => {
+    setselectedPostList(selectedOptions);
+  };
+  const handleSpeciChange = (selectedOptions) => {
+    setselectedSpeciList(selectedOptions);
+  };
+  const handleWorkChange = (selectedOptions) => {
+    setselectedWorkSettingList(selectedOptions);
+  };
+  const handleGraduationChange = (selectedOptions) => {
+    setselectedGraduationTypeList(selectedOptions);
+  };
 
   const [dropdownData, setDropdownData] = useState({
     gender: "Select Gender",
     role: 0,
     subRole: "Select Sub-Role",
-    state: "Select State",
-    employmentType: "Select Employment Type",
+    state: "0",
+    experience: "0",
   });
 
   const [isDropdownOpen, setDropdownOpen] = useState({
@@ -40,7 +63,7 @@ function RegisterForm() {
     role: false,
     subRole: false,
     state: false,
-    employmentType: false,
+    experience: false,
   });
 
   const handleDropdownChange = (dropdownName, value) => {
@@ -55,12 +78,61 @@ function RegisterForm() {
       ...prevValues,
       [dropdownName]: value,
     }));
+    if (dropdownName === "role") {
+      handleDropdownData("subRole", "Choose Sub Role");
+      if (roleList[value].subRoles !== "NULL") {
+        setSubRoleList(JSON.parse(roleList[value].subRoles));
+      } else {
+        setSubRoleList([]);
+      }
+      let temp = [];
+      setselectedPostList([]);
+      if (roleList[value].posts !== "NULL") {
+        const parsedPosts = JSON.parse(roleList[value].posts);
+        temp = parsedPosts.map((data) => ({ label: data, value: data }));
+        setpostList(temp);
+      } else {
+        setpostList([]);
+      }
+
+      if (roleList[value].employmentType !== "NULL") {
+        const parsedEmplo = JSON.parse(roleList[value].employmentType);
+        temp = parsedEmplo.map((data) => ({ label: data, value: data }));
+        setemploymentTypeList(temp);
+      } else {
+        setemploymentTypeList([]);
+      }
+
+      if (roleList[value].specialization !== "NULL") {
+        const parsedSpeci = JSON.parse(roleList[value].specialization);
+        temp = parsedSpeci.map((data) => ({ label: data, value: data }));
+        setspeciList(temp);
+      } else {
+        setspeciList([]);
+      }
+
+      if (roleList[value].workSetting !== "NULL") {
+        const parsedWork = JSON.parse(roleList[value].workSetting);
+        temp = parsedWork.map((data) => ({ label: data, value: data }));
+        setworkSettingList(temp);
+      } else {
+        setworkSettingList([]);
+      }
+      if (roleList[value].graduationType !== "NULL") {
+        const parsedWork = JSON.parse(roleList[value].graduationType);
+        temp = parsedWork.map((data) => ({ label: data, value: data }));
+        setgraduationTypeList(temp);
+      } else {
+        setgraduationTypeList([]);
+      }
+    }
   };
 
   // ---------------functions----------------->
 
   useEffect(() => {
     fetchRole();
+    fetchState();
   }, []);
 
   async function fetchRole() {
@@ -70,23 +142,13 @@ function RegisterForm() {
     }
   }
 
-  // -------------------------------->
-
-  const handleTagAdd = () => {
-    if (inputValue.trim() !== "") {
-      setTags([...tags, inputValue.trim()]);
-      setInputValue("");
+  async function fetchState() {
+    const response = await dbObject.get("/states/fetch-states.php");
+    if (!response.data.error) {
+      setStateList(response.data.response);
     }
-  };
-
-  const handleTagRemove = (tagToRemove) => {
-    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
-    setTags(updatedTags);
-  };
-
-  function handleInputChange(e) {
-    setInputValue(e.target.value);
   }
+
   return (
     <>
       <div className="pt-20 md:pb-10 text-black">
@@ -139,23 +201,27 @@ function RegisterForm() {
                   </label>
                 </div>
               </div>
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="date"
-                    name="dob"
-                    id="dob"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="dob"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    DOB
-                  </label>
-                </div>
+
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="date"
+                  name="dob"
+                  id="dob"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="dob"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  DOB
+                </label>
+              </div>
+
+              {/* Gender Drop */}
+              <div>
+                <p className="text-sm text-gray-500 mb-2">Select Gender</p>
                 <div className="w-full mb-6">
                   <button
                     onClick={() => {
@@ -236,7 +302,9 @@ function RegisterForm() {
                 </div>
               </div>
 
-              {/* <div className="w-full mb-6">
+              {/* Role Dropdown */}
+              <p className="text-sm text-gray-500 mb-2">Select Role</p>
+              <div className="relative z-2 w-full mb-6 group">
                 <button
                   onClick={() => {
                     handleDropdownChange("role", !isDropdownOpen.role);
@@ -245,7 +313,7 @@ function RegisterForm() {
                   className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  {roleList[dropdownData.role].title}
+                  {roleList[dropdownData.role]?.title}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -262,7 +330,6 @@ function RegisterForm() {
                     />
                   </svg>
                 </button>
-
                 <div
                   id="roleDropdown"
                   name="roleDropdown"
@@ -275,7 +342,7 @@ function RegisterForm() {
                     aria-labelledby="dropdownSearchButton"
                   >
                     {roleList.map((data, index) => (
-                      <li>
+                      <li key={data.id}>
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
@@ -289,18 +356,161 @@ function RegisterForm() {
                     ))}
                   </ul>
                 </div>
-              </div> */}
+              </div>
 
-              {/* <div className="w-full mb-6">
+              {/* Sub Role Dropdown */}
+
+              {subRoleList.length === 0 ? (
+                <></>
+              ) : (
+                <>
+                  <p className="text-sm text-gray-500 mb-2 mt-6">
+                    Select Sub-Role
+                  </p>
+                  <div className="relative z-2 w-full mb-6 group">
+                    <button
+                      onClick={() => {
+                        handleDropdownChange(
+                          "subRole",
+                          !isDropdownOpen.subRole
+                        );
+                      }}
+                      id="subRoleDropdownBtn"
+                      className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                      type="button"
+                    >
+                      {dropdownData.subRole}
+                      <svg
+                        className="w-2.5 h-2.5 ml-2.5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 10 6"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 1 4 4 4-4"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      id="subRoleDropdown"
+                      name="subRoleDropdown"
+                      className={`${
+                        isDropdownOpen.subRole ? "absolute" : "hidden"
+                      } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                    >
+                      <ul
+                        className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                        aria-labelledby="dropdownSearchButton"
+                      >
+                        {subRoleList.map((data, index) => (
+                          <li key={index}>
+                            <div
+                              className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                              onClick={() => {
+                                handleDropdownData("subRole", data);
+                                handleDropdownChange("subRole", false);
+                              }}
+                            >
+                              {data}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Multi-select Post */}
+              <p className="text-sm text-gray-500 mb-2">Select Post</p>
+              <Select
+                options={postList}
+                isDisabled={postList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Post"
+                onChange={handlePostChange}
+              />
+
+              {/* Multi-select Emplo */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Employment-Type
+              </p>
+              <Select
+                options={employmentTypeList}
+                isDisabled={employmentTypeList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Employment-Type"
+                onChange={handleEmploChange}
+              />
+
+              {/* Multi-select Speci */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Specialization
+              </p>
+              <Select
+                options={speciList}
+                isMulti
+                isDisabled={speciList.length === 0}
+                id="multi"
+                name="multi"
+                placeholder="Select Specialization"
+                onChange={handleSpeciChange}
+              />
+
+              {/* Multi-select work */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Work Setting
+              </p>
+              <Select
+                options={workSettingList}
+                isDisabled={workSettingList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Work Setting"
+                onChange={handleWorkChange}
+              />
+
+              {/* Multi-select work */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Graduation Type
+              </p>
+              <Select
+                options={graduationTypeList}
+                isDisabled={graduationTypeList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Graduation Type"
+                onChange={handleGraduationChange}
+              />
+
+              {/* experience Dropdown */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Experience
+              </p>
+              <div className="relative z-2 w-full mb-6 group">
                 <button
                   onClick={() => {
-                    handleDropdownChange("subRole", !isDropdownOpen.subRole);
+                    handleDropdownChange(
+                      "experience",
+                      !isDropdownOpen.experience
+                    );
                   }}
-                  id="subRoleDropdownBtn"
+                  id="experienceDropdownBtn"
                   className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  {roleList[dropdownData.role].title}
+                  {experienceList[dropdownData.experience]}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -317,195 +527,157 @@ function RegisterForm() {
                     />
                   </svg>
                 </button>
-
                 <div
-                  id="subRoleDropdown"
-                  name="subRoleDropdown"
+                  id="experienceDropdown"
+                  name="experienceDropdown"
                   className={`${
-                    isDropdownOpen.subRole ? "absolute" : "hidden"
+                    isDropdownOpen.experience ? "absolute" : "hidden"
                   } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
                 >
                   <ul
                     className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
                     aria-labelledby="dropdownSearchButton"
                   >
-                    {roleList[dropdownData.role].subRole.map((data, index) => (
-                      <li>
+                    {experienceList.map((data, index) => (
+                      <li key={index}>
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
-                            handleDropdownData("role", index);
-                            handleDropdownChange("role", false);
+                            handleDropdownData("experience", index);
+                            handleDropdownChange("experience", false);
                           }}
                         >
-                          {data.title}
+                          {data}
                         </div>
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div> */}
+              </div>
+
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="city"
+                  id="city"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="city"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  City
+                </label>
+              </div>
+
+              {/* state Dropdown */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">Select State</p>
+              <div className="relative z-2 w-full mb-6 group">
+                <button
+                  onClick={() => {
+                    handleDropdownChange("state", !isDropdownOpen.state);
+                  }}
+                  id="stateDropdownBtn"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  type="button"
+                >
+                  {stateList[dropdownData.state]?.stateName}
+                  <svg
+                    className="w-2.5 h-2.5 ml-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="stateDropdown"
+                  name="stateDropdown"
+                  className={`${
+                    isDropdownOpen.state ? "absolute" : "hidden"
+                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                >
+                  <ul
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                    aria-labelledby="dropdownSearchButton"
+                  >
+                    {stateList.map((data, index) => (
+                      <li key={index}>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("state", index);
+                            handleDropdownChange("state", false);
+                          }}
+                        >
+                          {data.stateName}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative z-0 w-full mb-6 mt-6 group">
+                <textarea
+                  type="text"
+                  name="address"
+                  id="address"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  htmlFor="address"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Address
+                </label>
+              </div>
 
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="email"
-                  name="floating_email"
-                  id="floating_email"
+                  name="email"
+                  id="email"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
                 />
                 <label
-                  htmlFor="floating_email"
+                  htmlFor="email"
                   className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  Email address
-                </label>
-              </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="password"
-                  name="floating_password"
-                  id="floating_password"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="floating_password"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="password"
-                  name="repeat_password"
-                  id="floating_repeat_password"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="floating_repeat_password"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Confirm password
-                </label>
-              </div>
-
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    maxLength={10}
-                    name="phone"
-                    id="phone"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="phone"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Phone number
-                  </label>
-                </div>
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="floating_company"
-                    id="floating_company"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_company"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Company
-                  </label>
-                </div>
-              </div>
-
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="location"
-                  name="floating_location"
-                  id="floating_location"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="floating_location"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Location
+                  E-mail
                 </label>
               </div>
 
               <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="job_title"
-                  name="floating_job_title"
-                  id="floating_job_title"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="floating_job_title"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Job Title
-                </label>
-              </div>
-
-              <div className="relative w-full mb-6">
                 <input
                   type="text"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className="inline-flex py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  placeholder="Add tags..."
+                  maxLength={10}
+                  name="phone"
+                  id="phone"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
                 />
-                <div
-                  onClick={handleTagAdd}
-                  className="absolute top-0 right-0 h-full flex items-center pr-2 text-gray-500 cursor-pointer"
+                <label
+                  htmlFor="phone"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      strokeWidth="2"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="mt-2 flex flex-wrap -m-1 mb-5">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-blue-100 text-blue-800 rounded-[10px] px-2 py-1 m-1 cursor-pointer flex items-center"
-                  >
-                    {tag}
-                    <span onClick={() => handleTagRemove(tag)}>
-                      <img src={close} alt="" className="h-5" />
-                    </span>
-                  </span>
-                ))}
+                  Phone
+                </label>
               </div>
               <Link to="/dashboard/profile">
                 <button
