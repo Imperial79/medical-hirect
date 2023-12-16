@@ -7,12 +7,12 @@ import LoginPage from "./Pages/LoginPage";
 import RegisterForm from "./Pages/RegisterForm";
 import ProfilePage from "./Pages/ProfilePage";
 import ResumesPage from "./Pages/ResumesPage";
-import AppliedJobsPage from "./Pages/AppliedJobsPage";
 import ContextProvider from "./Helper/ContextProvider";
 import Alert from "./components/Alert";
 import SearchRecruiters from "./Pages/SearchRecruiters";
 import AboutRecruiter from "./Pages/AboutRecruiter";
 import BookmarkedApplications from "./Pages/BookmarkedApplications";
+import AppliedApplications from "./Pages/AppliedApplications";
 
 function App() {
   return (
@@ -29,17 +29,16 @@ function App() {
             <Route path="/jobs-recruiter" element={<SearchRecruiters />} />
             <Route path="/about-recruiter" element={<AboutRecruiter />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
-            <Route
-              path="/dashboard/applied-jobs"
-              element={<AppliedJobsPage />}
-            />
+
             <Route path="/dashboard/resumes" element={<ResumesPage />} />
             <Route
               path="/dashboard/bookmarked-applications"
               element={<BookmarkedApplications />}
             />
-
-            {/* <Route path='/recruiter' render={() => (window.location.href = 'https://recruiter.shapon.tech')} /> */}
+            <Route
+              path="/dashboard/applied-applications"
+              element={<AppliedApplications />}
+            />
           </Routes>
         </ContextProvider>
 

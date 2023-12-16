@@ -174,7 +174,7 @@ function JobDetailPage() {
                   <div className="mt-2 flex gap-2 items-center md:mb-0 mb-4">
                     <img src={date} alt="Company Logo" className="h-5" />
 
-                    <p className="font-normal ">
+                    <p className="font-normal">
                       Posted On:{" "}
                       {new Date(vacancyData.postDate).toLocaleDateString()}
                     </p>
@@ -187,14 +187,14 @@ function JobDetailPage() {
                   <button
                     type="button"
                     onClick={fetchResumes}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800 md:w-auto w-full justify-center"
                   >
                     Apply Now
                   </button>
                 ) : (
                   <Link
                     to="/login"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800 inline-flex items-center gap-2"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800 inline-flex items-center gap-2 md:w-auto w-full justify-center"
                   >
                     Login to Apply
                     <img src={openLinkIcon} alt="" className="h-4" />
@@ -251,7 +251,7 @@ function JobDetailPage() {
               <Link
                 to={vacancyData.attachment}
                 target="_blank"
-                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5"
+                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all"
               >
                 <img
                   src={attachmentIcon}

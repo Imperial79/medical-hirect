@@ -71,7 +71,25 @@ function HomePage() {
         title="Healthcare jobs & opportunities"
         subtitle="curated job openings for Physicians, Nurses, Doctors ..."
         buttonLabel="Search company"
-      />
+      >
+        <div className="md:flex md:gap-4 items-center">
+          <div className="w-full">
+            <input
+              type="text"
+              id="base-input"
+              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full block w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
+              placeholder="Search job titles, keywords, skills etc"
+            />
+          </div>
+
+          <button
+            type="button"
+            className="md:w-auto w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 light:focus:ring-yellow-900 whitespace-nowrap text-ellipsis"
+          >
+            Search Recruiter
+          </button>
+        </div>
+      </Hero>
 
       <div className="px-2">
         <h1 className="font-semibold text-gray-700 text-center mt-10 text-2xl">

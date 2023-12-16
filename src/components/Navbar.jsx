@@ -128,7 +128,7 @@ function Navbar() {
                       </li>
                       <li>
                         <Link
-                          to="#"
+                          to="/dashboard/applied-applications"
                           onClick={() => {
                             setisProfileDropOpen(false);
                           }}

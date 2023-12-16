@@ -12,23 +12,7 @@ function Hero(props) {
       </h1>
 
       <div className="border-b-[1px] mt-10 bg-white rounded-tl-lg rounded-tr-lg p-10 md:w-[70%] w-[90%] mx-auto">
-        <div className="md:flex md:gap-4 items-center">
-          <div className="w-full">
-            <input
-              type="text"
-              id="base-input"
-              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full block w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
-              placeholder="Search job titles, keywords, skills etc"
-            />
-          </div>
-
-          <button
-            type="button"
-            className="md:w-auto w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 light:focus:ring-yellow-900 whitespace-nowrap text-ellipsis"
-          >
-            {props.buttonLabel}
-          </button>
-        </div>
+        {props.children}
       </div>
     </div>
   );
