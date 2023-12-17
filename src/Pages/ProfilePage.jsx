@@ -81,6 +81,11 @@ function ProfilePage() {
     address: user != null ? user.address : "",
     email: user != null ? user.email : "",
     phone: user != null ? user.phone : "",
+    post: JSON.parse(user?.post) ?? [],
+    employmentType: JSON.parse(user?.employmentType) ?? [],
+    specialization: JSON.parse(user?.specialization) ?? [],
+    workSetting: JSON.parse(user?.workSetting) ?? [],
+    graduationType: JSON.parse(user?.graduationType) ?? [],
   });
 
   useEffect(() => {
@@ -95,7 +100,23 @@ function ProfilePage() {
       address: user != null ? user.address : "",
       email: user != null ? user.email : "",
       phone: user != null ? user.phone : "",
+      post: JSON.parse(user?.post) ?? [],
+      employmentType: JSON.parse(user?.employmentType) ?? [],
+      specialization: JSON.parse(user?.specialization) ?? [],
+      workSetting: JSON.parse(user?.workSetting) ?? [],
+      graduationType: JSON.parse(user?.graduationType) ?? [],
     });
+    setImagePreview(user?.image ?? null);
+    setDropdownData({
+      gender: user?.gender,
+      role: user?.roleId,
+      experience: user?.experience,
+      state: user?.state,
+      subRole: user?.subRole,
+    });
+
+    // console.log(user);
+    // console.log(textField.graduationType[0].label);
   }, [user]);
 
   const handleDropdownChange = (dropdownName, value) => {
@@ -158,6 +179,13 @@ function ProfilePage() {
         setgraduationTypeList([]);
       }
     }
+  };
+
+  const handleInputChange = (e) => {
+    setTextField({
+      ...textField, // Preserve existing values
+      [e.target.name]: e.target.value,
+    });
   };
 
   // ---------------functions----------------->
@@ -280,7 +308,7 @@ function ProfilePage() {
             >
               <img
                 id="imagePreview"
-                src={imagePreview ?? user.image}
+                src={imagePreview ?? user?.image}
                 className="h-full object-cover rounded-full"
               />
             </button>
@@ -303,6 +331,9 @@ function ProfilePage() {
                     placeholder=""
                     required
                     value={textField.firstName}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                   />
                   <label
                     htmlFor="firstName"
@@ -322,6 +353,9 @@ function ProfilePage() {
                     placeholder=" "
                     required
                     value={textField.lastName}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                   />
                   <label
                     htmlFor="lastName"
@@ -337,9 +371,12 @@ function ProfilePage() {
                   name="dob"
                   id="dob"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
+                  placeholder=""
                   required
                   value={textField.dob}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
                 <label
                   htmlFor="dob"
@@ -432,17 +469,20 @@ function ProfilePage() {
                 </div>
               </div>
 
-              {/* Role Dropdown */}
+              {/* Role text field */}
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
                   name="role"
                   id="role"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
+                  placeholder=""
                   required
                   readOnly
-                  value={textField.roleTitle}
+                  value={textField.role}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
                 <label
                   htmlFor="role"
@@ -463,6 +503,9 @@ function ProfilePage() {
                   required
                   readOnly
                   value={textField.subRole}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
                 <label
                   htmlFor="subRole"
@@ -474,15 +517,20 @@ function ProfilePage() {
 
               {/* Multi-select Post */}
               <p className="text-sm text-gray-500 mb-2">Select Post</p>
-              <Select
+              {/* <Select
                 options={postList}
-                isDisabled={postList.length === 0}
                 isMulti
                 id="multi"
                 name="multi"
                 placeholder="Select Post"
                 onChange={handlePostChange}
-              />
+              /> */}
+
+              {textField?.post.map((data, index) => (
+                <h1>{data}</h1>
+              ))}
+
+              {/* {JSON.parse(user?.post)} */}
 
               {/* Multi-select Emplo */}
               <p className="text-sm text-gray-500 mb-2 mt-6">
@@ -526,19 +574,22 @@ function ProfilePage() {
                 onChange={handleWorkChange}
               />
 
-              {/* Multi-select work */}
+              {/* Multi-select grad */}
               <p className="text-sm text-gray-500 mb-2 mt-6">
                 Select Graduation Type
               </p>
-              <Select
+              {/* <Select
                 options={graduationTypeList}
-                isDisabled={graduationTypeList.length === 0}
                 isMulti
                 id="multi"
                 name="multi"
                 placeholder="Select Graduation Type"
                 onChange={handleGraduationChange}
-              />
+              /> */}
+
+              {/* {textField.graduationType.map((data, index) => (
+                <p>data</p>
+              ))} */}
 
               {/* Graduation years */}
               {textField.roleTitle === "Student" ? (
@@ -552,7 +603,7 @@ function ProfilePage() {
                     required
                     value={textField.graduationDate}
                     onChange={(e) => {
-                      // setgraduationDate(e.target.value);
+                      handleInputChange(e);
                     }}
                   />
                   <label
@@ -582,7 +633,7 @@ function ProfilePage() {
                   className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  {experienceList[dropdownData.experience]}
+                  {dropdownData.experience}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -615,7 +666,7 @@ function ProfilePage() {
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
-                            handleDropdownData("experience", index);
+                            handleDropdownData("experience", data);
                             handleDropdownChange("experience", false);
                           }}
                         >
@@ -636,6 +687,9 @@ function ProfilePage() {
                   placeholder=" "
                   required
                   value={textField.city}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
                 <label
                   htmlFor="city"
@@ -656,7 +710,7 @@ function ProfilePage() {
                   className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  {stateList[dropdownData.state]?.stateName}
+                  {dropdownData.state}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -689,7 +743,7 @@ function ProfilePage() {
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
-                            handleDropdownData("state", index);
+                            handleDropdownData("state", data.stateName);
                             handleDropdownChange("state", false);
                           }}
                         >
@@ -710,6 +764,9 @@ function ProfilePage() {
                   placeholder=""
                   required
                   value={textField.address}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                 />
                 <label
                   htmlFor="address"

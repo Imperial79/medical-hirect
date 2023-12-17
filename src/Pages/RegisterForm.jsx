@@ -7,7 +7,7 @@ import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
 
 function RegisterForm() {
-  const { _id, setAlert } = useContext(Context);
+  const { _id, setAlert, setUser } = useContext(Context);
   const location = useLocation();
   const navigator = useNavigate();
 
@@ -67,7 +67,7 @@ function RegisterForm() {
     gender: "Select Gender",
     role: 0,
     subRole: "Select Sub-Role",
-    state: "0",
+    state: "Andhra Pradesh",
     experience: "0",
   });
 
@@ -79,7 +79,14 @@ function RegisterForm() {
     experience: false,
   });
 
+  // TODO:
   const handleDropdownChange = (dropdownName, value) => {
+    if (dropdownName === "role") {
+      setselectedPostList([]);
+      setselectedEmploymentTypeList([]);
+      setselectedSpeciList([]);
+      setselectedGraduationTypeList([]);
+    }
     setDropdownOpen((prevValues) => ({
       ...prevValues,
       [dropdownName]: value,
@@ -166,6 +173,27 @@ function RegisterForm() {
     try {
       setloading(true);
       const formData = new FormData();
+      let postList = selectedPostList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      let emploList = selectedEmploymentTypeList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      let workSettingList = selectedWorkSettingList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      let gradTypeList = selectedGraduationTypeList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      // TODO:
 
       formData.append("firstName", _id("firstName").value);
       formData.append("lastName", _id("lastName").value);
@@ -178,19 +206,16 @@ function RegisterForm() {
       formData.append("specialization", JSON.stringify(selectedSpeciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
-      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("state", dropdownData.state);
       formData.append("roleId", roleList[dropdownData.role]?.id);
-      formData.append("subRole", dropdownData.subRole);
-      formData.append("post", JSON.stringify(selectedPostList));
       formData.append(
-        "employmentType",
-        JSON.stringify(selectedEmploymentTypeList)
+        "subRole",
+        dropdownData.subRole === "Select Sub-Role" ? "" : dropdownData.subRole
       );
-      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
-      formData.append(
-        "graduationType",
-        JSON.stringify(selectedGraduationTypeList)
-      );
+      formData.append("post", JSON.stringify(postList));
+      formData.append("employmentType", JSON.stringify(emploList));
+      formData.append("workSetting", JSON.stringify(workSettingList));
+      formData.append("graduationType", JSON.stringify(gradTypeList));
       formData.append("graduationDate", graduationDate);
       formData.append("fcmToken", "");
 
@@ -200,6 +225,7 @@ function RegisterForm() {
       );
       console.log(response);
       if (!response.data.error) {
+        setUser(response.data.response);
         navigator("/", { replace: true });
       } else {
         setAlert({
@@ -207,6 +233,7 @@ function RegisterForm() {
           isDanger: true,
         });
       }
+
       setloading(false);
     } catch (error) {
       console.log(error);
@@ -218,6 +245,26 @@ function RegisterForm() {
     try {
       setloading(true);
       const formData = new FormData();
+      let postList = selectedPostList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+      console.log(postList);
+
+      let emploList = selectedEmploymentTypeList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      let workSettingList = selectedWorkSettingList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
+      let gradTypeList = selectedGraduationTypeList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
 
       formData.append("guid", guid);
       formData.append("firstName", _id("firstName").value);
@@ -231,19 +278,16 @@ function RegisterForm() {
       formData.append("specialization", JSON.stringify(selectedSpeciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
-      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("state", dropdownData.state);
       formData.append("roleId", roleList[dropdownData.role]?.id);
-      formData.append("subRole", dropdownData.subRole);
-      formData.append("post", JSON.stringify(selectedPostList));
       formData.append(
-        "employmentType",
-        JSON.stringify(selectedEmploymentTypeList)
+        "subRole",
+        dropdownData.subRole === "Select Sub-Role" ? "" : dropdownData.subRole
       );
-      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
-      formData.append(
-        "graduationType",
-        JSON.stringify(selectedGraduationTypeList)
-      );
+      formData.append("post", JSON.stringify(postList));
+      formData.append("employmentType", JSON.stringify(emploList));
+      formData.append("workSetting", JSON.stringify(workSettingList));
+      formData.append("graduationType", JSON.stringify(gradTypeList));
       formData.append("graduationDate", graduationDate);
       formData.append("fcmToken", "");
 
@@ -254,6 +298,7 @@ function RegisterForm() {
 
       console.log(response);
       if (!response.data.error) {
+        setUser(response.data.response);
         navigator("/", { replace: true });
       } else {
         setAlert({
@@ -561,6 +606,7 @@ function RegisterForm() {
                 options={postList}
                 isDisabled={postList.length === 0}
                 isMulti
+                value={selectedPostList}
                 id="multi"
                 name="multi"
                 placeholder="Select Post"
@@ -573,6 +619,7 @@ function RegisterForm() {
               </p>
               <Select
                 options={employmentTypeList}
+                value={selectedEmploymentTypeList}
                 isDisabled={employmentTypeList.length === 0}
                 isMulti
                 id="multi"
@@ -588,6 +635,7 @@ function RegisterForm() {
               <Select
                 options={speciList}
                 isMulti
+                value={selectedSpeciList}
                 isDisabled={speciList.length === 0}
                 id="multi"
                 name="multi"
@@ -617,6 +665,7 @@ function RegisterForm() {
                 options={graduationTypeList}
                 isDisabled={graduationTypeList.length === 0}
                 isMulti
+                value={selectedGraduationTypeList}
                 id="multi"
                 name="multi"
                 placeholder="Select Graduation Type"
@@ -738,7 +787,7 @@ function RegisterForm() {
                   className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
                   type="button"
                 >
-                  {stateList[dropdownData.state]?.stateName}
+                  {dropdownData.state}
                   <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -771,7 +820,7 @@ function RegisterForm() {
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
-                            handleDropdownData("state", index);
+                            handleDropdownData("state", data.stateName);
                             handleDropdownChange("state", false);
                           }}
                         >
