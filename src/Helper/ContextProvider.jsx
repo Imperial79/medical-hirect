@@ -11,7 +11,6 @@ function ContextProvider({ children }) {
     content: "",
     isDanger: false,
   });
-  const location = new useLocation();
 
   const [signupDetails, setsignupDetails] = useState({
     fullname: "",
@@ -31,15 +30,18 @@ function ContextProvider({ children }) {
   });
 
   const navigator = useNavigate();
+  const location = new useLocation();
+
   const auth = async () => {
     setAuthLoading(true);
     try {
       const response = await dbObject.post("/users/auth.php");
-
       if (!response.data["error"]) {
         setUser(response.data.response);
+        navigator(location.pathname + location.search);
+      } else {
+        navigator("/");
       }
-      navigator(location.pathname + location.search);
     } catch (error) {}
     setAuthLoading(false);
   };

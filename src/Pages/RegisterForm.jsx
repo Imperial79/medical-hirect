@@ -1,11 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import doctor from "../assets/doctor.svg";
-import close from "../assets/close.svg";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { dbObject, experienceList } from "../Helper/Constants";
 import Select from "react-select";
+import { Context } from "../Helper/ContextProvider";
+import Scaffold from "../components/Scaffold";
 
 function RegisterForm() {
+  const { _id, setAlert } = useContext(Context);
+  const location = useLocation();
+  const navigator = useNavigate();
+
+  const otp = location.state.otp;
+  const phone = location.state.phone;
+  const email = location.state.email;
+  const guid = location.state.guid;
+  const registerType = location.state.type;
+  const [graduationDate, setgraduationDate] = useState("");
+
+  const [loading, setloading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [roleList, setroleList] = useState([]);
@@ -38,7 +51,7 @@ function RegisterForm() {
     setselectedPostList(selectedOptions);
   };
   const handleEmploChange = (selectedOptions) => {
-    setselectedPostList(selectedOptions);
+    setselectedEmploymentTypeList(selectedOptions);
   };
   const handleSpeciChange = (selectedOptions) => {
     setselectedSpeciList(selectedOptions);
@@ -149,14 +162,120 @@ function RegisterForm() {
     }
   }
 
+  async function registerUsingPhone() {
+    try {
+      setloading(true);
+      const formData = new FormData();
+
+      formData.append("firstName", _id("firstName").value);
+      formData.append("lastName", _id("lastName").value);
+      formData.append("dob", _id("dob").value);
+      formData.append("gender", dropdownData.gender);
+      formData.append("phone", phone);
+      formData.append("email", _id("email").value);
+      formData.append("otp", otp);
+      formData.append("experience", experienceList[dropdownData.experience]);
+      formData.append("specialization", JSON.stringify(selectedSpeciList));
+      formData.append("address", _id("address").value);
+      formData.append("city", _id("city").value);
+      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("roleId", roleList[dropdownData.role]?.id);
+      formData.append("subRole", dropdownData.subRole);
+      formData.append("post", JSON.stringify(selectedPostList));
+      formData.append(
+        "employmentType",
+        JSON.stringify(selectedEmploymentTypeList)
+      );
+      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
+      formData.append(
+        "graduationType",
+        JSON.stringify(selectedGraduationTypeList)
+      );
+      formData.append("graduationDate", graduationDate);
+      formData.append("fcmToken", "");
+
+      const response = await dbObject.post(
+        "/users/register-with-phone.php",
+        formData
+      );
+      console.log(response);
+      if (!response.data.error) {
+        navigator("/", { replace: true });
+      } else {
+        setAlert({
+          content: response.data.message,
+          isDanger: true,
+        });
+      }
+      setloading(false);
+    } catch (error) {
+      console.log(error);
+      setloading(false);
+    }
+  }
+
+  async function registerUsingEmail() {
+    try {
+      setloading(true);
+      const formData = new FormData();
+
+      formData.append("guid", guid);
+      formData.append("firstName", _id("firstName").value);
+      formData.append("lastName", _id("lastName").value);
+      formData.append("dob", _id("dob").value);
+      formData.append("gender", dropdownData.gender);
+      formData.append("phone", _id("phone").value);
+      formData.append("email", email);
+      formData.append("otp", otp);
+      formData.append("experience", experienceList[dropdownData.experience]);
+      formData.append("specialization", JSON.stringify(selectedSpeciList));
+      formData.append("address", _id("address").value);
+      formData.append("city", _id("city").value);
+      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("roleId", roleList[dropdownData.role]?.id);
+      formData.append("subRole", dropdownData.subRole);
+      formData.append("post", JSON.stringify(selectedPostList));
+      formData.append(
+        "employmentType",
+        JSON.stringify(selectedEmploymentTypeList)
+      );
+      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
+      formData.append(
+        "graduationType",
+        JSON.stringify(selectedGraduationTypeList)
+      );
+      formData.append("graduationDate", graduationDate);
+      formData.append("fcmToken", "");
+
+      const response = await dbObject.post(
+        "/users/register-with-google.php",
+        formData
+      );
+
+      console.log(response);
+      if (!response.data.error) {
+        navigator("/", { replace: true });
+      } else {
+        setAlert({
+          content: response.data.message,
+          isDanger: true,
+        });
+      }
+
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+    }
+  }
+
   return (
-    <>
+    <Scaffold isLoading={loading}>
       <div className="pt-20 md:pb-10 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5 md:flex">
+        <div className="items-start bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5 md:flex">
           <img
             src={doctor}
             alt=""
-            className="lg:w-[30%] md:w-[30%] my-20 mx-20 hidden md:block "
+            className="lg:w-[30%] md:w-[30%] my-20 mx-20 hidden md:block"
           />
           <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-full">
             <h1 className="text-[20px] mb-4">Register as a job finder</h1>
@@ -165,36 +284,46 @@ function RegisterForm() {
               method="POST"
               onSubmit={(e) => {
                 e.preventDefault();
+                if (registerType === "Phone") {
+                  console.log("ph");
+                  registerUsingPhone();
+                } else {
+                  console.log("em");
+                  registerUsingEmail();
+                }
               }}
             >
               <div className="grid md:grid-cols-2 md:gap-6">
+                {/* Firstmname */}
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    name="firstName"
+                    id="firstName"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
-                    htmlFor="floating_first_name"
+                    htmlFor="firstName"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     First name
                   </label>
                 </div>
+
+                {/* Lastname */}
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                    name="floating_last_name"
-                    id="floating_last_name"
+                    name="lastName"
+                    id="lastName"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
-                    htmlFor="floating_last_name"
+                    htmlFor="lastName"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Last name
@@ -494,6 +623,32 @@ function RegisterForm() {
                 onChange={handleGraduationChange}
               />
 
+              {/* Graduation years */}
+              {roleList[dropdownData.role]?.title === "Student" ? (
+                <div className="relative z-0 w-full mb-6 mt-6 group">
+                  <input
+                    type="text"
+                    name="graduationDate"
+                    id="graduationDate"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=""
+                    required
+                    value={graduationDate}
+                    onChange={(e) => {
+                      setgraduationDate(e.target.value);
+                    }}
+                  />
+                  <label
+                    htmlFor="graduationDate"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Graduation Date
+                  </label>
+                </div>
+              ) : (
+                <></>
+              )}
+
               {/* experience Dropdown */}
               <p className="text-sm text-gray-500 mb-2 mt-6">
                 Select Experience
@@ -605,7 +760,7 @@ function RegisterForm() {
                   name="stateDropdown"
                   className={`${
                     isDropdownOpen.state ? "absolute" : "hidden"
-                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                  } z-10 bg-white rounded-lg shadow w-[100%] light:bg-gray-700 pt-5 max-h-[200px] overflow-y-auto`}
                 >
                   <ul
                     className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
@@ -653,6 +808,7 @@ function RegisterForm() {
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
+                  value={registerType === "Email" ? email : null}
                 />
                 <label
                   htmlFor="email"
@@ -671,6 +827,7 @@ function RegisterForm() {
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
+                  value={registerType === "Phone" ? phone : null}
                 />
                 <label
                   htmlFor="phone"
@@ -679,19 +836,18 @@ function RegisterForm() {
                   Phone
                 </label>
               </div>
-              <Link to="/dashboard/profile">
-                <button
-                  type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-                >
-                  Proceed
-                </button>
-              </Link>
+
+              <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
+              >
+                Register
+              </button>
             </form>
           </div>
         </div>
       </div>
-    </>
+    </Scaffold>
   );
 }
 

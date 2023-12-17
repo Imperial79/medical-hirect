@@ -1,39 +1,65 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import close from "../assets/close.svg";
+import doctor from "../assets/doctor.svg";
+import { useLocation, useNavigate } from "react-router-dom";
+import { dbObject, experienceList } from "../Helper/Constants";
+import Select from "react-select";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
-import Select from "react-select";
 
 function ProfilePage() {
-  const { user } = useContext(Context);
-  const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([]);
-  const [roleList, setroleList] = useState([
-    {
-      id: 1,
-      title: "Select Role",
-      subRole: [
-        {
-          id: 1,
-          subRoleTitle: "Select Sub Role",
-        },
-      ],
-      subPost: [
-        {
-          id: 1,
-          subPostTitle: "Select Post",
-        },
-      ],
-    },
-  ]);
+  const { _id, setAlert, user } = useContext(Context);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [graduationDate, setgraduationDate] = useState("");
+
+  const [loading, setloading] = useState(false);
+  const [roleList, setroleList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+
+  const [subRoleList, setSubRoleList] = useState(["Choose Sub Role"]);
+  // post multi
+  const [postList, setpostList] = useState([]);
+  const [selectedPostList, setselectedPostList] = useState([]);
+
+  // emplo multi
+  const [employmentTypeList, setemploymentTypeList] = useState([]);
+  const [selectedEmploymentTypeList, setselectedEmploymentTypeList] = useState(
+    []
+  );
+  // speci multi
+  const [speciList, setspeciList] = useState([]);
+  const [selectedSpeciList, setselectedSpeciList] = useState([]);
+
+  // work multi
+  const [workSettingList, setworkSettingList] = useState([]);
+  const [selectedWorkSettingList, setselectedWorkSettingList] = useState([]);
+
+  const [graduationTypeList, setgraduationTypeList] = useState([]);
+  const [selectedGraduationTypeList, setselectedGraduationTypeList] = useState(
+    []
+  );
+
+  const handlePostChange = (selectedOptions) => {
+    setselectedPostList(selectedOptions);
+  };
+  const handleEmploChange = (selectedOptions) => {
+    setselectedEmploymentTypeList(selectedOptions);
+  };
+  const handleSpeciChange = (selectedOptions) => {
+    setselectedSpeciList(selectedOptions);
+  };
+  const handleWorkChange = (selectedOptions) => {
+    setselectedWorkSettingList(selectedOptions);
+  };
+  const handleGraduationChange = (selectedOptions) => {
+    setselectedGraduationTypeList(selectedOptions);
+  };
 
   const [dropdownData, setDropdownData] = useState({
     gender: "Select Gender",
     role: 0,
     subRole: "Select Sub-Role",
-    state: "Select State",
-    employmentType: "Select Employment Type",
+    state: "0",
+    experience: "0",
   });
 
   const [isDropdownOpen, setDropdownOpen] = useState({
@@ -41,8 +67,36 @@ function ProfilePage() {
     role: false,
     subRole: false,
     state: false,
-    employmentType: false,
+    experience: false,
   });
+
+  const [textField, setTextField] = useState({
+    bio: user != null ? user.bio : "",
+    firstName: user != null ? user.firstName : "",
+    lastName: user != null ? user.lastName : "",
+    dob: user != null ? user.dob : "",
+    role: user != null ? user.roleTitle : "",
+    subRole: user != null ? user.subRole : "",
+    city: user != null ? user.city : "",
+    address: user != null ? user.address : "",
+    email: user != null ? user.email : "",
+    phone: user != null ? user.phone : "",
+  });
+
+  useEffect(() => {
+    setTextField({
+      bio: user != null ? user.bio : "",
+      firstName: user != null ? user.firstName : "",
+      lastName: user != null ? user.lastName : "",
+      dob: user != null ? user.dob : "",
+      role: user != null ? user.roleTitle : "",
+      subRole: user != null ? user.subRole : "",
+      city: user != null ? user.city : "",
+      address: user != null ? user.address : "",
+      email: user != null ? user.email : "",
+      phone: user != null ? user.phone : "",
+    });
+  }, [user]);
 
   const handleDropdownChange = (dropdownName, value) => {
     setDropdownOpen((prevValues) => ({
@@ -56,264 +110,665 @@ function ProfilePage() {
       ...prevValues,
       [dropdownName]: value,
     }));
-  };
-  const handleTagAdd = () => {
-    if (inputValue.trim() !== "") {
-      setTags([...tags, inputValue.trim()]);
-      setInputValue("");
+    if (dropdownName === "role") {
+      handleDropdownData("subRole", "Choose Sub Role");
+      if (roleList[value].subRoles !== "NULL") {
+        setSubRoleList(JSON.parse(roleList[value].subRoles));
+      } else {
+        setSubRoleList([]);
+      }
+      let temp = [];
+      setselectedPostList([]);
+      if (roleList[value].posts !== "NULL") {
+        const parsedPosts = JSON.parse(roleList[value].posts);
+        temp = parsedPosts.map((data) => ({ label: data, value: data }));
+        setpostList(temp);
+      } else {
+        setpostList([]);
+      }
+
+      if (roleList[value].employmentType !== "NULL") {
+        const parsedEmplo = JSON.parse(roleList[value].employmentType);
+        temp = parsedEmplo.map((data) => ({ label: data, value: data }));
+        setemploymentTypeList(temp);
+      } else {
+        setemploymentTypeList([]);
+      }
+
+      if (roleList[value].specialization !== "NULL") {
+        const parsedSpeci = JSON.parse(roleList[value].specialization);
+        temp = parsedSpeci.map((data) => ({ label: data, value: data }));
+        setspeciList(temp);
+      } else {
+        setspeciList([]);
+      }
+
+      if (roleList[value].workSetting !== "NULL") {
+        const parsedWork = JSON.parse(roleList[value].workSetting);
+        temp = parsedWork.map((data) => ({ label: data, value: data }));
+        setworkSettingList(temp);
+      } else {
+        setworkSettingList([]);
+      }
+      if (roleList[value].graduationType !== "NULL") {
+        const parsedWork = JSON.parse(roleList[value].graduationType);
+        temp = parsedWork.map((data) => ({ label: data, value: data }));
+        setgraduationTypeList(temp);
+      } else {
+        setgraduationTypeList([]);
+      }
     }
   };
 
-  const handleTagRemove = (tagToRemove) => {
-    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
-    setTags(updatedTags);
+  // ---------------functions----------------->
+
+  useEffect(() => {
+    fetchRole();
+    fetchState();
+  }, []);
+
+  const handleClick = () => {
+    document.getElementById("imageInput").click();
+  };
+  async function uploadImage() {
+    try {
+      setloading(true);
+      const formData = new FormData();
+      formData.append("mediaFile", _id("imageInput").files[0]);
+      const response = await dbObject.post("/users/update-dp.php", formData);
+      setLoading(false);
+      setAlert({
+        content: response.data.message,
+        isDanger: response.data.error,
+      });
+    } catch (error) {
+      setloading(false);
+      setAlert({
+        content: "Sorry for inconvenience! Please try again.",
+        isDanger: true,
+      });
+    }
+  }
+  const handleImageChange = (event) => {
+    if (event.target.files.length > 0) {
+      setImagePreview(URL.createObjectURL(event.target.files[0]));
+      uploadImage();
+    }
   };
 
-  function handleInputChange(e) {
-    setInputValue(e.target.value);
+  async function fetchRole() {
+    const response = await dbObject.get("/role/fetch-roles.php");
+    if (!response.data.error) {
+      setroleList(response.data.response);
+    }
   }
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  async function fetchState() {
+    const response = await dbObject.get("/states/fetch-states.php");
+    if (!response.data.error) {
+      setStateList(response.data.response);
+    }
+  }
 
-  const handleChange = (selectedOptions) => {
-    console.log(selectedOptions);
-  };
+  async function updateProfile() {
+    try {
+      setloading(true);
+      const formData = new FormData();
+
+      formData.append("firstName", _id("firstName").value);
+      formData.append("lastName", _id("lastName").value);
+      formData.append("dob", _id("dob").value);
+      formData.append("gender", dropdownData.gender);
+      formData.append("phone", phone);
+      formData.append("email", _id("email").value);
+      formData.append("experience", experienceList[dropdownData.experience]);
+      formData.append("specialization", JSON.stringify(selectedSpeciList));
+      formData.append("address", _id("address").value);
+      formData.append("city", _id("city").value);
+      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("roleId", roleList[dropdownData.role]?.id);
+      formData.append("subRole", dropdownData.subRole);
+      formData.append("post", JSON.stringify(selectedPostList));
+      formData.append(
+        "employmentType",
+        JSON.stringify(selectedEmploymentTypeList)
+      );
+      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
+      formData.append(
+        "graduationType",
+        JSON.stringify(selectedGraduationTypeList)
+      );
+      formData.append("graduationDate", graduationDate);
+      formData.append("fcmToken", "");
+
+      const response = await dbObject.post(
+        "/users/update-profile.php",
+        formData
+      );
+      console.log(response);
+
+      setAlert({
+        content: response.data.message,
+        isDanger: true,
+      });
+
+      setloading(false);
+    } catch (error) {
+      console.log(error);
+      setloading(false);
+    }
+  }
 
   return (
-    <>
-      <Scaffold isLoading={user == null ? true : false}>
-        <div className="pt-20 text-black">
-          <div className="lg:w-[60%] md:w-[70%] w-full mx-auto mb-10 bg-white rounded-[20px] py-10 px-10 items-center justify-center  md:col-span-8 shadow-lg">
-            <h1 className="text-[20px] mb-4">Edit Profile</h1>
+    <Scaffold isLoading={user === null}>
+      <div className="pt-20 md:pb-10 text-black">
+        <div className="items-start bg-[#f8f8f8] p-2 rounded-[20px] mx-5 md:w-[70%] md:mx-auto">
+          <div className="bg-white rounded-[20px] p-10 items-center ">
+            <h1 className="text-[20px] mb-4">Update Profile</h1>
 
-            <div className="w-[70px] h-[70px] mb-10">
+            <input
+              id="imageInput"
+              className="hidden"
+              type="file"
+              accept=".jpeg, .jpg, .png, .webp"
+              onChange={handleImageChange}
+            />
+
+            <button
+              onClick={handleClick}
+              className="bg-gray-100 h-[100px] w-[100px] rounded-full mb-10"
+            >
               <img
-                src={user.image}
-                alt=""
-                className="h-full w-full object-cover"
+                id="imagePreview"
+                src={imagePreview ?? user.image}
+                className="h-full object-cover rounded-full"
               />
-            </div>
+            </button>
+
             <form
               method="POST"
               onSubmit={(e) => {
                 e.preventDefault();
+                updateProfile();
               }}
             >
               <div className="grid md:grid-cols-2 md:gap-6">
+                {/* Firstmname */}
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                    name="floating_first_name"
-                    id="floating_first_name"
+                    name="firstName"
+                    id="firstName"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
+                    placeholder=""
                     required
-                    value={user.firstName}
+                    value={textField.firstName}
                   />
                   <label
-                    htmlFor="floating_first_name"
+                    htmlFor="firstName"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     First name
                   </label>
                 </div>
+
+                {/* Lastname */}
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                    name="floating_last_name"
-                    id="floating_last_name"
+                    name="lastName"
+                    id="lastName"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=""
+                    placeholder=" "
                     required
-                    value={user.lastName}
+                    value={textField.lastName}
                   />
                   <label
-                    htmlFor="floating_last_name"
+                    htmlFor="lastName"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Last name
                   </label>
                 </div>
               </div>
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="date"
+                  name="dob"
+                  id="dob"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                  value={textField.dob}
+                />
+                <label
+                  htmlFor="dob"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  DOB
+                </label>
+              </div>
+
+              {/* Gender Drop */}
+              <div>
+                <p className="text-sm text-gray-500 mb-2">Select Gender</p>
+                <div className="w-full mb-6">
+                  <button
+                    onClick={() => {
+                      handleDropdownChange("gender", !isDropdownOpen.gender);
+                    }}
+                    id="genderDropdownBtn"
+                    className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                    type="button"
+                  >
+                    {dropdownData.gender === "M"
+                      ? "Male"
+                      : dropdownData.gender === "F"
+                      ? "Female"
+                      : "Others"}
+                    <svg
+                      className="w-2.5 h-2.5 ml-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 4 4 4-4"
+                      />
+                    </svg>
+                  </button>
+
+                  <div
+                    id="genderDropdown"
+                    name="genderDropdown"
+                    className={`${
+                      isDropdownOpen.gender ? "absolute" : "hidden"
+                    } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                  >
+                    <ul
+                      className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                      aria-labelledby="dropdownSearchButton"
+                    >
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "M");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Male
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "F");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Female
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("gender", "O");
+                            handleDropdownChange("gender", false);
+                          }}
+                        >
+                          Others
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Role Dropdown */}
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="role"
+                  id="role"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                  readOnly
+                  value={textField.roleTitle}
+                />
+                <label
+                  htmlFor="role"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Role
+                </label>
+              </div>
+
+              {/* Sub Role Dropdown */}
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="subRole"
+                  id="subRole"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                  readOnly
+                  value={textField.subRole}
+                />
+                <label
+                  htmlFor="subRole"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Sub-Role
+                </label>
+              </div>
+
+              {/* Multi-select Post */}
+              <p className="text-sm text-gray-500 mb-2">Select Post</p>
+              <Select
+                options={postList}
+                isDisabled={postList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Post"
+                onChange={handlePostChange}
+              />
+
+              {/* Multi-select Emplo */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Employment-Type
+              </p>
+              <Select
+                options={employmentTypeList}
+                isDisabled={employmentTypeList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Employment-Type"
+                onChange={handleEmploChange}
+              />
+
+              {/* Multi-select Speci */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Specialization
+              </p>
+              <Select
+                options={speciList}
+                isMulti
+                isDisabled={speciList.length === 0}
+                id="multi"
+                name="multi"
+                placeholder="Select Specialization"
+                onChange={handleSpeciChange}
+              />
+
+              {/* Multi-select work */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Work Setting
+              </p>
+              <Select
+                options={workSettingList}
+                isDisabled={workSettingList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Work Setting"
+                onChange={handleWorkChange}
+              />
+
+              {/* Multi-select work */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Graduation Type
+              </p>
+              <Select
+                options={graduationTypeList}
+                isDisabled={graduationTypeList.length === 0}
+                isMulti
+                id="multi"
+                name="multi"
+                placeholder="Select Graduation Type"
+                onChange={handleGraduationChange}
+              />
+
+              {/* Graduation years */}
+              {textField.roleTitle === "Student" ? (
+                <div className="relative z-0 w-full mb-6 mt-6 group">
                   <input
-                    type="date"
-                    name="dob"
-                    id="dob"
+                    type="text"
+                    name="graduationDate"
+                    id="graduationDate"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=""
                     required
-                    value={user.dob}
+                    value={textField.graduationDate}
+                    onChange={(e) => {
+                      // setgraduationDate(e.target.value);
+                    }}
                   />
                   <label
-                    htmlFor="dob"
+                    htmlFor="graduationDate"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
-                    DOB
+                    Graduation Date
                   </label>
                 </div>
-                <KDropdown
-                  data={dropdownData.gender}
-                  isOpen={isDropdownOpen.gender}
-                  handleChange={handleDropdownChange}
-                  handleData={handleDropdownData}
+              ) : (
+                <></>
+              )}
+
+              {/* experience Dropdown */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">
+                Select Experience
+              </p>
+              <div className="relative z-2 w-full mb-6 group">
+                <button
+                  onClick={() => {
+                    handleDropdownChange(
+                      "experience",
+                      !isDropdownOpen.experience
+                    );
+                  }}
+                  id="experienceDropdownBtn"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  type="button"
+                >
+                  {experienceList[dropdownData.experience]}
+                  <svg
+                    className="w-2.5 h-2.5 ml-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="experienceDropdown"
+                  name="experienceDropdown"
+                  className={`${
+                    isDropdownOpen.experience ? "absolute" : "hidden"
+                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
+                >
+                  <ul
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                    aria-labelledby="dropdownSearchButton"
+                  >
+                    {experienceList.map((data, index) => (
+                      <li key={index}>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("experience", index);
+                            handleDropdownChange("experience", false);
+                          }}
+                        >
+                          {data}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="city"
+                  id="city"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                  value={textField.city}
                 />
+                <label
+                  htmlFor="city"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  City
+                </label>
+              </div>
+
+              {/* state Dropdown */}
+              <p className="text-sm text-gray-500 mb-2 mt-6">Select State</p>
+              <div className="relative z-2 w-full mb-6 group">
+                <button
+                  onClick={() => {
+                    handleDropdownChange("state", !isDropdownOpen.state);
+                  }}
+                  id="stateDropdownBtn"
+                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
+                  type="button"
+                >
+                  {stateList[dropdownData.state]?.stateName}
+                  <svg
+                    className="w-2.5 h-2.5 ml-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+                <div
+                  id="stateDropdown"
+                  name="stateDropdown"
+                  className={`${
+                    isDropdownOpen.state ? "absolute" : "hidden"
+                  } z-10 bg-white rounded-lg shadow w-[100%] light:bg-gray-700 pt-5 max-h-[200px] overflow-y-auto`}
+                >
+                  <ul
+                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                    aria-labelledby="dropdownSearchButton"
+                  >
+                    {stateList.map((data, index) => (
+                      <li key={index}>
+                        <div
+                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                          onClick={() => {
+                            handleDropdownData("state", index);
+                            handleDropdownChange("state", false);
+                          }}
+                        >
+                          {data.stateName}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="relative z-0 w-full mb-6 mt-6 group">
+                <textarea
+                  type="text"
+                  name="address"
+                  id="address"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                  required
+                  value={textField.address}
+                />
+                <label
+                  htmlFor="address"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Address
+                </label>
               </div>
 
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="email"
-                  name="floating_email"
-                  id="floating_email"
+                  name="email"
+                  id="email"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=""
                   required
-                  value={user.email}
+                  readOnly
+                  value={textField.email}
                 />
                 <label
-                  htmlFor="floating_email"
+                  htmlFor="email"
                   className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  Email address
+                  E-mail
                 </label>
               </div>
 
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    maxLength={10}
-                    name="phone"
-                    id="phone"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                    value={user.phone}
-                  />
-                  <label
-                    htmlFor="phone"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Phone number
-                  </label>
-                </div>
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="floating_company"
-                    id="floating_company"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                    value={user.companyName}
-                  />
-                  <label
-                    htmlFor="floating_company"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Company
-                  </label>
-                </div>
-              </div>
               <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="location"
-                  name="floating_location"
-                  id="floating_location"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlFor="floating_location"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Location
-                </label>
-              </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="job_title"
-                  name="floating_job_title"
-                  id="floating_job_title"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=""
-                  required
-                />
-                <label
-                  htmlFor="floating_job_title"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Job Title
-                </label>
-              </div>
-              <div className="relative w-full mb-6">
                 <input
                   type="text"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className="inline-flex py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  placeholder="Add tags..."
+                  maxLength={10}
+                  name="phone"
+                  id="phone"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                  required
+                  readOnly
+                  value={textField.phone}
                 />
-                <div
-                  onClick={handleTagAdd}
-                  className="absolute top-0 right-0 h-full flex items-center pr-2 text-gray-500 cursor-pointer"
+                <label
+                  htmlFor="phone"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div className="mt-2 flex flex-wrap -m-1 mb-5">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-blue-100 text-blue-800 rounded-[10px] px-2 py-1 m-1 cursor-pointer flex items-center"
-                  >
-                    {tag}
-                    <span onClick={() => handleTagRemove(tag)}>
-                      <img src={close} alt="" className="h-5" />
-                    </span>
-                  </span>
-                ))}
+                  Phone
+                </label>
               </div>
 
-              <Select
-                options={options}
-                isMulti
-                id="multi"
-                name="multi"
-                onChange={handleChange}
-              />
-              <br />
               <button
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
               >
                 Update Profile
               </button>
-              {/* </Link> */}
             </form>
           </div>
         </div>
-      </Scaffold>
-    </>
+      </div>
+    </Scaffold>
   );
 }
 

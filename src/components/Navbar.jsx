@@ -1,9 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { Context } from "../Helper/ContextProvider";
 import { dbObject } from "../Helper/Constants";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../Helper/firebase-config";
+import { signOut } from "firebase/auth";
 
 function Navbar() {
   const { user, setUser } = useContext(Context);
@@ -21,13 +23,12 @@ function Navbar() {
   }
 
   async function logOut() {
+    setisProfileDropOpen(false);
     await dbObject.get("/users/logout.php");
+    await signOut(auth);
+    setUser(null);
     navigator("/login", { replace: true });
   }
-
-  useEffect(() => {
-    setUser(null);
-  }, [user]);
 
   return (
     <>
@@ -94,7 +95,7 @@ function Navbar() {
                 </Link>
               </li>
 
-              {user != null ? (
+              {user !== null ? (
                 <li>
                   <button
                     onClick={() => {

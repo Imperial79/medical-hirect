@@ -103,8 +103,8 @@ function JobDetailPage() {
 
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 md:grid md:grid-cols-6 md:gap-5 text-black">
-        <div className="col-span-4 w-full">
+      <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 text-black">
+        <div className="lg:w-[70%] md:w-[80%] w-full mx-auto">
           <div className="justify-start">
             <div className="flex mt-[17px] items-center">
               <div className="md:h-28 h-20">
@@ -234,10 +234,6 @@ function JobDetailPage() {
                 title="Special Note"
                 content={vacancyData.specialRemark}
               />
-              <DescriptionCard
-                title="Employement Type"
-                content={vacancyData.employmentType}
-              />
 
               <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
                 {vacancyData?.tags?.split("#").map((data, index) => (
@@ -267,14 +263,6 @@ function JobDetailPage() {
               </Link>
             </div>
           </div>
-        </div>
-
-        <div className="col-span-2 mt-6 md:mt-5">
-          <div className="flex items-center justify-between mb-5">
-            <h1>Jobs by {vacancyData.companyName}</h1>
-          </div>
-          <OtherJobsCard />
-          <OtherJobsCard />
         </div>
       </div>
       <ApplyJobModal
