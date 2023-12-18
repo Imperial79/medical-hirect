@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import KOutlinedButton from "../components/kOutlinedButton";
 import JobCard from "../components/JobCard";
 import Hero from "../components/Hero";
@@ -6,12 +6,16 @@ import trendingSearches from "../assets/trending-searches.svg";
 import { dbObject } from "../Helper/Constants";
 import Dropdown from "../components/Dropdown";
 import filterIcon from "../assets/filter.svg";
+import { Context } from "../Helper/ContextProvider";
 
 function HomePage() {
   // const [loading, setLoading] = useState(false);
+  const { isScroll, setisScroll } = useContext(Context);
   const [rolesList, setRolesList] = useState([]);
   const [vacancyList, setvacancyList] = useState([]);
   const [statesList, setstatesList] = useState([]);
+
+  const openingsRef = useRef(null);
 
   async function fetchRoles() {
     try {
@@ -58,6 +62,17 @@ function HomePage() {
       }
     } catch (error) {}
   }
+
+  useEffect(() => {
+    if (isScroll) {
+      openingsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      setisScroll(false);
+    }
+  }, [isScroll]);
 
   useEffect(() => {
     fetchRoles();
@@ -142,7 +157,10 @@ function HomePage() {
         </div>
       </div>
 
-      <h2 className="my-10 font-medium text-gray-700 text-center text-xl">
+      <h2
+        ref={openingsRef}
+        className="my-10 font-medium text-gray-700 text-center text-xl"
+      >
         Recent Openings
       </h2>
 

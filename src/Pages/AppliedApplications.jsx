@@ -4,6 +4,7 @@ import { dbObject } from "../Helper/Constants";
 import hospitalIcon from "../assets/hospital.svg";
 import resumeIcon from "../assets/resume.svg";
 import { Link } from "react-router-dom";
+import noDataIcon from "../assets/no-data.jpg";
 
 function AppliedApplications() {
   const [loading, setloading] = useState(false);
@@ -22,7 +23,6 @@ function AppliedApplications() {
         formData
       );
       if (!response.data.error) {
-        console.log(response.data.response);
         setappliedApplicationList(response.data.response);
       }
       setloading(false);
@@ -41,11 +41,17 @@ function AppliedApplications() {
           Applied Applications
         </h1>
 
-        {appliedApplicationList.map((data, index) => (
-          <div key={index}>
-            <AppliedCard data={data} />
+        {appliedApplicationList.length > 0 ? (
+          appliedApplicationList.map((data, index) => (
+            <div key={index}>
+              <AppliedCard data={data} />
+            </div>
+          ))
+        ) : (
+          <div className="h-[600px] w-[600px] mx-auto">
+            <img src={noDataIcon} alt="no-data" className="object-contain" />
           </div>
-        ))}
+        )}
       </div>
     </Scaffold>
   );
@@ -111,14 +117,6 @@ function AppliedCard({ data }) {
               <p className="text-sm text-gray-500">{data.resumeName}</p>
             </div>
           </div>
-
-          {/* <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
-          {data?.tags?.split("#").map((data, index) => (
-            <div key={index}>
-              <PillTag label={data} />
-            </div>
-          ))}
-        </div> */}
         </div>
       </div>
     </Link>

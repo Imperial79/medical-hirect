@@ -87,7 +87,6 @@ function LoginPage() {
         }
       }
     } catch (error) {
-      console.log(error);
       setAlert({
         content: error,
         isDanger: true,

@@ -15,45 +15,6 @@ function ProfilePage() {
   const [roleList, setroleList] = useState([]);
   const [stateList, setStateList] = useState([]);
 
-  const [subRoleList, setSubRoleList] = useState(["Choose Sub Role"]);
-  // post multi
-  const [postList, setpostList] = useState([]);
-  const [selectedPostList, setselectedPostList] = useState([]);
-
-  // emplo multi
-  const [employmentTypeList, setemploymentTypeList] = useState([]);
-  const [selectedEmploymentTypeList, setselectedEmploymentTypeList] = useState(
-    []
-  );
-  // speci multi
-  const [speciList, setspeciList] = useState([]);
-  const [selectedSpeciList, setselectedSpeciList] = useState([]);
-
-  // work multi
-  const [workSettingList, setworkSettingList] = useState([]);
-  const [selectedWorkSettingList, setselectedWorkSettingList] = useState([]);
-
-  const [graduationTypeList, setgraduationTypeList] = useState([]);
-  const [selectedGraduationTypeList, setselectedGraduationTypeList] = useState(
-    []
-  );
-
-  const handlePostChange = (selectedOptions) => {
-    setselectedPostList(selectedOptions);
-  };
-  const handleEmploChange = (selectedOptions) => {
-    setselectedEmploymentTypeList(selectedOptions);
-  };
-  const handleSpeciChange = (selectedOptions) => {
-    setselectedSpeciList(selectedOptions);
-  };
-  const handleWorkChange = (selectedOptions) => {
-    setselectedWorkSettingList(selectedOptions);
-  };
-  const handleGraduationChange = (selectedOptions) => {
-    setselectedGraduationTypeList(selectedOptions);
-  };
-
   const [dropdownData, setDropdownData] = useState({
     gender: "Select Gender",
     role: 0,
@@ -81,11 +42,12 @@ function ProfilePage() {
     address: user != null ? user.address : "",
     email: user != null ? user.email : "",
     phone: user != null ? user.phone : "",
-    post: JSON.parse(user?.post) ?? [],
-    employmentType: JSON.parse(user?.employmentType) ?? [],
-    specialization: JSON.parse(user?.specialization) ?? [],
-    workSetting: JSON.parse(user?.workSetting) ?? [],
-    graduationType: JSON.parse(user?.graduationType) ?? [],
+    post: JSON.parse(user !== null ? user?.post : "[]"),
+    employmentType: JSON.parse(user !== null ? user?.employmentType : "[]"),
+    specialization: JSON.parse(user !== null ? user?.specialization : "[]"),
+    workSetting: JSON.parse(user !== null ? user?.workSetting : "[]"),
+    graduationType: JSON.parse(user !== null ? user?.graduationType : "[]"),
+    // graduationDate: user != null ? user.graduationDate : "",
   });
 
   useEffect(() => {
@@ -100,12 +62,13 @@ function ProfilePage() {
       address: user != null ? user.address : "",
       email: user != null ? user.email : "",
       phone: user != null ? user.phone : "",
-      post: JSON.parse(user?.post) ?? [],
-      employmentType: JSON.parse(user?.employmentType) ?? [],
-      specialization: JSON.parse(user?.specialization) ?? [],
-      workSetting: JSON.parse(user?.workSetting) ?? [],
-      graduationType: JSON.parse(user?.graduationType) ?? [],
+      post: JSON.parse(user !== null ? user?.post : "[]"),
+      employmentType: JSON.parse(user !== null ? user?.employmentType : "[]"),
+      specialization: JSON.parse(user !== null ? user?.specialization : "[]"),
+      workSetting: JSON.parse(user !== null ? user?.workSetting : "[]"),
+      graduationType: JSON.parse(user !== null ? user?.graduationType : "[]"),
     });
+    setgraduationDate(user != null ? user.graduationDate : "");
     setImagePreview(user?.image ?? null);
     setDropdownData({
       gender: user?.gender,
@@ -114,9 +77,6 @@ function ProfilePage() {
       state: user?.state,
       subRole: user?.subRole,
     });
-
-    // console.log(user);
-    // console.log(textField.graduationType[0].label);
   }, [user]);
 
   const handleDropdownChange = (dropdownName, value) => {
@@ -131,54 +91,54 @@ function ProfilePage() {
       ...prevValues,
       [dropdownName]: value,
     }));
-    if (dropdownName === "role") {
-      handleDropdownData("subRole", "Choose Sub Role");
-      if (roleList[value].subRoles !== "NULL") {
-        setSubRoleList(JSON.parse(roleList[value].subRoles));
-      } else {
-        setSubRoleList([]);
-      }
-      let temp = [];
-      setselectedPostList([]);
-      if (roleList[value].posts !== "NULL") {
-        const parsedPosts = JSON.parse(roleList[value].posts);
-        temp = parsedPosts.map((data) => ({ label: data, value: data }));
-        setpostList(temp);
-      } else {
-        setpostList([]);
-      }
+    // if (dropdownName === "role") {
+    //   handleDropdownData("subRole", "Choose Sub Role");
+    //   if (roleList[value].subRoles !== "NULL") {
+    //     setSubRoleList(JSON.parse(roleList[value].subRoles));
+    //   } else {
+    //     setSubRoleList([]);
+    //   }
+    //   let temp = [];
+    //   setselectedPostList([]);
+    //   if (roleList[value].posts !== "NULL") {
+    //     const parsedPosts = JSON.parse(roleList[value].posts);
+    //     temp = parsedPosts.map((data) => ({ label: data, value: data }));
+    //     setpostList(temp);
+    //   } else {
+    //     setpostList([]);
+    //   }
 
-      if (roleList[value].employmentType !== "NULL") {
-        const parsedEmplo = JSON.parse(roleList[value].employmentType);
-        temp = parsedEmplo.map((data) => ({ label: data, value: data }));
-        setemploymentTypeList(temp);
-      } else {
-        setemploymentTypeList([]);
-      }
+    //   if (roleList[value].employmentType !== "NULL") {
+    //     const parsedEmplo = JSON.parse(roleList[value].employmentType);
+    //     temp = parsedEmplo.map((data) => ({ label: data, value: data }));
+    //     setemploymentTypeList(temp);
+    //   } else {
+    //     setemploymentTypeList([]);
+    //   }
 
-      if (roleList[value].specialization !== "NULL") {
-        const parsedSpeci = JSON.parse(roleList[value].specialization);
-        temp = parsedSpeci.map((data) => ({ label: data, value: data }));
-        setspeciList(temp);
-      } else {
-        setspeciList([]);
-      }
+    //   if (roleList[value].specialization !== "NULL") {
+    //     const parsedSpeci = JSON.parse(roleList[value].specialization);
+    //     temp = parsedSpeci.map((data) => ({ label: data, value: data }));
+    //     setspeciList(temp);
+    //   } else {
+    //     setspeciList([]);
+    //   }
 
-      if (roleList[value].workSetting !== "NULL") {
-        const parsedWork = JSON.parse(roleList[value].workSetting);
-        temp = parsedWork.map((data) => ({ label: data, value: data }));
-        setworkSettingList(temp);
-      } else {
-        setworkSettingList([]);
-      }
-      if (roleList[value].graduationType !== "NULL") {
-        const parsedWork = JSON.parse(roleList[value].graduationType);
-        temp = parsedWork.map((data) => ({ label: data, value: data }));
-        setgraduationTypeList(temp);
-      } else {
-        setgraduationTypeList([]);
-      }
-    }
+    //   if (roleList[value].workSetting !== "NULL") {
+    //     const parsedWork = JSON.parse(roleList[value].workSetting);
+    //     temp = parsedWork.map((data) => ({ label: data, value: data }));
+    //     setworkSettingList(temp);
+    //   } else {
+    //     setworkSettingList([]);
+    //   }
+    //   if (roleList[value].graduationType !== "NULL") {
+    //     const parsedWork = JSON.parse(roleList[value].graduationType);
+    //     temp = parsedWork.map((data) => ({ label: data, value: data }));
+    //     setgraduationTypeList(temp);
+    //   } else {
+    //     setgraduationTypeList([]);
+    //   }
+    // }
   };
 
   const handleInputChange = (e) => {
@@ -243,29 +203,24 @@ function ProfilePage() {
       setloading(true);
       const formData = new FormData();
 
+      formData.append("bio", _id("bio").value);
       formData.append("firstName", _id("firstName").value);
       formData.append("lastName", _id("lastName").value);
       formData.append("dob", _id("dob").value);
+      formData.append("experience", dropdownData.experience);
       formData.append("gender", dropdownData.gender);
+      formData.append("subRole", dropdownData.subRole);
+      formData.append("specialization", user?.specialization);
+      formData.append("post", user?.post);
       formData.append("phone", phone);
       formData.append("email", _id("email").value);
-      formData.append("experience", experienceList[dropdownData.experience]);
-      formData.append("specialization", JSON.stringify(selectedSpeciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
-      formData.append("state", stateList[dropdownData.state]?.stateName);
+      formData.append("state", dropdownData.state);
       formData.append("roleId", roleList[dropdownData.role]?.id);
-      formData.append("subRole", dropdownData.subRole);
-      formData.append("post", JSON.stringify(selectedPostList));
-      formData.append(
-        "employmentType",
-        JSON.stringify(selectedEmploymentTypeList)
-      );
-      formData.append("workSetting", JSON.stringify(selectedWorkSettingList));
-      formData.append(
-        "graduationType",
-        JSON.stringify(selectedGraduationTypeList)
-      );
+      formData.append("employmentType", user?.employmentType);
+      formData.append("workSetting", user?.workSetting);
+      formData.append("graduationType", user?.graduationType);
       formData.append("graduationDate", graduationDate);
       formData.append("fcmToken", "");
 
@@ -273,22 +228,20 @@ function ProfilePage() {
         "/users/update-profile.php",
         formData
       );
-      console.log(response);
 
       setAlert({
         content: response.data.message,
-        isDanger: true,
+        isDanger: response.data.error,
       });
 
       setloading(false);
     } catch (error) {
-      console.log(error);
       setloading(false);
     }
   }
 
   return (
-    <Scaffold isLoading={user === null}>
+    <Scaffold isLoading={loading || user === null}>
       <div className="pt-20 md:pb-10 text-black">
         <div className="items-start bg-[#f8f8f8] p-2 rounded-[20px] mx-5 md:w-[70%] md:mx-auto">
           <div className="bg-white rounded-[20px] p-10 items-center ">
@@ -320,6 +273,27 @@ function ProfilePage() {
                 updateProfile();
               }}
             >
+              {/* Bio */}
+              <div className="relative z-0 w-full mb-6 group">
+                <textarea
+                  type="text"
+                  name="bio"
+                  id="bio"
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=""
+                  required
+                  value={textField.bio}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                />
+                <label
+                  htmlFor="bio"
+                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Bio
+                </label>
+              </div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 {/* Firstmname */}
                 <div className="relative z-0 w-full mb-6 group">
@@ -365,6 +339,7 @@ function ProfilePage() {
                   </label>
                 </div>
               </div>
+
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="date"
@@ -516,83 +491,36 @@ function ProfilePage() {
               </div>
 
               {/* Multi-select Post */}
-              <p className="text-sm text-gray-500 mb-2">Select Post</p>
-              {/* <Select
-                options={postList}
-                isMulti
-                id="multi"
-                name="multi"
-                placeholder="Select Post"
-                onChange={handlePostChange}
-              /> */}
-
-              {textField?.post.map((data, index) => (
-                <h1>{data}</h1>
-              ))}
-
-              {/* {JSON.parse(user?.post)} */}
+              <MultiSelectedData
+                label="Selected Post"
+                dataList={textField?.post}
+              />
 
               {/* Multi-select Emplo */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
-                Select Employment-Type
-              </p>
-              <Select
-                options={employmentTypeList}
-                isDisabled={employmentTypeList.length === 0}
-                isMulti
-                id="multi"
-                name="multi"
-                placeholder="Select Employment-Type"
-                onChange={handleEmploChange}
+              <MultiSelectedData
+                label="Selected Employement Type"
+                dataList={textField?.employmentType}
               />
 
               {/* Multi-select Speci */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
-                Select Specialization
-              </p>
-              <Select
-                options={speciList}
-                isMulti
-                isDisabled={speciList.length === 0}
-                id="multi"
-                name="multi"
-                placeholder="Select Specialization"
-                onChange={handleSpeciChange}
+              <MultiSelectedData
+                label="Selected Specialization"
+                dataList={textField?.specialization}
               />
 
               {/* Multi-select work */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
-                Select Work Setting
-              </p>
-              <Select
-                options={workSettingList}
-                isDisabled={workSettingList.length === 0}
-                isMulti
-                id="multi"
-                name="multi"
-                placeholder="Select Work Setting"
-                onChange={handleWorkChange}
+              <MultiSelectedData
+                label="Selected Work Setting"
+                dataList={textField?.workSetting}
               />
 
               {/* Multi-select grad */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
-                Select Graduation Type
-              </p>
-              {/* <Select
-                options={graduationTypeList}
-                isMulti
-                id="multi"
-                name="multi"
-                placeholder="Select Graduation Type"
-                onChange={handleGraduationChange}
-              /> */}
-
-              {/* {textField.graduationType.map((data, index) => (
-                <p>data</p>
-              ))} */}
-
+              <MultiSelectedData
+                label="Selected Graduation Type"
+                dataList={textField?.graduationType}
+              />
               {/* Graduation years */}
-              {textField.roleTitle === "Student" ? (
+              {textField.role === "Student" ? (
                 <div className="relative z-0 w-full mb-6 mt-6 group">
                   <input
                     type="text"
@@ -601,9 +529,10 @@ function ProfilePage() {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=""
                     required
-                    value={textField.graduationDate}
+                    value={graduationDate}
                     onChange={(e) => {
-                      handleInputChange(e);
+                      // handleInputChange(e);
+                      setgraduationDate(e.target.value);
                     }}
                   />
                   <label
@@ -831,80 +760,24 @@ function ProfilePage() {
 
 export default ProfilePage;
 
-function KDropdown({ data, isOpen, handleChange, handleData }) {
+function MultiOptionsPill({ label }) {
   return (
-    <div className="w-full mb-6">
-      <button
-        onClick={() => {
-          handleChange("gender", !isOpen);
-        }}
-        id="genderDropdownBtn"
-        className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-        type="button"
-      >
-        {data === "M" ? "Male" : data === "F" ? "Female" : "Others"}
-        <svg
-          className="w-2.5 h-2.5 ml-2.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 10 6"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="m1 1 4 4 4-4"
-          />
-        </svg>
-      </button>
+    <div className="bg-gray-600 text-sm text-white px-3 py-2 rounded-full">
+      {label}
+    </div>
+  );
+}
 
-      <div
-        id="genderDropdown"
-        name="genderDropdown"
-        className={`${
-          isOpen ? "absolute" : "hidden"
-        } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700`}
-      >
-        <ul
-          className="overflow-y-auto text-sm text-gray-700"
-          aria-labelledby="dropdownSearchButton"
-        >
-          <li>
-            <div
-              className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-              onClick={() => {
-                handleData("gender", "M");
-                handleChange("gender", false);
-              }}
-            >
-              Male
-            </div>
-          </li>
-          <li>
-            <div
-              className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-              onClick={() => {
-                handleData("gender", "F");
-                handleChange("gender", false);
-              }}
-            >
-              Female
-            </div>
-          </li>
-          <li>
-            <div
-              className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-              onClick={() => {
-                handleData("gender", "O");
-                handleChange("gender", false);
-              }}
-            >
-              Others
-            </div>
-          </li>
-        </ul>
+function MultiSelectedData({ label, dataList }) {
+  return (
+    <div className={`${dataList.length === 0 ? "hidden" : ""} mb-5`}>
+      <p className="text-sm text-gray-500">{label}</p>
+      <div className="flex flex-wrap md:mt-2 mt-2 gap-2">
+        {dataList.map((data, index) => (
+          <div key={index}>
+            <MultiOptionsPill label={data} />
+          </div>
+        ))}
       </div>
     </div>
   );

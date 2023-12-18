@@ -27,11 +27,8 @@ function JobCard({ data }) {
     }
   }
   return (
-    <>
-      <Link
-        to={`/job-detail?vacancy-id=${data.id}`}
-        className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400"
-      >
+    <Link to={`/job-detail?vacancy-id=${data.id}`}>
+      <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
         <div className="md:mr-10 flex justify-between items-center mb-4 md:mb-0">
           <div className="h-[100px] w-[100px] mx-auto">
             <img
@@ -76,8 +73,8 @@ function JobCard({ data }) {
             ))}
           </div>
         </div>
-      </Link>
-    </>
+      </div>
+    </Link>
   );
 }
 

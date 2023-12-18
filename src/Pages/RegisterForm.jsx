@@ -183,6 +183,11 @@ function RegisterForm() {
         []
       );
 
+      let speciList = selectedSpeciList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+
       let workSettingList = selectedWorkSettingList.reduce(
         (acc, obj) => acc.concat(obj.value),
         []
@@ -193,8 +198,6 @@ function RegisterForm() {
         []
       );
 
-      // TODO:
-
       formData.append("firstName", _id("firstName").value);
       formData.append("lastName", _id("lastName").value);
       formData.append("dob", _id("dob").value);
@@ -203,7 +206,7 @@ function RegisterForm() {
       formData.append("email", _id("email").value);
       formData.append("otp", otp);
       formData.append("experience", experienceList[dropdownData.experience]);
-      formData.append("specialization", JSON.stringify(selectedSpeciList));
+      formData.append("specialization", JSON.stringify(speciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
       formData.append("state", dropdownData.state);
@@ -223,7 +226,7 @@ function RegisterForm() {
         "/users/register-with-phone.php",
         formData
       );
-      console.log(response);
+
       if (!response.data.error) {
         setUser(response.data.response);
         navigator("/", { replace: true });
@@ -236,7 +239,6 @@ function RegisterForm() {
 
       setloading(false);
     } catch (error) {
-      console.log(error);
       setloading(false);
     }
   }
@@ -249,9 +251,12 @@ function RegisterForm() {
         (acc, obj) => acc.concat(obj.value),
         []
       );
-      console.log(postList);
 
       let emploList = selectedEmploymentTypeList.reduce(
+        (acc, obj) => acc.concat(obj.value),
+        []
+      );
+      let speciList = selectedSpeciList.reduce(
         (acc, obj) => acc.concat(obj.value),
         []
       );
@@ -275,7 +280,7 @@ function RegisterForm() {
       formData.append("email", email);
       formData.append("otp", otp);
       formData.append("experience", experienceList[dropdownData.experience]);
-      formData.append("specialization", JSON.stringify(selectedSpeciList));
+      formData.append("specialization", JSON.stringify(speciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
       formData.append("state", dropdownData.state);
@@ -296,7 +301,6 @@ function RegisterForm() {
         formData
       );
 
-      console.log(response);
       if (!response.data.error) {
         setUser(response.data.response);
         navigator("/", { replace: true });
@@ -330,10 +334,8 @@ function RegisterForm() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (registerType === "Phone") {
-                  console.log("ph");
                   registerUsingPhone();
                 } else {
-                  console.log("em");
                   registerUsingEmail();
                 }
               }}

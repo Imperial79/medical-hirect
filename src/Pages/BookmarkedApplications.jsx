@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Scaffold from "../components/Scaffold";
-import Hero from "../components/Hero";
+import noDataIcon from "../assets/no-data.jpg";
 import { dbObject } from "../Helper/Constants";
 import JobCard from "../components/JobCard";
 
@@ -39,11 +39,17 @@ function BookmarkedApplications() {
           Bookmarked Applications
         </h1>
 
-        {bookmarkedDataList.map((data, index) => (
-          <div key={index}>
-            <JobCard data={data} />
+        {bookmarkedDataList.length > 0 ? (
+          bookmarkedDataList.map((data, index) => (
+            <div key={index}>
+              <JobCard data={data} />
+            </div>
+          ))
+        ) : (
+          <div className="h-[600px] w-[600px] mx-auto">
+            <img src={noDataIcon} alt="no-data" className="object-contain" />
           </div>
-        ))}
+        )}
       </div>
     </Scaffold>
   );

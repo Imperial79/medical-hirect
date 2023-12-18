@@ -363,7 +363,7 @@ function ApplyJobModal({
         "/application/apply-for-vacancy.php",
         formData
       );
-      console.log(response.data);
+
       if (!response.data.error) {
         toggleModal();
       }
@@ -461,7 +461,6 @@ function UploadResumeModal({ isModalOpen, toggleModal, setLoading, setAlert }) {
         className="hidden"
         onChange={(e) => {
           setselectedResume(e.target.files[0]);
-          console.log(selectedResume);
         }}
       />
       {selectedResume === null ? (
