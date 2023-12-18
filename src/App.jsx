@@ -13,6 +13,7 @@ import SearchRecruiters from "./Pages/SearchRecruiters";
 import AboutRecruiter from "./Pages/AboutRecruiter";
 import BookmarkedApplications from "./Pages/BookmarkedApplications";
 import AppliedApplications from "./Pages/AppliedApplications";
+import ManageResumes from "./Pages/ManageResumes";
 
 function App() {
   return (
@@ -31,6 +32,10 @@ function App() {
             <Route path="/dashboard/profile" element={<ProfilePage />} />
 
             <Route path="/dashboard/resumes" element={<ResumesPage />} />
+            <Route
+              path="/dashboard/manage-resumes"
+              element={<ManageResumes />}
+            />
             <Route
               path="/dashboard/bookmarked-applications"
               element={<BookmarkedApplications />}

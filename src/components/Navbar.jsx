@@ -9,18 +9,19 @@ import { signOut } from "firebase/auth";
 
 function Navbar() {
   const { user, setUser, isScroll, setisScroll } = useContext(Context);
+  const [isNavMenuOpen, setisNavMenuOpen] = useState(false);
   const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
   const navigator = useNavigate();
 
-  function onNavOpen() {
-    let navBar = document.getElementById("navbar-sticky");
+  // function onNavOpen() {
+  //   let navBar = document.getElementById("navbar-sticky");
 
-    if (navBar.classList.contains("hidden")) {
-      navBar.classList.remove("hidden");
-    } else {
-      navBar.classList.add("hidden");
-    }
-  }
+  //   if (navBar.classList.contains("hidden")) {
+  //     navBar.classList.remove("hidden");
+  //   } else {
+  //     navBar.classList.add("hidden");
+  //   }
+  // }
 
   async function logOut() {
     setisProfileDropOpen(false);
@@ -50,7 +51,9 @@ function Navbar() {
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
-              onClick={onNavOpen}
+              onClick={() => {
+                setisNavMenuOpen(!isNavMenuOpen);
+              }}
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 light:text-gray-400 light:hover:bg-gray-700 light:focus:ring-gray-600"
               aria-controls="navbar-sticky"
               aria-expanded="false"
@@ -74,7 +77,9 @@ function Navbar() {
             </button>
           </div>
           <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            className={`${
+              isNavMenuOpen ? "" : "hidden"
+            } items-center justify-between w-full md:flex md:w-auto md:order-1`}
             id="navbar-sticky"
           >
             <ul className="md:items-center flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white light:bg-gray-800 md:light:bg-gray-900 light:border-gray-700">
@@ -119,54 +124,11 @@ function Navbar() {
                     />
                   </button>
                   <ProfileMenu
-                    isProfileDropOpen={isProfileDropOpen}
+                    isDropOpen={isProfileDropOpen}
                     user={user}
-                  >
-                    <ul className="py-2" aria-labelledby="user-menu-button">
-                      <li>
-                        <Link
-                          to="/dashboard/bookmarked-applications"
-                          onClick={() => {
-                            setisProfileDropOpen(false);
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
-                        >
-                          Bookmarked Applications
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/dashboard/applied-applications"
-                          onClick={() => {
-                            setisProfileDropOpen(false);
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
-                        >
-                          Applied Applications
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/dashboard/profile"
-                          onClick={() => {
-                            setisProfileDropOpen(false);
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
-                        >
-                          Edit Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          onClick={logOut}
-                          className="w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
-                        >
-                          Log out
-                        </button>
-                      </li>
-                    </ul>
-                  </ProfileMenu>
+                    logOut={logOut}
+                    setDrop={setisProfileDropOpen}
+                  />
                 </li>
               ) : (
                 <li>
@@ -188,11 +150,26 @@ function Navbar() {
 
 export default Navbar;
 
-function ProfileMenu({ isProfileDropOpen, user, children }) {
+function ProfileMenu({ isDropOpen, setDrop, user, logOut }) {
+  function MenuBtn({ label, to, toggleDrop }) {
+    return (
+      <li>
+        <Link
+          to={to}
+          onClick={() => {
+            toggleDrop(false);
+          }}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+        >
+          {label}
+        </Link>
+      </li>
+    );
+  }
   return (
     <div
       className={`${
-        isProfileDropOpen ? "absolute" : "hidden"
+        isDropOpen ? "absolute" : "hidden"
       } z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow light:bg-gray-700 light:divide-gray-600`}
       id="user-dropdown"
     >
@@ -204,7 +181,37 @@ function ProfileMenu({ isProfileDropOpen, user, children }) {
           {user.email}
         </span>
       </div>
-      {children}
+      <ul className="py-2" aria-labelledby="user-menu-button">
+        <MenuBtn
+          to="/dashboard/bookmarked-applications"
+          label="Bookmarked Applications"
+          toggleDrop={setDrop}
+        />
+        <MenuBtn
+          to="/dashboard/applied-applications"
+          label="Applied Applications"
+          toggleDrop={setDrop}
+        />
+        <MenuBtn
+          to="/dashboard/profile"
+          label="Edit Profile"
+          toggleDrop={setDrop}
+        />
+        <MenuBtn
+          to="/dashboard/manage-resumes"
+          label="Manage Resumes"
+          toggleDrop={setDrop}
+        />
+        <li>
+          <button
+            type="button"
+            onClick={logOut}
+            className="w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-200 light:hover:text-white"
+          >
+            Log out
+          </button>
+        </li>
+      </ul>
     </div>
   );
 }
