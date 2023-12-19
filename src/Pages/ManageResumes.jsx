@@ -44,7 +44,7 @@ function ManageResumes() {
           onClick={() => {
             setIsUploadResumeModalOpen(true);
           }}
-          className="cursor-pointer p-10 border-dashed bg-gray-100 mx-10 border-black text-black justify-center flex items-center gap-5 rounded-xl lg:max-w-[600px] lg:mx-auto"
+          className="cursor-pointer p-10 bg-gray-100 mx-10 text-black justify-center flex items-center gap-5 rounded-xl lg:max-w-[600px] lg:mx-auto hover:invert font-medium"
         >
           <img src={uploadIcon} alt="upload" className="h-7" />
           Upload a resume

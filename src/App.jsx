@@ -14,6 +14,7 @@ import AboutRecruiter from "./Pages/AboutRecruiter";
 import BookmarkedApplications from "./Pages/BookmarkedApplications";
 import AppliedApplications from "./Pages/AppliedApplications";
 import ManageResumes from "./Pages/ManageResumes";
+import ResumeBuilder from "./Pages/ResumeBuilder";
 
 function App() {
   return (
@@ -30,7 +31,6 @@ function App() {
             <Route path="/jobs-recruiter" element={<SearchRecruiters />} />
             <Route path="/about-recruiter" element={<AboutRecruiter />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
-
             <Route path="/dashboard/resumes" element={<ResumesPage />} />
             <Route
               path="/dashboard/manage-resumes"
@@ -43,6 +43,10 @@ function App() {
             <Route
               path="/dashboard/applied-applications"
               element={<AppliedApplications />}
+            />
+            <Route
+              path="/dashboard/resume-builder"
+              element={<ResumeBuilder />}
             />
           </Routes>
         </ContextProvider>

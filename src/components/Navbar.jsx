@@ -202,6 +202,11 @@ function ProfileMenu({ isDropOpen, setDrop, user, logOut }) {
           label="Manage Resumes"
           toggleDrop={setDrop}
         />
+        <MenuBtn
+          to="/dashboard/resume-builder"
+          label="Resume Builder"
+          toggleDrop={setDrop}
+        />
         <li>
           <button
             type="button"
