@@ -1,10 +1,10 @@
 import React from "react";
 
-function CircularProgressIndicator() {
+function CircularProgressIndicator({ size = 10, margin = "mx-auto" }) {
   return (
     <svg
       aria-hidden="true"
-      className="w-10 h-10 mx-auto text-gray-200 animate-spin light:text-gray-600 fill-blue-600"
+      className={`w-${size} h-${size} ${margin} text-gray-200 animate-spin light:text-gray-600 fill-blue-600`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

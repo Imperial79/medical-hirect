@@ -2,6 +2,7 @@ import React from "react";
 
 export function KButton({
   id,
+  onClick,
   type = "button",
   label = "Label",
   labelSize = "sm",
@@ -11,15 +12,19 @@ export function KButton({
   focusColor = "blue-300",
   rounded = "full",
   width = "full",
+  margin = "",
 }) {
   return (
-    <button
-      id={id}
-      type={type}
-      className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-${btnColor}`}
-    >
-      {label}
-    </button>
+    <div>
+      <button
+        id={id}
+        onClick={onClick}
+        type={type}
+        className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-${btnColor} ${margin}`}
+      >
+        {label}
+      </button>
+    </div>
   );
 }
 
@@ -34,6 +39,7 @@ export function KTextField({
   value,
   onChange,
   readOnly = false,
+  spacing = "[0px]",
 }) {
   return (
     <div>
@@ -45,7 +51,7 @@ export function KTextField({
         id={id}
         name={name}
         maxLength={maxLength}
-        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
+        className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5 tracking-${spacing}`}
         placeholder={placeholder}
         required={required}
         value={value}
@@ -131,10 +137,16 @@ export function KDropDown({ id, label, value, onClick, children, isDropOpen }) {
   );
 }
 
-export function KGrid({ crossAxisCount = 2, gap = 5, children }) {
+export function KGrid({
+  crossAxisCount = 2,
+  gap = 5,
+  children,
+  alignment = "center",
+  margin = "mb-5",
+}) {
   return (
     <div
-      className={`md:grid md:grid-cols-${crossAxisCount} gap-${gap} mb-5 items-start`}
+      className={`md:grid md:grid-cols-${crossAxisCount} gap-${gap} items-${alignment} ${margin}`}
     >
       {children}
     </div>

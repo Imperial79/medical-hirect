@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import Scaffold from "../components/Scaffold";
 import profileIcon from "../assets/profile.svg";
-import { KGrid, KTextArea, KTextField } from "../components/components";
+import { useNavigate } from "react-router-dom";
+import {
+  KButton,
+  KGrid,
+  KTextArea,
+  KTextField,
+} from "../components/components";
 
 function ResumeBuilder() {
   const [educationDataList, seteducationDataList] = useState([
@@ -29,6 +35,8 @@ function ResumeBuilder() {
     seteducationDataList(tempFormdata);
     console.log(educationDataList);
   };
+
+  const navigator = useNavigate();
 
   return (
     <Scaffold>
@@ -72,7 +80,7 @@ function ResumeBuilder() {
             />
           </KGrid>
 
-          <KGrid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5} alignment="start">
             <KTextArea
               label="Address"
               type="text"
@@ -111,9 +119,8 @@ function ResumeBuilder() {
             required={true}
           />
           <SubHeading
-            title="Work Experience"
-            subTitle="Add all your employer you have worked with, List your most recent
-            position first"
+            title="Education"
+            subTitle="Adding your education will help recruiters know your value as a potential candidate"
           />
           {educationDataList.map((form, index) => (
             <div key={index}>
@@ -138,19 +145,17 @@ function ResumeBuilder() {
             }}
             className="inline-flex items-center gap-2 font-medium text-blue-500 mt-4 hover:underline cursor-pointer"
           >
-            Add a work experience
+            Add education
           </div>
 
-          <SubHeading
-            title="Education"
-            subTitle="Adding your education will help recruiters know your value as a potential candidate"
-          />
-
-          {/* <EducationForm
-            onSubmit={(e) => {
-              e.preventDefault();
+          <KButton
+            id="createResume"
+            onClick={() => {
+              navigator("/dashboard/resume");
             }}
-          /> */}
+            margin="mt-5"
+            label="Create Resume"
+          />
         </FormCard>
       </div>
     </Scaffold>
@@ -238,7 +243,9 @@ function EducationForm({
       id={formId}
       method="POST"
       onSubmit={onSubmit}
-      className="p-5 bg-gray-50 rounded-xl border border-gray-200 mb-5"
+      className={`p-5 bg-gray-50 rounded-xl border border-gray-200 ${
+        educationDataList.length - 1 === index ? "mb-0" : "mb-5"
+      }`}
     >
       <div className="flex items-center justify-between">
         <h1 className="text-[20px] font-bold mb-2"># {index + 1}</h1>

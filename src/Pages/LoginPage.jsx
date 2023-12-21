@@ -7,8 +7,9 @@ import { auth, googleProvider } from "../Helper/firebase-config";
 import { signInWithCredential, signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
-import FullScreenLoading from "../components/FullScrenLoading";
 import Scaffold from "../components/Scaffold";
+import { KTextField } from "../components/components";
+import CircularProgressIndicator from "../components/CircularProgressIndicator";
 
 function LoginPage() {
   const { setUser, setAlert } = useContext(Context);
@@ -186,7 +187,7 @@ function LoginPage() {
   return (
     <Scaffold isLoading={loading}>
       <div className="pt-20 md:px-10 p-5 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[70%] md:w-full w-[100%] mx-auto md:flex">
+        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:max-w-[900px] md:w-full w-[100%] mx-auto md:flex">
           <img
             src={doctor}
             className="md:w-1/2 w-0 md:m-10 m-0 hidden md:block"
@@ -212,52 +213,37 @@ function LoginPage() {
               <h1 className="text-[15px] text-gray-500 font-normal text-center">
                 Enter your details
               </h1>
+              <KTextField
+                label="Phone"
+                type="phone"
+                maxLength={10}
+                id={"phone"}
+                name={"phone"}
+                placeholder="Enter your phone number"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+              />
+              <KTextField
+                label="OTP"
+                type="text"
+                maxLength={5}
+                id={"otp"}
+                name={"otp"}
+                spacing="[10px]"
+                placeholder=""
+                onChange={(e) => {
+                  setOtp(e.target.value);
+                }}
+              />
 
-              <div className="mt-5 relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
-                  maxLength={10}
-                  name="floating_phone"
-                  id="floating_phone"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                  }}
-                />
-                <label
-                  htmlFor="floating_phone"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Phone
-                </label>
-              </div>
-
-              <div className="mt-5 relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
-                  name="otp"
-                  id="otp"
-                  maxLength={5}
-                  onChange={(e) => {
-                    setOtp(e.target.value);
-                  }}
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer tracking-[10px]"
-                  placeholder=""
-                  required
-                />
-                <label
-                  htmlFor="otp"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  OTP
-                </label>
-              </div>
               {isTimerRunning ? (
-                <h1 className="text-sm text-gray-500 font-medium">
-                  Resend OTP in {timer} secs
-                </h1>
+                <div className="flex items-center">
+                  <CircularProgressIndicator size={5} margin="mr-2" />
+                  <h1 className="text-sm text-gray-500 font-medium">
+                    Resend OTP in {timer} secs
+                  </h1>
+                </div>
               ) : (
                 <button
                   onClick={(e) => {

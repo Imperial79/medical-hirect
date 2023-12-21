@@ -6,9 +6,11 @@ import { dbObject } from "../Helper/Constants";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../Helper/firebase-config";
 import { signOut } from "firebase/auth";
+import CircularProgressIndicator from "./CircularProgressIndicator";
 
 function Navbar() {
-  const { user, setUser, isScroll, setisScroll } = useContext(Context);
+  const { user, setUser, isScroll, setisScroll, authLoading } =
+    useContext(Context);
   const [isNavMenuOpen, setisNavMenuOpen] = useState(false);
   const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
   const navigator = useNavigate();
@@ -102,8 +104,9 @@ function Navbar() {
                   Search Recruiters
                 </Link>
               </li>
-
-              {user !== null ? (
+              {authLoading ? (
+                <CircularProgressIndicator size={5} />
+              ) : user !== null ? (
                 <li>
                   <button
                     onClick={() => {
@@ -140,6 +143,44 @@ function Navbar() {
                   </Link>
                 </li>
               )}
+
+              {/* {user !== null ? (
+                <li>
+                  <button
+                    onClick={() => {
+                      setisProfileDropOpen(!isProfileDropOpen);
+                    }}
+                    type="button"
+                    className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom"
+                  >
+                    <span className="sr-only">Open user menu</span>
+                    <img
+                      className="w-8 h-8 rounded-full"
+                      src={user.image}
+                      alt="user photo"
+                    />
+                  </button>
+                  <ProfileMenu
+                    isDropOpen={isProfileDropOpen}
+                    user={user}
+                    logOut={logOut}
+                    setDrop={setisProfileDropOpen}
+                  />
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    to="/login"
+                    className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
+                  >
+                    Login
+                  </Link>
+                </li>
+              )} */}
             </ul>
           </div>
         </div>

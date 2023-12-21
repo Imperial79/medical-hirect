@@ -15,6 +15,7 @@ import BookmarkedApplications from "./Pages/BookmarkedApplications";
 import AppliedApplications from "./Pages/AppliedApplications";
 import ManageResumes from "./Pages/ManageResumes";
 import ResumeBuilder from "./Pages/ResumeBuilder";
+import ResumePage from "./Pages/ResumePage";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               path="/dashboard/resume-builder"
               element={<ResumeBuilder />}
             />
+            <Route path="/dashboard/resume" element={<ResumePage />} />
           </Routes>
         </ContextProvider>
 
