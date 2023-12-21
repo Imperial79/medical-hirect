@@ -1,43 +1,33 @@
 import React, { useState } from "react";
 import Scaffold from "../components/Scaffold";
 import profileIcon from "../assets/profile.svg";
+import { KGrid, KTextArea, KTextField } from "../components/components";
 
 function ResumeBuilder() {
-  const [workExperienceList, setworkExperienceList] = useState([
+  const [educationDataList, seteducationDataList] = useState([
     {
-      companyName: "",
-      designation: "",
-      workingSince: "",
-      workingTill: "",
-      jobDescription: "",
+      courseName: "",
+      year: "",
+      courseDescription: "",
     },
   ]);
 
-  function handleInputChange(index, e) {
-    const { name, value } = e.target;
-    const newFormData = [...workExperienceList];
-    newFormData[index][name] = value;
-    setworkExperienceList(newFormData);
-  }
-
-  const addWorkExperience = () => {
-    setworkExperienceList([
-      ...workExperienceList,
+  const addEducationForm = () => {
+    seteducationDataList([
+      ...educationDataList,
       {
-        companyName: "",
-        designation: "",
-        workingSince: "",
-        workingTill: "",
-        jobDescription: "",
+        courseName: "",
+        year: "",
+        courseDescription: "",
       },
     ]);
   };
 
   const removeForm = (index) => {
-    // const newFormData = [...workExperienceList];
-    // newFormData.splice(index, 1);
-    // setworkExperienceList(newFormData);
-    console.log(workExperienceList);
+    const tempFormdata = [...educationDataList];
+    tempFormdata.splice(index, 1);
+    seteducationDataList(tempFormdata);
+    console.log(educationDataList);
   };
 
   return (
@@ -52,7 +42,7 @@ function ResumeBuilder() {
         >
           <h1 className="text-[25px] font-semibold mb-5">Create your resume</h1>
           <h2 className="text-[20px] font-medium mb-6">Personal Details</h2>
-          <Grid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5}>
             <KTextField
               label="Full Name"
               type="text"
@@ -62,9 +52,9 @@ function ResumeBuilder() {
             />
 
             <ImagePicker />
-          </Grid>
+          </KGrid>
 
-          <Grid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5}>
             <KTextField
               label="E-mail Address"
               type="text"
@@ -80,9 +70,9 @@ function ResumeBuilder() {
               placeholder="Eg. 909XXXXX67"
               required={true}
             />
-          </Grid>
+          </KGrid>
 
-          <Grid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5}>
             <KTextArea
               label="Address"
               type="text"
@@ -99,7 +89,7 @@ function ResumeBuilder() {
               placeholder="Eg. linkedin profile link"
               required={true}
             />
-          </Grid>
+          </KGrid>
 
           <SubHeading
             title="Profile Snapshot"
@@ -125,26 +115,26 @@ function ResumeBuilder() {
             subTitle="Add all your employer you have worked with, List your most recent
             position first"
           />
-          {workExperienceList.map((form, index) => (
+          {educationDataList.map((form, index) => (
             <div key={index}>
-              <WorkProfileForm
+              <EducationForm
                 index={index}
-                formId={`workProfileForm${index}`}
+                formId={`educationForm${index}`}
                 removeForm={() => {
                   removeForm(index);
                 }}
                 onSubmit={(e) => {
                   e.preventDefault();
                 }}
-                setworkExperienceList={setworkExperienceList}
-                workExperienceList={workExperienceList}
+                seteducationDataList={seteducationDataList}
+                educationDataList={educationDataList}
               />
             </div>
           ))}
 
           <div
             onClick={() => {
-              addWorkExperience();
+              addEducationForm();
             }}
             className="inline-flex items-center gap-2 font-medium text-blue-500 mt-4 hover:underline cursor-pointer"
           >
@@ -156,11 +146,11 @@ function ResumeBuilder() {
             subTitle="Adding your education will help recruiters know your value as a potential candidate"
           />
 
-          <EducationForm
+          {/* <EducationForm
             onSubmit={(e) => {
               e.preventDefault();
             }}
-          />
+          /> */}
         </FormCard>
       </div>
     </Scaffold>
@@ -174,16 +164,6 @@ function SubHeading({ title, subTitle }) {
     <div className="my-6">
       <h2 className="text-[20px] font-medium mb-2">{title}</h2>
       <p className="text-sm text-gray-500">{subTitle}</p>
-    </div>
-  );
-}
-
-function Grid({ crossAxisCount, gap, children }) {
-  return (
-    <div
-      className={`md:grid md:grid-cols-${crossAxisCount} gap-${gap} mb-5 items-center`}
-    >
-      {children}
     </div>
   );
 }
@@ -207,66 +187,6 @@ function FormCard({ heading, subHeading, onSubmit, children }) {
         </form>
       </div>
     </>
-  );
-}
-
-function KTextField({
-  label,
-  maxLength,
-  type,
-  id,
-  name,
-  placeholder,
-  required,
-  onChange,
-}) {
-  return (
-    <div>
-      <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        maxLength={maxLength}
-        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
-        placeholder={placeholder}
-        required={required}
-        onChange={onChange}
-      />
-    </div>
-  );
-}
-
-function KTextArea({
-  label,
-  maxLength,
-  rows,
-  type,
-  id,
-  name,
-  placeholder,
-  required,
-  onChange,
-}) {
-  return (
-    <div>
-      <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
-        {label}
-      </label>
-      <textarea
-        type={type}
-        id={id}
-        name={name}
-        rows={rows}
-        maxLength={maxLength}
-        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
-        placeholder={placeholder}
-        required={required}
-        onChange={onChange}
-      />
-    </div>
   );
 }
 
@@ -299,19 +219,19 @@ function ImagePicker() {
   );
 }
 
-function WorkProfileForm({
+function EducationForm({
   index,
   formId,
   onSubmit,
   removeForm,
-  workExperienceList,
-  setworkExperienceList,
+  educationDataList,
+  seteducationDataList,
 }) {
   function handleInputChange(index, e) {
     const { id, value } = e.target;
-    const newFormData = [...workExperienceList];
+    const newFormData = [...educationDataList];
     newFormData[index][id] = value;
-    setworkExperienceList(newFormData);
+    seteducationDataList(newFormData);
   }
   return (
     <form
@@ -330,11 +250,11 @@ function WorkProfileForm({
           Remove
         </button>
       </div>
-      <Grid crossAxisCount={2} gap={5}>
+      <KGrid crossAxisCount={2} gap={5}>
         <KTextField
-          label="Company Name"
+          label="Course Name"
           type="text"
-          id={`companyName`}
+          id="courseName"
           name="companyName"
           placeholder="Enter name of the company"
           required={true}
@@ -343,49 +263,24 @@ function WorkProfileForm({
           }}
         />
         <KTextField
-          label="Designation"
+          label="Year"
           type="text"
-          maxLength={10}
-          id={`designation`}
-          name="designation"
-          placeholder="Enter your designation"
+          id="year"
+          name="year"
+          placeholder="Course duration (Eg. 2012-2015)"
           required={true}
           onChange={(e) => {
             handleInputChange(index, e);
           }}
         />
-      </Grid>
-      <Grid crossAxisCount={2} gap={5}>
-        <div>
-          <KTextField
-            type="date"
-            label="Working Since"
-            id={`workingSince`}
-            name="workingSince"
-            onChange={(e) => {
-              handleInputChange(index, e);
-            }}
-          />
-        </div>
-        <div>
-          <KTextField
-            type="date"
-            label="Working Till"
-            id={`workingTill`}
-            name="workingTill"
-            onChange={(e) => {
-              handleInputChange(index, e);
-            }}
-          />
-        </div>
-      </Grid>
+      </KGrid>
 
       <KTextArea
-        id={`jobDescription`}
-        name="jobDescription"
-        label="Describe your job"
+        id="courseDescription"
+        name="courseDescription"
+        label="Describe your course"
         rows={3}
-        placeholder="Something about your job"
+        placeholder="Something about your course"
         type="text"
         onChange={(e) => {
           handleInputChange(index, e);
@@ -394,92 +289,3 @@ function WorkProfileForm({
     </form>
   );
 }
-
-function EducationForm({ onSubmit, children }) {
-  return (
-    <form
-      method="POST"
-      onSubmit={onSubmit}
-      className="p-5 bg-gray-50 rounded-xl border border-gray-200"
-    >
-      <Grid crossAxisCount={2} gap={5}>
-        <KTextField
-          label="Course Name"
-          type="text"
-          id="courseName"
-          placeholder="Eg. 10, 12, M.B.B.S. etc"
-          required={true}
-        />
-        <KTextField
-          label="Year"
-          type="text"
-          id="educationYear"
-          placeholder="2010-2013"
-          required={true}
-        />
-      </Grid>
-
-      <KTextArea
-        id="educationDescription"
-        label="Describe your education"
-        rows={3}
-        placeholder="Something about your education"
-        type="text"
-      />
-    </form>
-  );
-}
-
-// function KDropDown({ buttonId, dropdownId, label, currentValue }) {
-//   const [isDropOpen, setisDropOpen] = useState(false);
-//   return (
-//     <div>
-//       <label
-//         for={buttonId}
-//         className="block mb-2 text-sm font-medium text-gray-900"
-//       >
-//         {label}
-//       </label>
-//       <button
-//         onClick={() => {
-//           setisDropOpen(!isDropOpen);
-//         }}
-//         id={buttonId}
-//         className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 mb-5 inline-flex items-center justify-between`}
-//         type="button"
-//       >
-//         {currentValue}
-//         <svg
-//           className="w-2.5 h-2.5 ms-3"
-//           aria-hidden="true"
-//           xmlns="http://www.w3.org/2000/svg"
-//           fill="none"
-//           viewBox="0 0 10 6"
-//         >
-//           <path
-//             stroke="currentColor"
-//             stroke-linecap="round"
-//             stroke-linejoin="round"
-//             stroke-width="2"
-//             d="m1 1 4 4 4-4"
-//           />
-//         </svg>
-//       </button>
-
-//       <div
-//         id={dropdownId}
-//         className={`${
-//           isDropOpen ? "hidden" : "absolute"
-//         } z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44`}
-//       >
-//         <ul className="py-2 text-sm text-gray-700">
-//           <li>
-//             <button className="block px-4 py-2 hover:bg-gray-100 w-full text-start">
-//               Dashboard
-//             </button>
-//           </li>
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// }
