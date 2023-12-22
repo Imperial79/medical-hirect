@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../Helper/firebase-config";
 import { signOut } from "firebase/auth";
 import CircularProgressIndicator from "./CircularProgressIndicator";
+import { KButton } from "./components";
 
 function Navbar() {
   const { user, setUser, isScroll, setisScroll, authLoading } =
@@ -45,7 +46,7 @@ function Navbar() {
               id="post-job"
               to="https://recruiter.shapon.tech"
               target="_blank"
-              className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center light:bg-teal-600 light:hover:bg-teal-700 light:focus:ring-teal-800"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
             >
               Post Job
             </Link>

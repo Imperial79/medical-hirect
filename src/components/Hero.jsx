@@ -11,7 +11,7 @@ function Hero(props) {
         {props.subtitle}
       </h1>
 
-      <div className="border-b-[1px] mt-10 bg-white rounded-tl-lg rounded-tr-lg p-10 md:w-[70%] w-[90%] mx-auto">
+      <div className="border-b-[1px] mt-10 bg-white rounded-tl-lg rounded-tr-lg p-10 md:max-w-[1000px] mx-5 md:mx-auto">
         {props.children}
       </div>
     </div>

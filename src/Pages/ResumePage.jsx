@@ -130,7 +130,14 @@ function ResumePage() {
               />
               <DetailBlock
                 heading="Expertise"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, explicabo aspernatur. Corporis, sed sapiente nobis porro officia velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus."
+                content={
+                  <ul className="list-disc">
+                    <li>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Corporis, libero. Nulla blanditiis
+                    </li>
+                  </ul>
+                }
               />
               <DetailBlock
                 margin="mb-0"
@@ -141,10 +148,17 @@ function ResumePage() {
             <div>
               <DetailBlock
                 heading="Education"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,explicabo aspernatur. Corporis, sed sapiente nobis porro officia
-                velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,explicabo aspernatur. 
-                Corporis, sed sapiente nobis porro officia
-                velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus."
+                content={
+                  <div>
+                    <h2 className="font-bold uppercase text-lg leading-tight">
+                      BACHELOR DEGREE IN DENTIST
+                    </h2>
+                    <h2 className="font-bold uppercase text-lg">2005-2010</h2>
+                    <p className="font-medium text-sm text-gray-400">
+                      University of Kolkata
+                    </p>
+                  </div>
+                }
               />
               <DetailBlock
                 margin="mb-0"

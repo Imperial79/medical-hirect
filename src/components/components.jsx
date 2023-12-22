@@ -32,32 +32,45 @@ export function KTextField({
   label = "label",
   maxLength,
   type = "text",
-  id,
-  name,
+  id = "",
+  name = id,
   placeholder = "placeholder",
   required = true,
   value,
   onChange,
   readOnly = false,
   spacing = "[0px]",
+  actionElement,
 }) {
   return (
     <div>
-      <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
+      <label
+        for={id}
+        className={`${
+          label === "" ? "hidden" : ""
+        } block mb-2 text-sm font-medium text-gray-900`}
+      >
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        maxLength={maxLength}
-        className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5 tracking-${spacing}`}
-        placeholder={placeholder}
-        required={required}
-        value={value}
-        onChange={onChange}
-        readOnly={readOnly}
-      />
+      <div className="flex items-center mb-5">
+        <input
+          type={type}
+          id={id}
+          name={name}
+          maxLength={maxLength}
+          className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  tracking-${spacing}`}
+          placeholder={placeholder}
+          required={required}
+          value={value}
+          onChange={onChange}
+          readOnly={readOnly}
+        />
+        {actionElement === undefined ? (
+          <></>
+        ) : (
+          <div className="ml-2">{actionElement}</div>
+        )}
+      </div>
     </div>
   );
 }
@@ -67,8 +80,8 @@ export function KTextArea({
   maxLength,
   rows = 3,
   type = "text",
-  id,
-  name,
+  id = "",
+  name = id,
   placeholder = "placeholder",
   required = true,
   value,
