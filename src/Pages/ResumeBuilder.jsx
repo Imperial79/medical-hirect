@@ -343,7 +343,7 @@ function ResumeBuilder() {
           <KButton
             id="createResume"
             onClick={() => {
-              navigator("/dashboard/resume");
+              createResume();
             }}
             margin="mt-5"
             label="Create Resume"
