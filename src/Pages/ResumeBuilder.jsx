@@ -9,6 +9,7 @@ import {
   KTextField,
 } from "../components/components";
 import { Context } from "../Helper/ContextProvider";
+import { dbObject } from "../Helper/Constants";
 
 function ResumeBuilder() {
   const { user } = useContext(Context);
@@ -30,7 +31,35 @@ function ResumeBuilder() {
       email: user?.email ?? "",
       phone: user?.phone ?? "",
       address: user?.address ?? "",
+      objective: user?.bio ?? "",
     });
+
+    setexpertiseList(JSON.parse(user?.expertiseDescription ?? "[]"));
+    seteducationDataList(
+      JSON.parse(
+        user?.educationDescription ??
+          JSON.stringify([
+            {
+              courseName: "",
+              year: "",
+              courseDescription: "",
+            },
+          ])
+      )
+    );
+    setworkDataList(
+      JSON.parse(
+        user?.workDescription ??
+          JSON.stringify([
+            {
+              companyName: "",
+              designation: "",
+              year: "",
+              workDescription: "",
+            },
+          ])
+      )
+    );
   }, [user]);
 
   function handleInputChange(e) {
@@ -47,12 +76,6 @@ function ResumeBuilder() {
       courseDescription: "",
     },
   ]);
-
-  // const [expertiseList, setexpertiseList] = useState([
-  //   {
-  //     expertise: "",
-  //   },
-  // ]);
 
   const [expertiseList, setexpertiseList] = useState([]);
 
@@ -117,6 +140,16 @@ function ResumeBuilder() {
 
   const navigator = useNavigate();
 
+  async function createResume() {
+    try {
+      const formData = new FormData();
+      const response = await dbObject.post(
+        "/resume/build-resume.php",
+        formData
+      );
+    } catch (error) {}
+  }
+
   return (
     <Scaffold>
       <div className="my-20">
@@ -142,7 +175,7 @@ function ResumeBuilder() {
               }}
             />
 
-            <ImagePicker />
+            <ImagePicker user={user} />
           </KGrid>
 
           <KGrid crossAxisCount={2} gap={5}>
@@ -230,10 +263,11 @@ function ResumeBuilder() {
             subTitle="Adding your expertise will help recruiters know your value as a potential candidate"
           />
           <div>
-            {expertiseList.map((form, index) => (
+            {expertiseList.map((value, index) => (
               <div key={index} className="list-none">
                 <ExpertiseForm
                   index={index}
+                  value={value}
                   removeExpertise={removeExpertiseForm}
                   setexpertiseList={setexpertiseList}
                   expertiseList={expertiseList}
@@ -254,7 +288,7 @@ function ResumeBuilder() {
             title="Education"
             subTitle="Adding your education will help recruiters know your value as a potential candidate"
           />
-          {educationDataList.map((form, index) => (
+          {educationDataList.map((data, index) => (
             <div key={index}>
               <EducationForm
                 index={index}
@@ -262,9 +296,7 @@ function ResumeBuilder() {
                 removeEducationForm={() => {
                   removeEducationForm(index);
                 }}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
+                data={data}
                 seteducationDataList={seteducationDataList}
                 educationDataList={educationDataList}
               />
@@ -284,7 +316,7 @@ function ResumeBuilder() {
             title="Work Experience"
             subTitle="Add all your employer you have worked with, List your most recent position first"
           />
-          {workDataList.map((form, index) => (
+          {workDataList.map((data, index) => (
             <div key={index}>
               <WorkForm
                 index={index}
@@ -292,9 +324,7 @@ function ResumeBuilder() {
                 removeWorkForm={() => {
                   removeWorkForm(index);
                 }}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
+                data={data}
                 setworkDataList={setworkDataList}
                 workDataList={workDataList}
               />
@@ -357,7 +387,7 @@ function FormCard({ heading, subHeading, onSubmit, children }) {
   );
 }
 
-function ImagePicker() {
+function ImagePicker({ user }) {
   return (
     <div className="inline-flex items-center gap-2">
       <input
@@ -373,7 +403,11 @@ function ImagePicker() {
         }}
         className="p-2 h-14 w-1h-14 bg-white inline-flex rounded-full border cursor-pointer"
       >
-        <img src={profileIcon} alt="profile" className="object-contain" />
+        <img
+          src={user?.image ?? profileIcon}
+          alt="profile"
+          className="object-contain"
+        />
       </div>
 
       <div>
@@ -391,13 +425,9 @@ function ExpertiseForm({
   removeExpertise,
   expertiseList = [],
   setexpertiseList,
+  value,
 }) {
   function handleInputChange(index, e) {
-    // const { id, value } = e.target;
-    // const newFormData = [...expertiseList];
-    // newFormData[index][id] = value;
-    // setexpertiseList(newFormData);
-
     const value = e.target.value;
     const tempForm = [...expertiseList];
     tempForm[index] = value;
@@ -409,6 +439,7 @@ function ExpertiseForm({
         id={`expertise${index}`}
         label={`Skill ${index + 1}`}
         placeholder="Enter a skill"
+        value={value}
         onChange={(e) => {
           handleInputChange(index, e);
         }}
@@ -437,10 +468,10 @@ function ExpertiseForm({
 function EducationForm({
   index,
   formId,
-  onSubmit,
   removeEducationForm,
   educationDataList = [],
   seteducationDataList,
+  data,
 }) {
   function handleInputChange(index, e) {
     const { id, value } = e.target;
@@ -449,10 +480,8 @@ function EducationForm({
     seteducationDataList(newFormData);
   }
   return (
-    <form
+    <div
       id={formId + index}
-      method="POST"
-      onSubmit={onSubmit}
       className={`p-5 bg-gray-50 rounded-xl border border-gray-200 ${
         educationDataList.length - 1 === index ? "mb-0" : "mb-5"
       }`}
@@ -473,11 +502,12 @@ function EducationForm({
           type="text"
           id="courseName"
           name="companyName"
-          placeholder="Enter name of the company"
+          placeholder="Enter name of the course"
           required={true}
           onChange={(e) => {
             handleInputChange(index, e);
           }}
+          value={data.courseName}
         />
         <KTextField
           label="Year"
@@ -489,6 +519,7 @@ function EducationForm({
           onChange={(e) => {
             handleInputChange(index, e);
           }}
+          value={data.year}
         />
       </KGrid>
 
@@ -502,18 +533,19 @@ function EducationForm({
         onChange={(e) => {
           handleInputChange(index, e);
         }}
+        value={data.courseDescription}
       />
-    </form>
+    </div>
   );
 }
 
 function WorkForm({
   index,
   formId,
-  onSubmit,
   removeWorkForm,
   workDataList = [],
   setworkDataList,
+  data = {},
 }) {
   function handleInputChange(index, e) {
     const { id, value } = e.target;
@@ -522,10 +554,8 @@ function WorkForm({
     setworkDataList(newFormData);
   }
   return (
-    <form
-      id={formId}
-      method="POST"
-      onSubmit={onSubmit}
+    <div
+      id={formId + index}
       className={`p-5 bg-gray-50 rounded-xl border border-gray-200 ${
         workDataList.length - 1 === index ? "mb-0" : "mb-5"
       }`}
@@ -549,6 +579,7 @@ function WorkForm({
           onChange={(e) => {
             handleInputChange(index, e);
           }}
+          value={data.companyName}
         />
         <KTextField
           label="Designation"
@@ -558,6 +589,7 @@ function WorkForm({
           onChange={(e) => {
             handleInputChange(index, e);
           }}
+          value={data.designation}
         />
         <KTextField
           label="Year"
@@ -567,6 +599,7 @@ function WorkForm({
           onChange={(e) => {
             handleInputChange(index, e);
           }}
+          value={data.year}
         />
       </KGrid>
 
@@ -580,6 +613,6 @@ function WorkForm({
           handleInputChange(index, e);
         }}
       />
-    </form>
+    </div>
   );
 }
