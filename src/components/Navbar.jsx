@@ -109,24 +109,29 @@ function Navbar() {
                 <CircularProgressIndicator size={5} />
               ) : user !== null ? (
                 <li>
-                  <button
+                  <div
                     onClick={() => {
                       setisProfileDropOpen(!isProfileDropOpen);
                     }}
-                    type="button"
-                    className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    data-dropdown-toggle="user-dropdown"
-                    data-dropdown-placement="bottom"
+                    className="flex items-center gap-3 cursor-pointer select-none"
                   >
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src={user.image}
-                      alt="user photo"
-                    />
-                  </button>
+                    <button
+                      type="button"
+                      className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2"
+                      id="user-menu-button"
+                      aria-expanded="false"
+                      data-dropdown-toggle="user-dropdown"
+                      data-dropdown-placement="bottom"
+                    >
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="w-8 h-8 rounded-full"
+                        src={user.image}
+                        alt="user photo"
+                      />
+                    </button>
+                    <p className="text-black">{user?.firstName}'s Profile</p>
+                  </div>
                   <ProfileMenu
                     isDropOpen={isProfileDropOpen}
                     user={user}

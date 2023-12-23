@@ -43,7 +43,7 @@ export function KTextField({
   actionElement,
 }) {
   return (
-    <div>
+    <div className="mb-5">
       <label
         htmlFor={id}
         className={`${
@@ -52,7 +52,7 @@ export function KTextField({
       >
         {label}
       </label>
-      <div className="flex items-center mb-5">
+      <div className="flex items-center">
         <input
           type={type}
           id={id}
@@ -89,10 +89,10 @@ export function KTextArea({
   onChange,
 }) {
   return (
-    <div>
+    <div className="mb-5">
       <label
         htmlFor={id}
-        className="block mb-2 text-sm font-medium text-gray-900"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         {label}
       </label>

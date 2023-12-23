@@ -219,7 +219,7 @@ function ProfilePage() {
               handleInputChange(e);
             }}
           />
-          <KGrid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
             <KTextField
               name="firstName"
               id="firstName"
@@ -256,7 +256,7 @@ function ProfilePage() {
             />
           </div>
 
-          <KGrid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
             {/* Gender Drop */}
 
             <KDropDown
@@ -380,7 +380,7 @@ function ProfilePage() {
             <></>
           )}
 
-          <KGrid crossAxisCount={2} gap={5}>
+          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
             <KDropDown
               label="Select Experience"
               id="experience"
@@ -420,7 +420,7 @@ function ProfilePage() {
             />
           </KGrid>
 
-          <KGrid>
+          <KGrid margin="mb-0" alignment="start">
             <KDropDown
               label="Select State"
               id="state"
@@ -511,7 +511,7 @@ function MultiSelectedData({ label, dataList }) {
 
 function ImagePicker({ handleImageChange, imagePreview, user }) {
   return (
-    <div className="inline-flex items-center gap-2">
+    <div className="inline-flex items-center gap-2 mb-5">
       <input
         id="imageInput"
         className="hidden"
