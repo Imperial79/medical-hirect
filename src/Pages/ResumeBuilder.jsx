@@ -424,13 +424,12 @@ function ImagePicker({ userImage, setloading }) {
   const [fileName, setfileName] = useState(null);
 
   async function uploadImage(imageFile) {
-    console.log(imageFile);
     try {
       setloading(true);
       const formData = new FormData();
       formData.append("mediaFile", imageFile);
       const response = await dbObject.post("/users/update-dp.php", formData);
-      setLoading(false);
+      setloading(false);
       setAlert({
         content: response.data.message,
         isDanger: response.data.error,
@@ -471,7 +470,7 @@ function ImagePicker({ userImage, setloading }) {
         <img
           src={imagePreview ?? profileIcon}
           alt="profile"
-          className="object-cover rounded-full"
+          className="h-full w-full object-cover rounded-full"
         />
       </div>
 

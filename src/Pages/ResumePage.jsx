@@ -68,7 +68,7 @@ function ResumePage() {
                   <img
                     src={resumeData?.image}
                     alt="user-image"
-                    className="object-contain"
+                    className="object-cover"
                   />
                 </div>
                 <div className="text-white md:text-start text-center w-full">
