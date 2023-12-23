@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Context } from "../Helper/ContextProvider";
 
 function Alert() {
@@ -18,8 +18,8 @@ function Alert() {
   }
   return (
     <div
-      className={`z-50 fixed top-[100px] md:left-10 w-full ${
-        content === "" ? "hidden" : ""
+      className={`z-50 fixed top-[100px] md:left-10 w-full transition-opacity duration-300 ${
+        content === "" ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
       <div

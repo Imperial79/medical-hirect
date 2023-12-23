@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, children }) => {
   const modalClasses = `text-black fixed top-0 left-0 w-full h-full flex items-center justify-center transition-opacity duration-300 ${
     isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
   }`;

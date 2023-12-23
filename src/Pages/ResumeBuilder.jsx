@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Scaffold from "../components/Scaffold";
 import profileIcon from "../assets/profile.svg";
-import { useNavigate } from "react-router-dom";
 import {
   KButton,
   KGrid,
@@ -10,28 +9,33 @@ import {
 } from "../components/components";
 import { Context } from "../Helper/ContextProvider";
 import { dbObject } from "../Helper/Constants";
+import { useNavigate } from "react-router-dom";
 
 function ResumeBuilder() {
-  const { user } = useContext(Context);
-
+  const { user, setAlert } = useContext(Context);
+  const [loading, setloading] = useState(false);
+  const navigate = useNavigate();
   const [textfield, settextfield] = useState({
-    fullname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     address: "",
     profileLink: "",
-    headline: "",
+    subRole: "",
     objective: "",
   });
 
   useEffect(() => {
     settextfield({
       ...textfield,
-      fullname: user === null ? "" : user?.firstName + " " + user?.lastName,
+      firstName: user?.firstName ?? "",
+      lastName: user?.lastName ?? "",
       email: user?.email ?? "",
       phone: user?.phone ?? "",
       address: user?.address ?? "",
       objective: user?.bio ?? "",
+      subRole: user?.subRole ?? "",
     });
 
     setexpertiseList(JSON.parse(user?.expertiseDescription ?? "[]"));
@@ -101,9 +105,10 @@ function ResumeBuilder() {
   const addExpertiseForm = () => {
     setexpertiseList([
       ...expertiseList,
-      {
-        expertise: "",
-      },
+      // {
+      //   expertise: "",
+      // },
+      "",
     ]);
   };
   const addWorkForm = () => {
@@ -128,30 +133,49 @@ function ResumeBuilder() {
     const tempFormdata = [...educationDataList];
     tempFormdata.splice(index, 1);
     seteducationDataList(tempFormdata);
-    console.log(educationDataList);
   };
 
   const removeWorkForm = (index) => {
     const tempFormdata = [...workDataList];
     tempFormdata.splice(index, 1);
     setworkDataList(tempFormdata);
-    console.log(workDataList);
   };
-
-  const navigator = useNavigate();
 
   async function createResume() {
     try {
+      setloading(true);
       const formData = new FormData();
+      formData.append("firstName", textfield.firstName);
+      formData.append("lastName", textfield.lastName);
+      formData.append("profileLink", textfield.profileLink);
+      formData.append("subRole", textfield.subRole);
+      formData.append("bio", textfield.objective);
+      formData.append("expertiseDescription", JSON.stringify(expertiseList));
+      formData.append(
+        "educationDescription",
+        JSON.stringify(educationDataList)
+      );
+      formData.append("workDescription", JSON.stringify(workDataList));
+
       const response = await dbObject.post(
         "/resume/build-resume.php",
         formData
       );
-    } catch (error) {}
+      if (!response.data.error) {
+        navigate("/dashboard/resume", { replace: true });
+      }
+      setAlert({
+        content: response.data.message,
+        isDanger: response.data.error,
+      });
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+    }
   }
 
   return (
-    <Scaffold>
+    <Scaffold isLoading={loading}>
       <div className="my-20">
         <FormCard
           heading="Resume Builder"
@@ -162,20 +186,28 @@ function ResumeBuilder() {
         >
           <h1 className="text-[25px] font-semibold mb-5">Create your resume</h1>
           <h2 className="text-[20px] font-medium mb-6">Personal Details</h2>
-          <KGrid crossAxisCount={2} gap={5}>
+          <ImagePicker userImage={user?.image} setloading={setloading} />
+          <KGrid crossAxisCount={2} gap={5} margin="my-6">
             <KTextField
-              label="Full Name"
-              type="text"
-              id="fullname"
-              placeholder="Eg. John Doe"
+              label="Firstname"
+              id="firstName"
+              placeholder="Eg. John"
               required={true}
-              value={textfield?.fullname}
+              value={textfield?.firstName}
               onChange={(e) => {
                 handleInputChange(e);
               }}
             />
-
-            <ImagePicker user={user} />
+            <KTextField
+              label="Lastname"
+              id="lastName"
+              placeholder="Eg. Doe"
+              required={true}
+              value={textfield?.lastName}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
+            />
           </KGrid>
 
           <KGrid crossAxisCount={2} gap={5}>
@@ -184,23 +216,17 @@ function ResumeBuilder() {
               type="text"
               id="email"
               placeholder="Eg. example@mail.com"
-              required={true}
+              readOnly
               value={textfield.email}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
             />
             <KTextField
               label="Mobile Number"
               type="text"
               maxLength={10}
               id="phone"
+              readOnly
               placeholder="Eg. 909XXXXX67"
-              required={true}
               value={textfield.phone}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
             />
           </KGrid>
 
@@ -211,7 +237,7 @@ function ResumeBuilder() {
               rows={4}
               id="address"
               placeholder="Enter your address"
-              required={true}
+              readOnly
               value={textfield.address}
               onChange={(e) => {
                 handleInputChange(e);
@@ -220,7 +246,6 @@ function ResumeBuilder() {
             <KTextField
               label="Profile Link"
               type="text"
-              maxLength={10}
               id="profileLink"
               placeholder="Eg. linkedin profile link"
               required={true}
@@ -236,12 +261,12 @@ function ResumeBuilder() {
             subTitle="Include 2-3 clear sentences about your overall experience"
           />
           <KTextField
-            id="headline"
-            label="Headline"
+            id="subRole"
+            label="subRole"
             type="text"
             required={true}
             placeholder="Your speciality"
-            value={textfield.headline}
+            value={textfield.subRole}
             onChange={(e) => {
               handleInputChange(e);
             }}
@@ -387,7 +412,35 @@ function FormCard({ heading, subHeading, onSubmit, children }) {
   );
 }
 
-function ImagePicker({ user }) {
+function ImagePicker({ userImage, setloading }) {
+  const [imagePreview, setimagePreview] = useState(null);
+  const [fileName, setfileName] = useState(null);
+
+  async function uploadImage(imageFile) {
+    console.log(imageFile);
+    try {
+      setloading(true);
+      const formData = new FormData();
+      formData.append("mediaFile", imageFile);
+      const response = await dbObject.post("/users/update-dp.php", formData);
+      setLoading(false);
+      setAlert({
+        content: response.data.message,
+        isDanger: response.data.error,
+      });
+    } catch (error) {
+      setloading(false);
+      setAlert({
+        content: "Sorry for inconvenience! Please try again.",
+        isDanger: true,
+      });
+    }
+  }
+
+  useEffect(() => {
+    setimagePreview(userImage);
+  }, [userImage]);
+
   return (
     <div className="inline-flex items-center gap-2">
       <input
@@ -395,23 +448,30 @@ function ImagePicker({ user }) {
         name="image-picker"
         id="image-picker"
         className="hidden"
+        onChange={(e) => {
+          setimagePreview(URL.createObjectURL(e.target.files[0]));
+          setfileName(e.target.files[0].name);
+          uploadImage(e.target.files[0]);
+        }}
       />
 
       <div
         onClick={() => {
           document.getElementById("image-picker").click();
         }}
-        className="p-2 h-14 w-1h-14 bg-white inline-flex rounded-full border cursor-pointer"
+        className="h-12 w-12 bg-white inline-flex rounded-full border border-gray-400 cursor-pointer"
       >
         <img
-          src={user?.image ?? profileIcon}
+          src={imagePreview ?? profileIcon}
           alt="profile"
-          className="object-contain"
+          className="object-cover rounded-full"
         />
       </div>
 
       <div>
-        <h2 className="text-blue-600 font-medium">Upload photo</h2>
+        <h2 className="text-blue-600 font-medium">
+          {fileName ?? "Upload photo"}
+        </h2>
         <h2 className="text-gray-500 font-normal text-sm">
           Allowed file formats: jpg, jpeg, png
         </h2>

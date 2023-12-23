@@ -45,7 +45,7 @@ export function KTextField({
   return (
     <div>
       <label
-        for={id}
+        htmlFor={id}
         className={`${
           label === "" ? "hidden" : ""
         } block mb-2 text-sm font-medium text-gray-900`}
@@ -58,7 +58,7 @@ export function KTextField({
           id={id}
           name={name}
           maxLength={maxLength}
-          className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  tracking-${spacing}`}
+          className={`shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 tracking-${spacing}`}
           placeholder={placeholder}
           required={required}
           value={value}
@@ -84,12 +84,16 @@ export function KTextArea({
   name = id,
   placeholder = "placeholder",
   required = true,
+  readOnly = false,
   value,
   onChange,
 }) {
   return (
     <div>
-      <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
+      <label
+        htmlFor={id}
+        className="block mb-2 text-sm font-medium text-gray-900"
+      >
         {label}
       </label>
       <textarea
@@ -98,9 +102,10 @@ export function KTextArea({
         name={name}
         rows={rows}
         maxLength={maxLength}
-        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-5"
+        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         placeholder={placeholder}
         required={required}
+        readOnly={readOnly}
         value={value}
         onChange={onChange}
       />
@@ -111,7 +116,10 @@ export function KTextArea({
 export function KDropDown({ id, label, value, onClick, children, isDropOpen }) {
   return (
     <div>
-      <label for={id} className="block mb-2 text-sm font-medium text-gray-900">
+      <label
+        htmlFor={id}
+        className="block mb-2 text-sm font-medium text-gray-900"
+      >
         {label}
       </label>
       <button

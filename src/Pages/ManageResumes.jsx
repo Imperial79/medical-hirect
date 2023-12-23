@@ -8,7 +8,8 @@ import Modal from "../components/Modal";
 import deleteIcon from "../assets/trash-outline.svg";
 import closeIcon from "../assets/close.svg";
 import resumeIcon from "../assets/resume.svg";
-import openLinkIcon from "../assets/openLink.svg";
+import logoSmall from "../assets/medilink-small.png";
+import { Link } from "react-router-dom";
 
 function ManageResumes() {
   const { setAlert } = useContext(Context);
@@ -35,24 +36,51 @@ function ManageResumes() {
   }, []);
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20">
+      <div className="pt-20 text-black md:max-w-3xl md:mx-auto mx-5">
         <h1 className="mt-5 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-black mb-10">
           Manage Resumes
         </h1>
-
-        <div
+        <button
           onClick={() => {
             setIsUploadResumeModalOpen(true);
           }}
-          className="cursor-pointer p-10 bg-gray-100 mx-10 text-black justify-center flex items-center gap-5 rounded-xl lg:max-w-[600px] lg:mx-auto hover:invert font-medium"
+          className="w-full"
         >
-          <img src={uploadIcon} alt="upload" className="h-7" />
-          Upload a resume
-        </div>
+          <div className="cursor-pointer p-10 bg-gray-100 text-black justify-center flex items-center gap-5 rounded-xl hover:invert font-medium md:w-auto">
+            <img src={uploadIcon} alt="upload" className="h-7" />
+            Upload a resume
+          </div>
+        </button>
 
-        <h1 className="my-5 text-black mx-auto flex justify-center">
-          Uploaded resumes
-        </h1>
+        <p className="mt-10">Resume created by Medilink</p>
+        <Link
+          to="/dashboard/resume"
+          className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all"
+        >
+          <div className="inline-flex gap-3">
+            <img src={logoSmall} alt="" className="h-6" />
+            <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+              Medilink Resume
+            </h1>
+          </div>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </Link>
+
+        <h1 className="my-5 text-black">Uploaded resumes</h1>
 
         {resumeList.length > 0 ? (
           resumeList.map((data, index) => (
@@ -83,29 +111,48 @@ export default ManageResumes;
 
 function ResumeCard({ data }) {
   return (
-    <div className="bg-gray-100 rounded-xl flex gap-1 items-center text-black lg:max-w-[700px] lg:mx-auto mx-5 mb-2">
-      <div className="w-full flex p-5 gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
+    <div className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all">
+      <div className="w-full flex gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
         <img src={resumeIcon} alt="" className="h-6" />
         <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
           {data.resumeName}
         </h1>
       </div>
-      <img
-        src={deleteIcon}
-        alt="close-icon"
-        onClick={() => {
-          // setselectedResume(null);
-        }}
-        className="h-6 mr-5 object-contain cursor-pointer"
-      />
-      <img
-        src={openLinkIcon}
-        alt="close-icon"
-        onClick={() => {
-          // setselectedResume(null);
-        }}
-        className="h-5 mr-5 object-contain cursor-pointer invert"
-      />
+      <div className="inline-flex gap-5 items-center">
+        <Link>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6 text-red-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+            />
+          </svg>
+        </Link>
+
+        <Link to={data.resume} target="_blank">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+        </Link>
+      </div>
     </div>
   );
 }
