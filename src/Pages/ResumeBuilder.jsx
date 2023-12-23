@@ -27,43 +27,50 @@ function ResumeBuilder() {
   });
 
   useEffect(() => {
-    settextfield({
-      ...textfield,
-      firstName: user?.firstName ?? "",
-      lastName: user?.lastName ?? "",
-      email: user?.email ?? "",
-      phone: user?.phone ?? "",
-      address: user?.address ?? "",
-      objective: user?.bio ?? "",
-      subRole: user?.subRole ?? "",
-    });
-
-    setexpertiseList(JSON.parse(user?.expertiseDescription ?? "[]"));
-    seteducationDataList(
-      JSON.parse(
-        user?.educationDescription ??
-          JSON.stringify([
-            {
-              courseName: "",
-              year: "",
-              courseDescription: "",
-            },
-          ])
-      )
-    );
-    setworkDataList(
-      JSON.parse(
-        user?.workDescription ??
-          JSON.stringify([
-            {
-              companyName: "",
-              designation: "",
-              year: "",
-              workDescription: "",
-            },
-          ])
-      )
-    );
+    if (user !== null) {
+      settextfield({
+        ...textfield,
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
+        email: user.email ?? "",
+        phone: user.phone ?? "",
+        address: user.address ?? "",
+        objective: user.bio ?? "",
+        subRole: user.subRole ?? "",
+      });
+      setexpertiseList(
+        JSON.parse(
+          user?.expertiseDescription === "" ? "[]" : user?.expertiseDescription
+        )
+      );
+      seteducationDataList(
+        JSON.parse(
+          user?.educationDescription === ""
+            ? JSON.stringify([
+                {
+                  courseName: "",
+                  year: "",
+                  courseDescription: "",
+                },
+              ])
+            : user?.educationDescription
+        )
+      );
+      setworkDataList(
+        JSON.parse(
+          user?.workDescription === ""
+            ? JSON.stringify([
+                {
+                  companyName: "",
+                  designation: "",
+                  year: "",
+                  workDescription: "",
+                },
+              ])
+            : user?.workDescription
+        )
+      );
+    }
   }, [user]);
 
   function handleInputChange(e) {

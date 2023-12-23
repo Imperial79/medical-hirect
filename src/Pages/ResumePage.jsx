@@ -11,9 +11,9 @@ function ResumePage() {
     phone: "",
     email: "",
     bio: "",
-    expertiseDescription: [],
-    courseDescription: [],
-    educationDescription: [],
+    expertiseDescription: "",
+    workDescription: "",
+    educationDescription: "",
   });
   const [loading, setloading] = useState(false);
   const [expertiseList, setexpertiseList] = useState([]);
@@ -24,7 +24,7 @@ function ResumePage() {
     try {
       setloading(true);
       const response = await dbObject.get("/resume/fetch-medilink-resume.php");
-      // console.log(response.data.response);
+
       if (!response.data.error) {
         setresumeData(response.data.response);
 
@@ -34,7 +34,6 @@ function ResumePage() {
         seteducationList(
           JSON.parse(response.data.response.educationDescription)
         );
-        // console.log(JSON.parse(response.data.response.educationDescription));
         setworkList(JSON.parse(response.data.response.workDescription));
       }
       setloading(false);
@@ -45,11 +44,7 @@ function ResumePage() {
 
   useEffect(() => {
     fetchResumeData();
-    // console.log(resumeData?.expertiseDescription);
   }, []);
-
-  // console.log(JSON.parse(resumeData?.expertiseDescription));
-  console.log(resumeData?.educationDescription);
 
   return (
     <Scaffold isLoading={loading}>
@@ -68,8 +63,8 @@ function ResumePage() {
                 <h1 className="font-medium md:text-4xl text-2xl tracking-wide">
                   {resumeData?.firstName} {resumeData?.lastName}
                 </h1>
-                <h3 className="font-normal md:text-2xl text-xl uppercase">
-                  Doctor
+                <h3 className="font-normal md:text-xl text-lg uppercase tracking-widest">
+                  {resumeData?.subRole}
                 </h3>
 
                 <KGrid margin="mt-10" alignment="start">
@@ -82,7 +77,7 @@ function ResumePage() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         dataslot="icon"
-                        className="h-6 w-6 text-white"
+                        className="md:h-6 h-5 md:w-6 w-5 text-white"
                       >
                         <path
                           strokeLinecap="round"
@@ -107,7 +102,7 @@ function ResumePage() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         dataslot="icon"
-                        className="w-6 h-6 text-white"
+                        className="md:h-6 h-5 md:w-6 w-5 text-white"
                       >
                         <path
                           strokeLinecap="round"
@@ -128,7 +123,7 @@ function ResumePage() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         dataslot="icon"
-                        className="w-6 h-6 text-white"
+                        className="md:h-6 h-5 md:w-6 w-5 text-white"
                       >
                         <path
                           strokeLinecap="round"
@@ -149,7 +144,7 @@ function ResumePage() {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         dataslot="icon"
-                        className="w-6 h-6 text-white"
+                        className="md:h-6 h-5 md:w-6 w-5 text-white"
                       >
                         <path
                           strokeLinecap="round"
@@ -205,10 +200,26 @@ function ResumePage() {
               <DetailBlock
                 margin="mb-0"
                 heading="Experience"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, explicabo aspernatur. Corporis, sed sapiente nobis porro officia velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus.sed sapiente nobis porro officia
-                velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,explicabo aspernatur. 
-                Corporis, sed sapiente nobis porro officia
-                velit dolor excepturi quibusdam ea quaerat minima non magninatus inventore sit accusamus."
+                content={
+                  <div>
+                    {workList.map((data, index) => (
+                      <div key={index} className="mb-5">
+                        <h2 className="font-bold uppercase text-lg leading-tight">
+                          {data.companyName}
+                        </h2>
+                        <h2 className="font-bold uppercase text-lg">
+                          {data.year}
+                        </h2>
+                        <p className="font-medium text-sm text-gray-400">
+                          {data.designation}
+                        </p>
+                        <p className="font-medium text-sm text-gray-400">
+                          {data.workDescription}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                }
               />
             </div>
           </KGrid>
@@ -249,7 +260,7 @@ function FormCard({ header, children }) {
 
 function Element({ icon, content }) {
   return (
-    <div className="flex text-start items-start md:mb-0 mb-4 gap-5">
+    <div className="flex text-start items-start md:mb-0 mb-4 md:gap-5 gap-3">
       <div className="flex-shrink-0">{icon}</div>
       <p className="text-white text-sm text-start">{content}</p>
     </div>
