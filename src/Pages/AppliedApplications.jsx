@@ -5,6 +5,7 @@ import hospitalIcon from "../assets/hospital.svg";
 import resumeIcon from "../assets/resume.svg";
 import { Link } from "react-router-dom";
 import noDataIcon from "../assets/no-data.jpg";
+import logoSmall from "../assets/medilink-small.png";
 
 function AppliedApplications() {
   const [loading, setloading] = useState(false);
@@ -60,6 +61,7 @@ function AppliedApplications() {
 export default AppliedApplications;
 
 function AppliedCard({ data }) {
+  console.log(data);
   return (
     <Link to={`/job-detail?vacancy-id=${data.vacancyId}`}>
       <div className="text-black bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
@@ -113,8 +115,16 @@ function AppliedCard({ data }) {
 
           <div>
             <div className="inline-flex items-center gap-2">
-              <img src={resumeIcon} alt="" className="h-5 w-5" />
-              <p className="text-sm text-gray-500">{data.resumeName}</p>
+              <img
+                src={data.optedResumeBuilder == "true" ? logoSmall : resumeIcon}
+                alt=""
+                className="h-5 w-5"
+              />
+              <p className="text-sm text-gray-500">
+                {data.optedResumeBuilder == "true"
+                  ? "Medilink Resume"
+                  : data.resumeName}
+              </p>
             </div>
           </div>
         </div>

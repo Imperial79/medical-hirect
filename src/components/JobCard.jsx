@@ -68,7 +68,7 @@ function JobCard({ data }) {
           <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
             {data?.tags?.split("#").map((data, index) => (
               <div key={index}>
-                <PillTag label={data} />
+                {data !== "" ? <PillTag label={data} /> : <></>}
               </div>
             ))}
           </div>

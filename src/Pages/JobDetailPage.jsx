@@ -17,6 +17,7 @@ import Scaffold from "../components/Scaffold";
 import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
 import uploadIcon from "../assets/upload.svg";
+import logoSmall from "../assets/medilink-small.png";
 
 function JobDetailPage() {
   const { user, setAlert } = useContext(Context);
@@ -238,7 +239,7 @@ function JobDetailPage() {
               <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
                 {vacancyData?.tags?.split("#").map((data, index) => (
                   <div key={index}>
-                    <PillTag label={data} />
+                    {data !== "" ? <PillTag label={data} /> : <></>}
                   </div>
                 ))}
               </div>
@@ -334,10 +335,16 @@ function ResumeCard({ onClick, data, selectedResume }) {
           selectedResume !== data.id
             ? "-translate-x-full opacity-0"
             : "-translate-x-0 opacity-100"
-        } h-[30px] w-[5px] bg-blue-700 rounded-full transition-all`}
+        } h-[30px] w-[5px] bg-blue-700 rounded-full transition-all flex-shrink-0 text-start`}
       ></div>
-      <img src={resumeIcon} alt="" className="h-5" />
-      {data.resumeName}
+      <img
+        src={data.resumeName === "Medilink Resume" ? logoSmall : resumeIcon}
+        alt=""
+        className="h-5 flex-shrink-0"
+      />
+      <p className="text-start ml-2 whitespace-nowrap overflow-hidden">
+        {data.resumeName}
+      </p>
     </button>
   );
 }
@@ -359,6 +366,10 @@ function ApplyJobModal({
 
       formData.append("vacancyId", vacancyId);
       formData.append("resumeId", selectedResume);
+      formData.append(
+        "optedResumeBuilder",
+        selectedResume === 0 ? "true" : "false"
+      );
       const response = await dbObject.post(
         "/application/apply-for-vacancy.php",
         formData
@@ -391,6 +402,15 @@ function ApplyJobModal({
           <img src={closeIcon} alt="close-icon" className="h-5" />
         </span>
       </h2>
+
+      <ResumeCard
+        data={{ id: 0, resumeName: "Medilink Resume" }}
+        onClick={() => {
+          setselectedResume(0);
+        }}
+        selectedResume={selectedResume}
+      />
+
       {resumeList.map((data, index) => (
         <div key={data.id}>
           <ResumeCard
