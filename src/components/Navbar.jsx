@@ -37,18 +37,13 @@ function Navbar() {
   return (
     <>
       <nav className="drop-shadow-sm bg-white light:bg-gray-900 fixed w-full z-20 top-0 left-0 items-center">
-        <div className="w-full flex flex-wrap items-center justify-between p-4">
+        <div className="w-full flex flex-wrap items-center justify-between py-3 px-4">
           <Link to="/" className="flex items-center">
             <img src={logo} className="w-32 mr-3" alt="Flowbite Logo" />
           </Link>
           <div className="flex md:order-2">
-            <Link
-              id="post-job"
-              to="https://recruiter.shapon.tech"
-              target="_blank"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-            >
-              Post Job
+            <Link to="https://recruiter.shapon.tech" target="_blank">
+              <KButton label="Post Job" />
             </Link>
 
             <button
@@ -109,66 +104,23 @@ function Navbar() {
                 <CircularProgressIndicator size={5} />
               ) : user !== null ? (
                 <li>
-                  <div
+                  <button
+                    type="button"
                     onClick={() => {
                       setisProfileDropOpen(!isProfileDropOpen);
                     }}
-                    className="flex items-center gap-3 cursor-pointer select-none"
+                    className="inline-flex items-center gap-2 cursor-pointer select-none bg-gray-100 rounded-full px-3 py-1.5 hover:bg-gray-200"
                   >
-                    <button
-                      type="button"
-                      className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2"
-                      id="user-menu-button"
-                      aria-expanded="false"
-                      data-dropdown-toggle="user-dropdown"
-                      data-dropdown-placement="bottom"
-                    >
-                      <span className="sr-only">Open user menu</span>
+                    <div className="bg-gray-300 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2">
                       <img
-                        className="w-8 h-8 rounded-full"
+                        className="w-8 h-8 rounded-full flex-shrink-0"
                         src={user.image}
                         alt="user photo"
                       />
-                    </button>
-                    <p className="text-black">{user?.firstName}'s Profile</p>
-                  </div>
-                  <ProfileMenu
-                    isDropOpen={isProfileDropOpen}
-                    user={user}
-                    logOut={logOut}
-                    setDrop={setisProfileDropOpen}
-                  />
-                </li>
-              ) : (
-                <li>
-                  <Link
-                    to="/login"
-                    className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
-                  >
-                    Login
-                  </Link>
-                </li>
-              )}
-
-              {/* {user !== null ? (
-                <li>
-                  <button
-                    onClick={() => {
-                      setisProfileDropOpen(!isProfileDropOpen);
-                    }}
-                    type="button"
-                    className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    data-dropdown-toggle="user-dropdown"
-                    data-dropdown-placement="bottom"
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src={user.image}
-                      alt="user photo"
-                    />
+                    </div>
+                    <p className="text-black text-sm">
+                      {user?.firstName}'s Profile
+                    </p>
                   </button>
                   <ProfileMenu
                     isDropOpen={isProfileDropOpen}
@@ -186,7 +138,7 @@ function Navbar() {
                     Login
                   </Link>
                 </li>
-              )} */}
+              )}
             </ul>
           </div>
         </div>
@@ -216,8 +168,8 @@ function ProfileMenu({ isDropOpen, setDrop, user, logOut }) {
   return (
     <div
       className={`${
-        isDropOpen ? "absolute" : "hidden"
-      } z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow light:bg-gray-700 light:divide-gray-600`}
+        isDropOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      } absolute z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow light:bg-gray-700 light:divide-gray-600 transition-opacity duration-300`}
       id="user-dropdown"
     >
       <div className="px-4 py-3">

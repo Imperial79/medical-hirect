@@ -23,7 +23,7 @@ function Alert() {
       }`}
     >
       <div
-        className={` md:mx-[100px] mx-5 shadow-xl flex items-center p-4 mb-4 text-sm ${
+        className={`md:mx-[100px] mx-5 shadow-xl flex items-center p-4 mb-4 text-sm ${
           isDanger ? "bg-red-800" : "bg-green-600"
         } rounded-lg text-white`}
         role="alert"

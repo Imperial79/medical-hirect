@@ -13,6 +13,7 @@ export function KButton({
   rounded = "full",
   width = "full",
   margin = "",
+  className = "",
 }) {
   return (
     <div>
@@ -20,7 +21,7 @@ export function KButton({
         id={id}
         onClick={onClick}
         type={type}
-        className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-${btnColor} ${margin}`}
+        className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-${btnColor} ${margin} ${className}`}
       >
         {label}
       </button>
