@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Scaffold from "../components/Scaffold";
 import { KGrid } from "../components/components";
 import { dbObject } from "../Helper/Constants";
+import logo from "../assets/logo.jpg";
 
 import { useNavigate } from "react-router-dom";
 
@@ -265,6 +266,9 @@ function FormCard({ header, children }) {
           </div>
 
           <div className="md:p-7 p-5 md:m-14 m-5">{children}</div>
+          <p className="m-5 inline-flex items-center gap-2">
+            Created by Medilink©
+          </p>
         </div>
       </div>
     </>
