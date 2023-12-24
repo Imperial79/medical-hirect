@@ -182,9 +182,10 @@ function SearchRecruiters() {
           <span className="font-semibold text-gray-900 light:text-white">
             {recruiterList.length}
           </span>{" "}
-          of{" "}
+          of Page
           <span className="font-semibold text-gray-900 light:text-white">
-            {totalRecords}
+            {" "}
+            {pageNo + 1}
           </span>
         </span>
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">

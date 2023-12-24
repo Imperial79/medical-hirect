@@ -269,7 +269,7 @@ function ResumeBuilder() {
           />
           <KTextField
             id="subRole"
-            label="subRole"
+            label="Sub-Role"
             type="text"
             required={true}
             placeholder="Your speciality"

@@ -8,6 +8,7 @@ import filterIcon from "../assets/filter.svg";
 import { Context } from "../Helper/ContextProvider";
 import { KDropDown } from "../components/components";
 import Scaffold from "../components/Scaffold";
+import noData from "../assets/no-data.svg";
 
 function HomePage() {
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ function HomePage() {
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("pageNo", 0);
+      formData.append("pageNo", pageNo);
       formData.append("searchKey", _id("searchKey").value);
       formData.append("city", _id("city").value);
       formData.append("state", selectedState);
@@ -77,7 +78,7 @@ function HomePage() {
 
   useEffect(() => {
     fetchVacancies();
-  }, [selectedRole]);
+  }, [selectedRole, pageNo]);
 
   useEffect(() => {
     if (isScroll) {
@@ -233,11 +234,20 @@ function HomePage() {
         Recent Openings
       </h2>
 
-      {vacancyList.map((data) => (
-        <div key={data.id}>
-          <JobCard data={data} />
+      {vacancyList.length !== 0 ? (
+        vacancyList.map((data) => (
+          <div key={data.id}>
+            <JobCard data={data} />
+          </div>
+        ))
+      ) : (
+        <div className="flex flex-col gap-10">
+          <img src={noData} alt="no-data" className="mx-auto h-48 w-4h-48" />
+          <h1 className="text-2xl text-gray-400 font-bold mx-auto text-center">
+            Sorry! No data found
+          </h1>
         </div>
-      ))}
+      )}
 
       <nav
         className="flex items-center flex-column flex-wrap md:flex-row justify-around py-4"
@@ -248,10 +258,11 @@ function HomePage() {
           <span className="font-semibold text-gray-900 light:text-white">
             {vacancyList.length}
           </span>{" "}
-          of{" "}
-          {/* <span className="font-semibold text-gray-900 light:text-white">
-            {totalRecords}
-          </span> */}
+          of Page
+          <span className="font-semibold text-gray-900 light:text-white">
+            {" "}
+            {pageNo + 1}
+          </span>
         </span>
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <li>

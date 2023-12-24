@@ -528,7 +528,7 @@ function ImagePicker({ handleImageChange, imagePreview, user }) {
         <img
           src={imagePreview ?? user?.image}
           alt="profile"
-          className="h-full object-cover rounded-full"
+          className="h-full w-full object-cover rounded-full"
         />
       </div>
       <div>
