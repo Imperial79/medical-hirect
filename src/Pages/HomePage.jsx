@@ -4,16 +4,22 @@ import JobCard from "../components/JobCard";
 import Hero from "../components/Hero";
 import trendingSearches from "../assets/trending-searches.svg";
 import { dbObject } from "../Helper/Constants";
-import Dropdown from "../components/Dropdown";
 import filterIcon from "../assets/filter.svg";
 import { Context } from "../Helper/ContextProvider";
+import { KDropDown } from "../components/components";
+import Scaffold from "../components/Scaffold";
 
 function HomePage() {
-  // const [loading, setLoading] = useState(false);
-  const { isScroll, setisScroll } = useContext(Context);
+  const [loading, setLoading] = useState(false);
+  const { isScroll, setisScroll, _id } = useContext(Context);
   const [rolesList, setRolesList] = useState([]);
   const [vacancyList, setvacancyList] = useState([]);
   const [statesList, setstatesList] = useState([]);
+  const [selectedState, setselectedState] = useState("Pan India");
+  const [isStateDropOpen, setisStateDropOpen] = useState(false);
+  const [selectedRole, setselectedRole] = useState("1");
+  const [selectedDistance, setselectedDistance] = useState("");
+  const [pageNo, setpageNo] = useState(0);
 
   const openingsRef = useRef(null);
 
@@ -24,6 +30,7 @@ function HomePage() {
       const response = await dbObject.get("/role/fetch-roles.php");
       if (!response.data.error) {
         setRolesList(response.data.response);
+        // setselectedRole(response.data.response.id);
       }
       // setLoading(false);
     } catch (error) {
@@ -33,14 +40,14 @@ function HomePage() {
 
   async function fetchVacancies() {
     try {
-      // setLoading(true);
+      setLoading(true);
       const formData = new FormData();
       formData.append("pageNo", 0);
-      formData.append("searchKey", "");
-      formData.append("city", "");
-      formData.append("state", "");
-      formData.append("distanceRange", "");
-      formData.append("roleId", "1");
+      formData.append("searchKey", _id("searchKey").value);
+      formData.append("city", _id("city").value);
+      formData.append("state", selectedState);
+      formData.append("distanceRange", selectedDistance);
+      formData.append("roleId", selectedRole);
       const response = await dbObject.post(
         "/vacancy/fetch-vacancies.php",
         formData
@@ -48,9 +55,9 @@ function HomePage() {
       if (!response.data.error) {
         setvacancyList(response.data.response);
       }
-      // setLoading(false);
+      setLoading(false);
     } catch (error) {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -64,6 +71,15 @@ function HomePage() {
   }
 
   useEffect(() => {
+    fetchRoles();
+    fetchStates();
+  }, []);
+
+  useEffect(() => {
+    fetchVacancies();
+  }, [selectedRole]);
+
+  useEffect(() => {
     if (isScroll) {
       openingsRef.current.scrollIntoView({
         behavior: "smooth",
@@ -74,14 +90,8 @@ function HomePage() {
     }
   }, [isScroll]);
 
-  useEffect(() => {
-    fetchRoles();
-    fetchStates();
-    fetchVacancies();
-  }, []);
-
   return (
-    <div>
+    <Scaffold isLoading={loading}>
       <Hero
         title="Healthcare jobs & opportunities"
         subtitle="curated job openings for Physicians, Nurses, Doctors ..."
@@ -91,7 +101,7 @@ function HomePage() {
           <div className="w-full">
             <input
               type="text"
-              id="base-input"
+              id="searchKey"
               className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full block w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
               placeholder="Search job titles, keywords, skills etc"
             />
@@ -99,6 +109,10 @@ function HomePage() {
 
           <button
             type="button"
+            onClick={() => {
+              fetchVacancies();
+              setisScroll(true);
+            }}
             className="md:w-auto w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 light:focus:ring-yellow-900 whitespace-nowrap text-ellipsis"
           >
             Search
@@ -124,27 +138,82 @@ function HomePage() {
           <div className="flex flex-wrap">
             {rolesList.map((data) => (
               <div key={data.id}>
-                <KOutlinedButton label={data.title} />
+                <KOutlinedButton
+                  onClick={() => {
+                    setselectedRole(data.id);
+                  }}
+                  isActive={selectedRole == data.id}
+                  label={data.title}
+                />
               </div>
             ))}
           </div>
           <h2 className="mt-5 mb-2 text-black">Filter distance</h2>
           <div className="flex flex-wrap">
-            <KOutlinedButton label="0 - 10 kms" />
-            <KOutlinedButton label="11 - 20 kms" />
-            <KOutlinedButton label="21 - 30 kms" />
+            <KOutlinedButton
+              id={0}
+              label="0 - 10 kms"
+              isActive={selectedDistance === "0-10"}
+              onClick={() => {
+                setselectedDistance("0-10");
+              }}
+            />{" "}
+            <KOutlinedButton
+              id={0}
+              label="11 - 20 kms"
+              isActive={selectedDistance === "11-20"}
+              onClick={() => {
+                setselectedDistance("11-20");
+              }}
+            />{" "}
+            <KOutlinedButton
+              id={0}
+              label="21 - 30 kms"
+              isActive={selectedDistance === "21-30"}
+              onClick={() => {
+                setselectedDistance("21-30");
+              }}
+            />
           </div>
           <h2 className="mt-5 mb-2 text-black">Select city or state</h2>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <input
               type="text"
-              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full block w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
+              id="city"
+              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
               placeholder="Search city..."
             />
-            <Dropdown dataList={statesList} />
+            <KDropDown
+              value={selectedState}
+              id="state"
+              isDropOpen={isStateDropOpen}
+              margin=""
+              onClick={() => {
+                setisStateDropOpen(!isStateDropOpen);
+              }}
+              rounded="full"
+            >
+              {statesList.map((data, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => {
+                    setselectedState(data.stateName);
+                    setisStateDropOpen(!isStateDropOpen);
+                  }}
+                  className="w-full text-start block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
+                >
+                  {data.stateName + ", " + data.abbr}
+                </button>
+              ))}
+            </KDropDown>
           </div>
           <div className="flex justify-end">
             <button
+              onClick={() => {
+                fetchVacancies();
+                setisScroll(true);
+              }}
               type="button"
               className="mt-5 focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 mb-2 md:ml-4 light:focus:ring-yellow-900 overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-2"
             >
@@ -169,7 +238,47 @@ function HomePage() {
           <JobCard data={data} />
         </div>
       ))}
-    </div>
+
+      <nav
+        className="flex items-center flex-column flex-wrap md:flex-row justify-around py-4"
+        aria-label="Table navigation"
+      >
+        <span className="text-sm font-normal text-gray-500 light:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+          Showing{" "}
+          <span className="font-semibold text-gray-900 light:text-white">
+            {vacancyList.length}
+          </span>{" "}
+          of{" "}
+          {/* <span className="font-semibold text-gray-900 light:text-white">
+            {totalRecords}
+          </span> */}
+        </span>
+        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+          <li>
+            <button
+              onClick={() => {
+                if (pageNo > 0) {
+                  setpageNo(pageNo - 1);
+                }
+              }}
+              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+            >
+              Previous
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => {
+                setpageNo(pageNo + 1);
+              }}
+              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </Scaffold>
   );
 }
 
