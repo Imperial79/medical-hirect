@@ -78,7 +78,7 @@ function AppliedCard({ data }) {
         <div>
           <div className="flex justify-between">
             <h2 className="text-blue-900 font-medium md:text-[20px] text-[20px]">
-              {data.roleTitle}
+              {data.roleTitle} | {data.subRole}
             </h2>
           </div>
 
@@ -108,7 +108,17 @@ function AppliedCard({ data }) {
                 {data.experience}
               </div>
             </div>
-            <div className="bg-green-100 text-green-700 rounded-full px-3 py-1 flex items-center gap-2 text-sm font-medium">
+            <div
+              className={`${
+                data.status === "In-Review"
+                  ? "bg-purple-100 text-purple-700"
+                  : data.status === "Rejected"
+                  ? "bg-red-100 text-red-700"
+                  : data.status === "Applied"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-green-100 text-green-700"
+              }  rounded-full px-3 py-1 flex items-center gap-2 text-sm font-medium`}
+            >
               {data.status}
             </div>
           </div>

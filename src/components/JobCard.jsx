@@ -42,7 +42,7 @@ function JobCard({ data }) {
         <div>
           <div className="flex justify-between">
             <h2 className="text-blue-900 font-medium md:text-[20px] text-[20px]">
-              {data.roleTitle}
+              {data.roleTitle} | {data.subRole}
             </h2>
           </div>
 

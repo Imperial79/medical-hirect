@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import job from "../assets/job.svg";
 import hospital from "../assets/hospital.svg";
 import hashTag from "../assets/hash-tag.svg";
@@ -18,6 +18,7 @@ import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
 import uploadIcon from "../assets/upload.svg";
 import logoSmall from "../assets/medilink-small.png";
+import { KButton } from "../components/components";
 
 function JobDetailPage() {
   const { user, setAlert } = useContext(Context);
@@ -25,17 +26,15 @@ function JobDetailPage() {
   let query = new URLSearchParams(useLocation().search);
   const [vacancyData, setvacancyData] = useState({});
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
-  const [isUploadResumeModalOpen, setIsUploadResumeModalOpen] = useState(false);
   const [resumeList, setresumeList] = useState([]);
   const [selectedResume, setselectedResume] = useState(0);
   const vacancyId = query.get("vacancy-id");
+  const [isBookmarked, setisBookmarked] = useState(false);
+  const [isApplied, setisApplied] = useState(false);
+  const navigator = useNavigate();
 
   const toggleApplyModal = () => {
     setIsApplyModalOpen(!isApplyModalOpen);
-  };
-
-  const toggleResumeModal = () => {
-    setIsUploadResumeModalOpen(!isUploadResumeModalOpen);
   };
 
   // ------------------->
@@ -49,9 +48,15 @@ function JobDetailPage() {
         "/vacancy/fetch-vacancy-details.php",
         formData
       );
+      console.log(response.data);
       if (!response.data.error) {
         setvacancyData(response.data.response);
+        setisBookmarked(response.data.response.isBookmarked == "true");
+        setisApplied(response.data.response.isApplied == "true");
+      } else {
+        navigator("/");
       }
+
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -65,14 +70,8 @@ function JobDetailPage() {
 
       if (!response.data.error) {
         setresumeList(response.data.response);
-        setTimeout(() => {
-          if (resumeList.length === 0) {
-            toggleResumeModal();
-          } else {
-            toggleApplyModal();
-          }
-          setloading(false);
-        }, 600);
+        toggleApplyModal();
+        setloading(false);
       }
     } catch (error) {
       setloading(false);
@@ -88,6 +87,9 @@ function JobDetailPage() {
         "/vacancy/bookmark-vacancy.php",
         formData
       );
+
+      setisBookmarked(!isBookmarked);
+
       setAlert({
         content: response.data.message,
         isDanger: response.data.error,
@@ -121,16 +123,17 @@ function JobDetailPage() {
                 className="md:hidden flex gap-2 items-center"
               >
                 <img
-                  src={vacancyData.isBookmarked ? saveFilled : save}
+                  src={isBookmarked ? saveFilled : save}
                   alt="save-button"
                   className="ml-10 h-5"
                 />
               </button>
             </div>
 
-            <div className="flex mt-10 items-center">
+            <div className="flex mt-10 items-center justify-between">
               <h1 className="md:w-[60%] text-blue-900 font-medium md:text-[25px] text-[17px]">
-                {vacancyData.roleTitle} | {vacancyData.companyName}
+                {vacancyData.roleTitle} | {vacancyData.subRole} |{" "}
+                {vacancyData.companyName}
               </h1>
               <button
                 type="button"
@@ -138,7 +141,7 @@ function JobDetailPage() {
                 className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
               >
                 <img
-                  src={vacancyData.isBookmarked ? saveFilled : save}
+                  src={isBookmarked ? saveFilled : save}
                   alt=""
                   className="h-5"
                 />
@@ -183,7 +186,7 @@ function JobDetailPage() {
                 </>
               </div>
 
-              <div className="my-5">
+              <div className={`${isApplied ? "hidden" : ""} my-5`}>
                 {user != null ? (
                   <button
                     type="button"
@@ -202,6 +205,14 @@ function JobDetailPage() {
                   </Link>
                 )}
               </div>
+
+              <p
+                className={`${
+                  isApplied ? "" : "hidden"
+                } my-10 text-gray-500 font-medium`}
+              >
+                You've already applied for this job
+              </p>
               <div className="grid grid-cols-3 md:gap-5 gap-3">
                 <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
                   <h1 className="font-semibold text-xl">
@@ -275,46 +286,36 @@ function JobDetailPage() {
         selectedResume={selectedResume}
         setselectedResume={setselectedResume}
         vacancyId={vacancyId}
+        setisApplied={setisApplied}
       />
 
-      <UploadResumeModal
+      {/* <UploadResumeModal
         isModalOpen={isUploadResumeModalOpen}
         toggleModal={toggleResumeModal}
         setLoading={setloading}
         setAlert={setAlert}
-      />
+      /> */}
     </Scaffold>
   );
 }
 
 export default JobDetailPage;
 
-function OtherJobsCard() {
-  return (
-    <button>
-      <div className="text-start border rounded-lg p-2 mb-2 hover:drop-shadow-xl transition duration-400 bg-white">
-        <div className="flex items-start gap-3">
-          <img src={job} alt="Company Logo" className="h-5" />
-          <div>
-            <h2 className="text-black font-medium max2lines text-sm">
-              Cardiology - Interventional Physician Job with Tenet Healthcare in
-              Memphis, TN
-            </h2>
-            <h2 className="mt-2 text-black text-sm">Memphis, TN</h2>
-            <h2 className="mt-1 text-black text-sm">Posted on: 29-03-2022</h2>
-          </div>
-        </div>
-      </div>
-    </button>
-  );
-}
+const TextWithLineBreaks = ({ text }) => {
+  if (!text) {
+    return null; // or handle the case when text is undefined or empty
+  }
+
+  const formattedText = text.replace(/\n/g, "<br/>");
+  return <div dangerouslySetInnerHTML={{ __html: formattedText }} />;
+};
 
 function DescriptionCard({ title, content }) {
   return (
     <>
       <h1 className="mt-5 font-medium text-[17px]">{title}</h1>
       <h2 className="mt-3 md:text-[15px] text-sm bg-gray-50 border border-gray-200 p-5 rounded-xl">
-        {content}
+        <TextWithLineBreaks text={content} />
       </h2>
     </>
   );
@@ -358,6 +359,7 @@ function ApplyJobModal({
   selectedResume,
   setselectedResume,
   vacancyId,
+  setisApplied,
 }) {
   async function applyJob() {
     try {
@@ -377,6 +379,7 @@ function ApplyJobModal({
 
       if (!response.data.error) {
         toggleModal();
+        setisApplied(true);
       }
       setAlert({
         content: response.data.message,
@@ -422,13 +425,14 @@ function ApplyJobModal({
           />
         </div>
       ))}
-      <button
-        type="button"
-        onClick={applyJob}
-        className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-      >
-        Apply
-      </button>
+      <div className="flex justify-between items-center mt-6">
+        <KButton onClick={applyJob} label="Apply" margin="mb-0" />
+        <KButton
+          linkTo="/dashboard/manage-resumes"
+          label="Upload Modal"
+          margin="mb-0"
+        />
+      </div>
     </Modal>
   );
 }

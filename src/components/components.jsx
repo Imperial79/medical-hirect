@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export function KButton({
+  linkTo = "",
   id,
   onClick,
   type = "button",
@@ -16,7 +18,7 @@ export function KButton({
   className = "",
 }) {
   return (
-    <div>
+    <Link to={linkTo}>
       <button
         id={id}
         onClick={onClick}
@@ -25,7 +27,7 @@ export function KButton({
       >
         {label}
       </button>
-    </div>
+    </Link>
   );
 }
 

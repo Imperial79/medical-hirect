@@ -39,6 +39,7 @@ function ContextProvider({ children }) {
       const response = await dbObject.post("/users/auth.php");
       if (!response.data["error"]) {
         setUser(response.data.response);
+        console.log(location.pathname + location.search);
         navigator(location.pathname + location.search);
       } else {
         navigator("/");
