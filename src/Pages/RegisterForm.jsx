@@ -518,7 +518,7 @@ function RegisterForm() {
                     aria-labelledby="dropdownSearchButton"
                   >
                     {roleList.map((data, index) => (
-                      <li key={data.id}>
+                      <li key={index}>
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {

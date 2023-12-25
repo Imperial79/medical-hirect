@@ -137,8 +137,8 @@ function HomePage() {
         <div className="p-4 rounded-xl">
           <h2 className="mt-5 mb-2 text-black">Filter speciality</h2>
           <div className="flex flex-wrap">
-            {rolesList.map((data) => (
-              <div key={data.id}>
+            {rolesList.map((data, index) => (
+              <div key={index}>
                 <KOutlinedButton
                   onClick={() => {
                     setselectedRole(data.id);
@@ -235,8 +235,8 @@ function HomePage() {
       </h2>
 
       {vacancyList.length !== 0 ? (
-        vacancyList.map((data) => (
-          <div key={data.id}>
+        vacancyList.map((data, index) => (
+          <div key={index}>
             <JobCard data={data} />
           </div>
         ))

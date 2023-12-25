@@ -167,7 +167,7 @@ function SearchRecruiters() {
           </span>
         </div>
         {recruiterList.map((data, index) => (
-          <div key={data.id}>
+          <div key={index}>
             <HospitalCard data={data} />
           </div>
         ))}

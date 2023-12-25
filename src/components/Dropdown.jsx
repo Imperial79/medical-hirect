@@ -45,7 +45,7 @@ const Dropdown = ({ dataList }) => {
             aria-labelledby="dropdownDefaultButton"
           >
             {dataList.map((data, index) => (
-              <li key={data.id}>
+              <li key={index}>
                 <button
                   type="button"
                   className="w-full text-start block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"

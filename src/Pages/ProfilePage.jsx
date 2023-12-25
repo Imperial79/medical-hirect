@@ -71,6 +71,7 @@ function ProfilePage() {
       workSetting: JSON.parse(user !== null ? user?.workSetting : "[]"),
       graduationType: JSON.parse(user !== null ? user?.graduationType : "[]"),
     });
+
     setgraduationDate(user != null ? user.graduationDate : "");
     setImagePreview(user?.image ?? null);
     setDropdownData({
@@ -195,290 +196,301 @@ function ProfilePage() {
   return (
     <Scaffold isLoading={loading || user === null}>
       <div className="pt-20 md:pb-10 text-black">
-        <FormCard
-          heading="Edit Profile"
-          subHeading="Enter your details"
-          method="POST"
+        <form
+          method="post"
           onSubmit={(e) => {
             e.preventDefault();
             updateProfile();
           }}
         >
-          <ImagePicker
-            handleImageChange={handleImageChange}
-            imagePreview={imagePreview}
-            user={user}
-          />
-          <KTextArea
-            id="bio"
-            name="bio"
-            label="Bio"
-            placeholder="Something about you ..."
-            value={textField.bio}
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-          />
-          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
-            <KTextField
-              name="firstName"
-              id="firstName"
-              placeholder=""
-              label="First Name"
-              value={textField.firstName}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
+          <FormCard
+            heading="Edit Profile"
+            subHeading="Enter your details"
+            method="POST"
+          >
+            <ImagePicker
+              handleImageChange={handleImageChange}
+              imagePreview={imagePreview}
+              user={user}
             />
-            <KTextField
-              name="lastName"
-              id="lastName"
-              placeholder=""
-              label="Last Name"
-              value={textField.lastName}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
-          </KGrid>
-
-          <div className="relative z-0 w-full mb-6 group">
-            <KTextField
-              label="DOB"
-              type="date"
-              name="dob"
-              id="dob"
-              placeholder=""
-              value={textField.dob}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
-          </div>
-
-          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
-            {/* Gender Drop */}
-
-            <KDropDown
-              id="gender"
-              label="Gender"
-              onClick={() => {
-                handleDropdownChange("gender", !isDropdownOpen.gender);
-              }}
-              isDropOpen={isDropdownOpen.gender}
-              value={
-                dropdownData.gender === "M"
-                  ? "Male"
-                  : dropdownData.gender === "F"
-                  ? "Female"
-                  : "Others"
-              }
-            >
-              <li>
-                <div
-                  className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                  onClick={() => {
-                    handleDropdownData("gender", "M");
-                    handleDropdownChange("gender", false);
-                  }}
-                >
-                  Male
-                </div>
-              </li>
-              <li>
-                <div
-                  className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                  onClick={() => {
-                    handleDropdownData("gender", "F");
-                    handleDropdownChange("gender", !isDropdownOpen.gender);
-                  }}
-                >
-                  Female
-                </div>
-              </li>
-              <li>
-                <div
-                  className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                  onClick={() => {
-                    handleDropdownData("gender", "O");
-                    handleDropdownChange("gender", !isDropdownOpen.gender);
-                  }}
-                >
-                  Others
-                </div>
-              </li>
-            </KDropDown>
-
-            {/* Role Textfield */}
-            <KTextField
-              type="text"
-              name="role"
-              id="role"
-              label="Role"
-              placeholder="role"
-              readOnly={true}
-              value={textField.role}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
-          </KGrid>
-
-          {/* Subrole textfield */}
-          <KTextField
-            name="subRole"
-            id="subRole"
-            label="Sub-Role"
-            placeholder="Subrole"
-            readOnly={true}
-            value={textField.subRole}
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-          />
-
-          {/* Multi-select Post */}
-          <MultiSelectedData label="Selected Post" dataList={textField?.post} />
-
-          {/* Multi-select Emplo */}
-          <MultiSelectedData
-            label="Selected Employement Type"
-            dataList={textField?.employmentType}
-          />
-
-          {/* Multi-select Speci */}
-          <MultiSelectedData
-            label="Selected Specialization"
-            dataList={textField?.specialization}
-          />
-
-          {/* Multi-select work */}
-          <MultiSelectedData
-            label="Selected Work Setting"
-            dataList={textField?.workSetting}
-          />
-
-          {/* Multi-select grad */}
-          <MultiSelectedData
-            label="Selected Graduation Type"
-            dataList={textField?.graduationType}
-          />
-          {/* Graduation years */}
-          {textField.role === "Student" ? (
-            <KTextField
-              label="Graduation Date"
-              type="text"
-              name="graduationDate"
-              id="graduationDate"
-              placeholder=""
-              value={graduationDate}
-              onChange={(e) => {
-                setgraduationDate(e.target.value);
-              }}
-            />
-          ) : (
-            <></>
-          )}
-
-          <KGrid crossAxisCount={2} gap={5} margin="mb-0">
-            <KDropDown
-              label="Select Experience"
-              id="experience"
-              name="experience"
-              onClick={() => {
-                handleDropdownChange("experience", !isDropdownOpen.experience);
-              }}
-              value={dropdownData.experience}
-              isDropOpen={isDropdownOpen.experience}
-            >
-              {experienceList.map((data, index) => (
-                <li key={index}>
-                  <div
-                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                    onClick={() => {
-                      handleDropdownData("experience", data);
-                      handleDropdownChange(
-                        "experience",
-                        !isDropdownOpen.experience
-                      );
-                    }}
-                  >
-                    {data}
-                  </div>
-                </li>
-              ))}
-            </KDropDown>
-            <KTextField
-              label="City"
-              name="city"
-              id="city"
-              placeholder=""
-              value={textField.city}
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            />
-          </KGrid>
-
-          <KGrid margin="mb-0" alignment="start">
-            <KDropDown
-              label="Select State"
-              id="state"
-              isDropOpen={isDropdownOpen.state}
-              onClick={() => {
-                handleDropdownChange("state", !isDropdownOpen.state);
-              }}
-              value={dropdownData.state}
-            >
-              {stateList.map((data, index) => (
-                <li key={index}>
-                  <div
-                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                    onClick={() => {
-                      handleDropdownData("state", data.stateName);
-                      handleDropdownChange("state", !isDropdownOpen.state);
-                    }}
-                  >
-                    {data.stateName}
-                  </div>
-                </li>
-              ))}
-            </KDropDown>
-
             <KTextArea
-              name="address"
-              id="address"
-              label="Address"
-              placeholder="Enter your address"
+              id="bio"
+              name="bio"
+              label="Bio"
+              placeholder="Something about you ..."
+              value={textField.bio}
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
             />
-          </KGrid>
+            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
+              <KTextField
+                name="firstName"
+                id="firstName"
+                placeholder=""
+                label="First Name"
+                value={textField.firstName}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+              <KTextField
+                name="lastName"
+                id="lastName"
+                placeholder=""
+                label="Last Name"
+                value={textField.lastName}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            </KGrid>
 
-          <KGrid>
+            <div className="relative z-0 w-full mb-6 group">
+              <KTextField
+                label="DOB"
+                type="date"
+                name="dob"
+                id="dob"
+                placeholder=""
+                value={textField.dob}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            </div>
+
+            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
+              {/* Gender Drop */}
+
+              <KDropDown
+                id="gender"
+                label="Gender"
+                onClick={() => {
+                  handleDropdownChange("gender", !isDropdownOpen.gender);
+                }}
+                isDropOpen={isDropdownOpen.gender}
+                value={
+                  dropdownData.gender === "M"
+                    ? "Male"
+                    : dropdownData.gender === "F"
+                    ? "Female"
+                    : "Others"
+                }
+              >
+                <li>
+                  <div
+                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                    onClick={() => {
+                      handleDropdownData("gender", "M");
+                      handleDropdownChange("gender", false);
+                    }}
+                  >
+                    Male
+                  </div>
+                </li>
+                <li>
+                  <div
+                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                    onClick={() => {
+                      handleDropdownData("gender", "F");
+                      handleDropdownChange("gender", !isDropdownOpen.gender);
+                    }}
+                  >
+                    Female
+                  </div>
+                </li>
+                <li>
+                  <div
+                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                    onClick={() => {
+                      handleDropdownData("gender", "O");
+                      handleDropdownChange("gender", !isDropdownOpen.gender);
+                    }}
+                  >
+                    Others
+                  </div>
+                </li>
+              </KDropDown>
+
+              {/* Role Textfield */}
+              <KTextField
+                type="text"
+                name="role"
+                id="role"
+                label="Role"
+                placeholder="role"
+                readOnly={true}
+                value={textField.role}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            </KGrid>
+
+            {/* Subrole textfield */}
             <KTextField
-              name="email"
-              id="email"
-              label="E-mail"
-              placeholder=""
-              required
-              readOnly
-              value={textField.email}
+              name="subRole"
+              id="subRole"
+              label="Sub-Role"
+              placeholder="Subrole"
+              readOnly={true}
+              value={textField.subRole}
             />
 
-            <KTextField
-              type="phone"
-              maxLength={10}
-              name="phone"
-              id="phone"
-              label="Phone Number"
-              placeholder=""
-              required
-              readOnly
-              value={textField.phone}
+            {/* Multi-select Post */}
+            <MultiSelectedData
+              label="Selected Post"
+              dataList={textField?.post}
             />
-          </KGrid>
 
-          <KButton type="submit" label="Update Profile" />
-        </FormCard>
+            {/* Multi-select Emplo */}
+            <MultiSelectedData
+              label="Selected Employement Type"
+              dataList={textField?.employmentType}
+            />
+
+            {/* Multi-select Speci */}
+            <MultiSelectedData
+              label="Selected Specialization"
+              dataList={textField?.specialization}
+            />
+
+            {/* Multi-select work */}
+            <MultiSelectedData
+              label="Selected Work Setting"
+              dataList={textField?.workSetting}
+            />
+
+            {/* Multi-select grad */}
+            <MultiSelectedData
+              label="Selected Graduation Type"
+              dataList={textField?.graduationType}
+            />
+            {/* Graduation years */}
+            {textField.role === "Student" ? (
+              <KTextField
+                label="Graduation Date"
+                type="text"
+                name="graduationDate"
+                id="graduationDate"
+                placeholder=""
+                value={graduationDate}
+                onChange={(e) => {
+                  setgraduationDate(e.target.value);
+                }}
+              />
+            ) : (
+              <></>
+            )}
+
+            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
+              <KDropDown
+                label="Select Experience"
+                id="experience"
+                name="experience"
+                onClick={() => {
+                  handleDropdownChange(
+                    "experience",
+                    !isDropdownOpen.experience
+                  );
+                }}
+                value={dropdownData.experience}
+                isDropOpen={isDropdownOpen.experience}
+              >
+                {experienceList.map((data, index) => (
+                  <li key={index}>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("experience", data);
+                        handleDropdownChange(
+                          "experience",
+                          !isDropdownOpen.experience
+                        );
+                      }}
+                    >
+                      {data}
+                    </div>
+                  </li>
+                ))}
+              </KDropDown>
+              <KTextField
+                label="City"
+                name="city"
+                id="city"
+                placeholder=""
+                value={textField.city}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            </KGrid>
+
+            <KGrid margin="mb-0" alignment="start">
+              <KDropDown
+                label="Select State"
+                id="state"
+                isDropOpen={isDropdownOpen.state}
+                onClick={() => {
+                  handleDropdownChange("state", !isDropdownOpen.state);
+                }}
+                value={dropdownData.state}
+              >
+                {stateList.map((data, index) => (
+                  <li key={index}>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("state", data.stateName);
+                        handleDropdownChange("state", !isDropdownOpen.state);
+                      }}
+                    >
+                      {data.stateName}
+                    </div>
+                  </li>
+                ))}
+              </KDropDown>
+
+              <KTextArea
+                name="address"
+                id="address"
+                label="Address"
+                placeholder="Enter your address"
+                value={textField.address}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+            </KGrid>
+
+            <KGrid>
+              <KTextField
+                name="email"
+                id="email"
+                label="E-mail"
+                placeholder=""
+                required
+                readOnly
+                value={textField.email}
+              />
+
+              <KTextField
+                type="phone"
+                maxLength={10}
+                name="phone"
+                id="phone"
+                label="Phone Number"
+                placeholder=""
+                required
+                readOnly
+                value={textField.phone}
+              />
+            </KGrid>
+
+            <KButton type="submit" label="Update Profile" />
+          </FormCard>
+        </form>
       </div>
     </Scaffold>
   );
@@ -541,13 +553,7 @@ function ImagePicker({ handleImageChange, imagePreview, user }) {
   );
 }
 
-function FormCard({
-  heading,
-  subHeading,
-  onSubmit,
-  children,
-  method = "POST",
-}) {
+function FormCard({ heading, subHeading, children }) {
   return (
     <>
       <div className="mx-5 text-black md:max-w-[900px] lg:mx-auto content-center">
@@ -557,13 +563,13 @@ function FormCard({
         <p className="text-sm text-start font-normal text-gray-500 mb-5">
           {subHeading}
         </p>
-        <form
-          method={method}
-          onSubmit={onSubmit}
+        <div
+          // method={method}
+          // onSubmit={onSubmit}
           className="border border-gray-200 md:p-7 p-5 rounded-xl bg-white"
         >
           {children}
-        </form>
+        </div>
       </div>
     </>
   );

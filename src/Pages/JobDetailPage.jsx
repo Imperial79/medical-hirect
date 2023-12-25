@@ -415,7 +415,7 @@ function ApplyJobModal({
       />
 
       {resumeList.map((data, index) => (
-        <div key={data.id}>
+        <div key={index}>
           <ResumeCard
             onClick={() => {
               setselectedResume(data.id);
@@ -428,8 +428,15 @@ function ApplyJobModal({
       <div className="flex justify-between items-center mt-6">
         <KButton onClick={applyJob} label="Apply" margin="mb-0" />
         <KButton
-          linkTo="/dashboard/manage-resumes"
-          label="Upload Modal"
+          // linkTo="/dashboard/manage-resumes"
+          onClick={() => {
+            const navigator = useNavigate();
+            navigator("/dashboard/manage-resumes");
+          }}
+          label="Upload Resume"
+          hoverColor="gray-300"
+          btnColor="gray-200"
+          labelColor="black"
           margin="mb-0"
         />
       </div>

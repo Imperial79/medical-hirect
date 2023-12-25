@@ -1,8 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export function KButton({
-  linkTo = "",
   id,
   onClick,
   type = "button",
@@ -18,16 +16,14 @@ export function KButton({
   className = "",
 }) {
   return (
-    <Link to={linkTo}>
-      <button
-        id={id}
-        onClick={onClick}
-        type={type}
-        className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-${btnColor} ${margin} ${className}`}
-      >
-        {label}
-      </button>
-    </Link>
+    <button
+      id={id}
+      onClick={onClick}
+      type={type}
+      className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:focus:ring-${btnColor} ${margin} ${className}`}
+    >
+      {label}
+    </button>
   );
 }
 

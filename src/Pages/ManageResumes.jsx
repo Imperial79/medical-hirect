@@ -23,7 +23,6 @@ function ManageResumes() {
       setloading(true);
       const response = await dbObject.get("/resume/fetch-my-resumes.php");
       if (!response.data.error) {
-        console.log(response.data);
         setresumeList(response.data.response);
       }
       setloading(false);
@@ -31,12 +30,36 @@ function ManageResumes() {
       setloading(false);
     }
   }
+
+  async function deleteResume() {
+    try {
+      const formData = new FormData();
+      formData.append("resumeId", data.id);
+      const response = await dbObject.post(
+        "/resume/delete-resume.php",
+        formData
+      );
+
+      if (!response.data.error) {
+        fetchResumes();
+        setAlert({
+          content: response.data.message,
+          isDanger: response.data.error,
+        });
+      }
+    } catch (error) {
+      setAlert({
+        content: "Resume cannot be deleted",
+        isDanger: true,
+      });
+    }
+  }
   useEffect(() => {
     fetchResumes();
   }, []);
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20 text-black md:max-w-3xl md:mx-auto mx-5">
+      <div className="py-20 text-black md:max-w-3xl md:mx-auto mx-5">
         <h1 className="mt-5 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-black mb-10">
           Manage Resumes
         </h1>
@@ -85,7 +108,7 @@ function ManageResumes() {
         {resumeList.length > 0 ? (
           resumeList.map((data, index) => (
             <div key={index}>
-              <ResumeCard data={data} />
+              <ResumeCard data={data} onDelete={deleteResume} />
             </div>
           ))
         ) : (
@@ -109,7 +132,7 @@ function ManageResumes() {
 
 export default ManageResumes;
 
-function ResumeCard({ data }) {
+function ResumeCard({ data, onDelete }) {
   return (
     <div className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all">
       <div className="w-full flex gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
@@ -121,6 +144,7 @@ function ResumeCard({ data }) {
       <div className="inline-flex gap-5 items-center">
         <Link>
           <svg
+            onClick={onDelete}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

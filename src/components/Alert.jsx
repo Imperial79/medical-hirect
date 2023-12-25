@@ -6,14 +6,12 @@ function Alert() {
   const label = alert["isDanger"] ? "Oops!" : "Success!";
   const content = alert["content"];
   const isDanger = alert["isDanger"];
-  const [showAlert, setshowAlert] = useState(false);
 
   if (content !== "") {
     setTimeout(() => {
       setAlert({
-        label: "",
         content: "",
-        isDanger: false,
+        isDanger: alert["isDanger"],
       });
     }, 2000);
   }

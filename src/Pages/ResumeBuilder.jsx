@@ -371,7 +371,7 @@ function ResumeBuilder() {
           >
             Add Work
           </div>
-
+          <br />
           <KButton
             id="createResume"
             onClick={() => {
@@ -422,6 +422,8 @@ function FormCard({ heading, subHeading, onSubmit, children }) {
 function ImagePicker({ userImage, setloading }) {
   const [imagePreview, setimagePreview] = useState(null);
   const [fileName, setfileName] = useState(null);
+
+  const { setAlert } = useContext(Context);
 
   async function uploadImage(imageFile) {
     try {
