@@ -267,7 +267,7 @@ function FormCard({ header, children }) {
 
           <div className="md:p-7 p-5 md:m-14 m-5">{children}</div>
           <p className="m-5 inline-flex items-center gap-2">
-            Created by Medilink©
+            Created by <img src={logo} alt="logo" className="w-32" />
           </p>
         </div>
       </div>
