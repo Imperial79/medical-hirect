@@ -8,7 +8,7 @@ import Modal from "../components/Modal";
 import deleteIcon from "../assets/trash-outline.svg";
 import closeIcon from "../assets/close.svg";
 import resumeIcon from "../assets/resume.svg";
-import logoSmall from "../assets/medilink-small.png";
+import logoSmall from "../assets/logo-transparent.png";
 import { Link } from "react-router-dom";
 
 function ManageResumes() {
@@ -75,7 +75,7 @@ function ManageResumes() {
           </div>
         </button>
 
-        <p className="mt-10">Resume created by Medilink</p>
+        <p className="mt-10">Resume created by Hirehelix</p>
         <Link
           to="/dashboard/resume"
           className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all"
@@ -83,7 +83,7 @@ function ManageResumes() {
           <div className="inline-flex gap-3">
             <img src={logoSmall} alt="" className="h-6" />
             <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
-              Medilink Resume
+              Hirehelix Resume
             </h1>
           </div>
 

@@ -17,7 +17,7 @@ import Scaffold from "../components/Scaffold";
 import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
 import uploadIcon from "../assets/upload.svg";
-import logoSmall from "../assets/medilink-small.png";
+import logoSmall from "../assets/logo-transparent.png";
 import { KButton } from "../components/components";
 
 function JobDetailPage() {
@@ -339,7 +339,7 @@ function ResumeCard({ onClick, data, selectedResume }) {
         } h-[30px] w-[5px] bg-blue-700 rounded-full transition-all flex-shrink-0 text-start`}
       ></div>
       <img
-        src={data.resumeName === "Medilink Resume" ? logoSmall : resumeIcon}
+        src={data.resumeName === "Hirehelix Resume" ? logoSmall : resumeIcon}
         alt=""
         className="h-5 flex-shrink-0"
       />
@@ -407,7 +407,7 @@ function ApplyJobModal({
       </h2>
 
       <ResumeCard
-        data={{ id: 0, resumeName: "Medilink Resume" }}
+        data={{ id: 0, resumeName: "Hirehelix Resume" }}
         onClick={() => {
           setselectedResume(0);
         }}

@@ -5,7 +5,7 @@ import hospitalIcon from "../assets/hospital.svg";
 import resumeIcon from "../assets/resume.svg";
 import { Link } from "react-router-dom";
 import noDataIcon from "../assets/no-data.jpg";
-import logoSmall from "../assets/medilink-small.png";
+import logoSmall from "../assets/logo-transparent.png";
 
 function AppliedApplications() {
   const [loading, setloading] = useState(false);
@@ -132,7 +132,7 @@ function AppliedCard({ data }) {
               />
               <p className="text-sm text-gray-500">
                 {data.optedResumeBuilder == "true"
-                  ? "Medilink Resume"
+                  ? "Hirehelix Resume"
                   : data.resumeName}
               </p>
             </div>

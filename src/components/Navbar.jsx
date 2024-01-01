@@ -42,7 +42,7 @@ function Navbar() {
             <img src={logo} className="w-32 mr-3" alt="Flowbite Logo" />
           </Link>
           <div className="flex md:order-2">
-            <Link to="https://recruiter.shapon.tech" target="_blank">
+            <Link to="https://recruiter.hirehelix.in" target="_blank">
               <KButton label="Post Job" />
             </Link>
 

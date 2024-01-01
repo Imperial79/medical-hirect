@@ -96,7 +96,7 @@ function Footer() {
           </div>
           <div className="px-4 py-6 bg-gray-700 md:flex md:items-center md:justify-between">
             <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
-              © {new Date().getFullYear()} <Link to="">Medilink™</Link>. All
+              © {new Date().getFullYear()} <Link to="">Hirehelix™</Link>. All
               Rights Reserved.
             </span>
           </div>

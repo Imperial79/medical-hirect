@@ -1,16 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDVG4NOpamS-6qodK7HLH9UfF5z4vYny-g",
-    authDomain: "medilink-dd7ad.firebaseapp.com",
-    projectId: "medilink-dd7ad",
-    storageBucket: "medilink-dd7ad.appspot.com",
-    messagingSenderId: "226694258438",
-    appId: "1:226694258438:web:a27543852d111a8f1cc887"
+  apiKey: "AIzaSyD9TmwlknaJ5tH5hS_SgtOwS8IXV2fzPCI",
+  authDomain: "hirehelix-aa9c4.firebaseapp.com",
+  projectId: "hirehelix-aa9c4",
+  storageBucket: "hirehelix-aa9c4.appspot.com",
+  messagingSenderId: "146424537294",
+  appId: "1:146424537294:web:2b9c3f6121ec3b774c309f",
 };
 
-
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
