@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseUrl = "https://app-api.shapon.tech";
+export const baseUrl = "https://app-api.hirehelix.in";
 
 export const dbObject = axios.create({
   withCredentials: true,

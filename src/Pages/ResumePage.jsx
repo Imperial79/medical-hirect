@@ -3,7 +3,6 @@ import Scaffold from "../components/Scaffold";
 import { KGrid } from "../components/components";
 import { dbObject } from "../Helper/Constants";
 import logo from "../assets/logo.jpg";
-
 import { useNavigate } from "react-router-dom";
 
 function ResumePage() {
