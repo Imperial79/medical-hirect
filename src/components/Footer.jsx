@@ -20,11 +20,6 @@ function Footer() {
                 </h2>
                 <ul className="text-gray-500 dark:text-gray-400 font-medium">
                   <li className="mb-4">
-                    <Link to="#" className=" hover:underline">
-                      About
-                    </Link>
-                  </li>
-                  <li className="mb-4">
                     <Link to="#" className="hover:underline">
                       Job Profiles
                     </Link>
@@ -49,11 +44,6 @@ function Footer() {
                   <li className="mb-4">
                     <Link to="#" className="hover:underline">
                       Facebook
-                    </Link>
-                  </li>
-                  <li className="mb-4">
-                    <Link to="#" className="hover:underline">
-                      Contact Us
                     </Link>
                   </li>
                 </ul>
