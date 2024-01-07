@@ -376,7 +376,7 @@ function ApplyJobModal({
       setLoading(false);
     }
   }
-
+  const navigator = useNavigate();
   return (
     <Modal isOpen={isModalOpen} onClose={toggleModal}>
       <h2
@@ -411,12 +411,11 @@ function ApplyJobModal({
           />
         </div>
       ))}
-      <div className="flex justify-between items-center mt-6">
+      <div className="flex justify-between items-center mt-6 gap-5">
         <KButton onClick={applyJob} label="Apply" margin="mb-0" />
         <KButton
           // linkTo="/dashboard/manage-resumes"
           onClick={() => {
-            const navigator = useNavigate();
             navigator("/dashboard/manage-resumes");
           }}
           label="Upload Resume"

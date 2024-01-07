@@ -151,6 +151,7 @@ function RegisterForm() {
   // ---------------functions----------------->
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchRole();
     fetchState();
   }, []);

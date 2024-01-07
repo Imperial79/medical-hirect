@@ -25,6 +25,9 @@ function ResumeBuilder() {
     subRole: "",
     objective: "",
   });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (user !== null) {

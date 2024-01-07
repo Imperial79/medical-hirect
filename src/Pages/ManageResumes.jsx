@@ -55,6 +55,7 @@ function ManageResumes() {
     }
   }
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchResumes();
   }, []);
   return (
