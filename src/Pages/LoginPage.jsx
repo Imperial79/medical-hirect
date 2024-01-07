@@ -53,7 +53,7 @@ function LoginPage() {
   const signInWithGoogle = async () => {
     try {
       await signOut(auth);
-      const data = await signInWithPopup(auth, googleProvider);
+      let data = await signInWithPopup(auth, googleProvider);
       const formData = new FormData();
       formData.append("email", data?.user?.email);
       formData.append("guid", data?.user?.uid);
@@ -231,7 +231,7 @@ function LoginPage() {
                 id={"otp"}
                 name={"otp"}
                 spacing="[10px]"
-                placeholder=""
+                placeholder="XXXXX"
                 onChange={(e) => {
                   setOtp(e.target.value);
                 }}

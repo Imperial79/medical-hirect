@@ -61,7 +61,6 @@ function AppliedApplications() {
 export default AppliedApplications;
 
 function AppliedCard({ data }) {
-  console.log(data);
   return (
     <Link to={`/job-detail?vacancy-id=${data.vacancyId}`}>
       <div className="text-black bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">

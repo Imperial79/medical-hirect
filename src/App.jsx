@@ -51,9 +51,8 @@ function App() {
             />
             <Route path="/dashboard/resume" element={<ResumePage />} />
           </Routes>
+          <Footer />
         </ContextProvider>
-
-        <Footer />
       </BrowserRouter>
     </>
   );

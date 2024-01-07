@@ -10,21 +10,10 @@ import CircularProgressIndicator from "./CircularProgressIndicator";
 import { KButton } from "./components";
 
 function Navbar() {
-  const { user, setUser, isScroll, setisScroll, authLoading } =
-    useContext(Context);
+  const { user, setUser, setisScroll, authLoading } = useContext(Context);
   const [isNavMenuOpen, setisNavMenuOpen] = useState(false);
   const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
   const navigator = useNavigate();
-
-  // function onNavOpen() {
-  //   let navBar = document.getElementById("navbar-sticky");
-
-  //   if (navBar.classList.contains("hidden")) {
-  //     navBar.classList.remove("hidden");
-  //   } else {
-  //     navBar.classList.add("hidden");
-  //   }
-  // }
 
   async function logOut() {
     setisProfileDropOpen(false);

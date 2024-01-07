@@ -18,7 +18,7 @@ import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
 import uploadIcon from "../assets/upload.svg";
 import logoSmall from "../assets/logo-transparent.png";
-import { KButton } from "../components/components";
+import { KButton, KGrid } from "../components/components";
 
 function JobDetailPage() {
   const { user, setAlert } = useContext(Context);
@@ -48,7 +48,6 @@ function JobDetailPage() {
         "/vacancy/fetch-vacancy-details.php",
         formData
       );
-      console.log(response.data);
       if (!response.data.error) {
         setvacancyData(response.data.response);
         setisBookmarked(response.data.response.isBookmarked == "true");
@@ -101,6 +100,7 @@ function JobDetailPage() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchJobDetails();
   }, []);
 
@@ -109,7 +109,7 @@ function JobDetailPage() {
       <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 text-black">
         <div className="lg:w-[70%] md:w-[80%] w-full mx-auto">
           <div className="justify-start">
-            <div className="flex mt-[17px] items-center">
+            <div className="flex mt-[17px] items-center justify-between">
               <div className="md:h-28 h-20">
                 <img
                   src={vacancyData.companyImage}
@@ -185,7 +185,6 @@ function JobDetailPage() {
                   </div>
                 </>
               </div>
-
               <div className={`${isApplied ? "hidden" : ""} my-5`}>
                 {user != null ? (
                   <button
@@ -205,7 +204,6 @@ function JobDetailPage() {
                   </Link>
                 )}
               </div>
-
               <p
                 className={`${
                   isApplied ? "" : "hidden"
@@ -214,24 +212,12 @@ function JobDetailPage() {
                 You've already applied for this job
               </p>
               <div className="grid grid-cols-3 md:gap-5 gap-3">
-                <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
-                  <h1 className="font-semibold text-xl">
-                    {vacancyData.salary}
-                  </h1>
-                  CTC
-                </div>
-                <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
-                  <h1 className="font-semibold text-xl">
-                    {vacancyData.experience}
-                  </h1>
-                  Experience
-                </div>
-                <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
-                  <h1 className="font-semibold text-xl">
-                    {vacancyData.opening}
-                  </h1>
-                  Openings
-                </div>
+                <StatsCard label={"CTC"} content={vacancyData.salary} />
+                <StatsCard
+                  label={"Experience"}
+                  content={vacancyData.experience}
+                />
+                <StatsCard label={"Openings"} content={vacancyData.opening} />
               </div>
 
               <DescriptionCard
@@ -246,7 +232,6 @@ function JobDetailPage() {
                 title="Special Note"
                 content={vacancyData.specialRemark}
               />
-
               <div className="flex flex-wrap md:mt-5 mt-2 gap-2">
                 {vacancyData?.tags?.split("#").map((data, index) => (
                   <div key={index}>
@@ -254,7 +239,6 @@ function JobDetailPage() {
                   </div>
                 ))}
               </div>
-
               <h1 className="mt-5 font-medium text-[17px]">Attachment</h1>
               <Link
                 to={vacancyData.attachment}
@@ -288,18 +272,20 @@ function JobDetailPage() {
         vacancyId={vacancyId}
         setisApplied={setisApplied}
       />
-
-      {/* <UploadResumeModal
-        isModalOpen={isUploadResumeModalOpen}
-        toggleModal={toggleResumeModal}
-        setLoading={setloading}
-        setAlert={setAlert}
-      /> */}
     </Scaffold>
   );
 }
 
 export default JobDetailPage;
+
+function StatsCard({ label, content }) {
+  return (
+    <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
+      <h1 className="font-semibold md:text-xl text-lg">{content}</h1>
+      <h3 className="md:text-xl text-sm">{label}</h3>
+    </div>
+  );
+}
 
 const TextWithLineBreaks = ({ text }) => {
   if (!text) {

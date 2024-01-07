@@ -41,9 +41,7 @@ function ContextProvider({ children }) {
         setUser(response.data.response);
       }
       navigator(location.pathname + location.search);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     setAuthLoading(false);
   };
 

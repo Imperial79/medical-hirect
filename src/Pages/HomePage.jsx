@@ -72,6 +72,7 @@ function HomePage() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchRoles();
     fetchStates();
   }, []);
@@ -130,7 +131,7 @@ function HomePage() {
         </p>
       </div>
 
-      <div className="mt-20 md:flex justify-center mx-auto items-center gap-10 md:w-[70%]">
+      <div className="mt-10 md:flex justify-center mx-auto items-center gap-10 md:w-[70%]">
         <div className="p-4">
           <img className="h-[300px] mx-auto" src={trendingSearches} alt="" />
         </div>
