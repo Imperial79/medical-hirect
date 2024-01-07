@@ -5,6 +5,13 @@ import { dbObject, experienceList } from "../Helper/Constants";
 import Select from "react-select";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
+import {
+  KButton,
+  KDropDown,
+  KGrid,
+  KTextArea,
+  KTextField,
+} from "../components/components";
 
 function RegisterForm() {
   const { _id, setAlert, setUser } = useContext(Context);
@@ -79,7 +86,6 @@ function RegisterForm() {
     experience: false,
   });
 
-  // TODO:
   const handleDropdownChange = (dropdownName, value) => {
     if (dropdownName === "role") {
       setselectedPostList([]);
@@ -341,270 +347,132 @@ function RegisterForm() {
                 }
               }}
             >
-              <div className="grid md:grid-cols-2 md:gap-6">
-                {/* Firstmname */}
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="firstName"
-                    id="firstName"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlhtmlFor="firstName"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    First name
-                  </label>
-                </div>
-
-                {/* Lastname */}
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="lastName"
-                    id="lastName"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlhtmlFor="lastName"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Last name
-                  </label>
-                </div>
-              </div>
-
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="date"
-                  name="dob"
-                  id="dob"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
+              <KGrid margin="md:mb-5 mb-0">
+                <KTextField
+                  name="firstName"
+                  id="firstName"
+                  label="First Name"
+                  placeholder="Enter your first name"
                 />
-                <label
-                  htmlhtmlFor="dob"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  DOB
-                </label>
-              </div>
+                <KTextField
+                  name="lastName"
+                  id="lastName"
+                  label="Last Name"
+                  placeholder="Enter your last name"
+                />
+              </KGrid>
 
-              {/* Gender Drop */}
-              <div>
-                <p className="text-sm text-gray-500 mb-2">Select Gender</p>
-                <div className="w-full mb-6">
-                  <button
-                    onClick={() => {
-                      handleDropdownChange("gender", !isDropdownOpen.gender);
-                    }}
-                    id="genderDropdownBtn"
-                    className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                    type="button"
-                  >
-                    {dropdownData.gender === "M"
+              <KGrid margin="md:mb-5 mb-0">
+                <KTextField type="date" name="dob" id="dob" label="DOB" />
+
+                <KDropDown
+                  id="genderDropdown"
+                  label="Select Gender"
+                  onClick={() => {
+                    handleDropdownChange("gender", !isDropdownOpen.gender);
+                  }}
+                  value={
+                    dropdownData.gender === "M"
                       ? "Male"
                       : dropdownData.gender === "F"
                       ? "Female"
-                      : "Others"}
-                    <svg
-                      className="w-2.5 h-2.5 ml-2.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 10 6"
+                      : "Others"
+                  }
+                  isDropOpen={isDropdownOpen.gender}
+                >
+                  <li>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("gender", "M");
+                        handleDropdownChange("gender", false);
+                      }}
                     >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 4 4 4-4"
-                      />
-                    </svg>
-                  </button>
-
-                  <div
-                    id="genderDropdown"
-                    name="genderDropdown"
-                    className={`${
-                      isDropdownOpen.gender ? "absolute" : "hidden"
-                    } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
-                  >
-                    <ul
-                      className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                      aria-labelledby="dropdownSearchButton"
+                      Male
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("gender", "F");
+                        handleDropdownChange("gender", false);
+                      }}
                     >
-                      <li>
-                        <div
-                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                          onClick={() => {
-                            handleDropdownData("gender", "M");
-                            handleDropdownChange("gender", false);
-                          }}
-                        >
-                          Male
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                          onClick={() => {
-                            handleDropdownData("gender", "F");
-                            handleDropdownChange("gender", false);
-                          }}
-                        >
-                          Female
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                          onClick={() => {
-                            handleDropdownData("gender", "O");
-                            handleDropdownChange("gender", false);
-                          }}
-                        >
-                          Others
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                      Female
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("gender", "O");
+                        handleDropdownChange("gender", false);
+                      }}
+                    >
+                      Others
+                    </div>
+                  </li>
+                </KDropDown>
+              </KGrid>
 
-              {/* Role Dropdown */}
-              <p className="text-sm text-gray-500 mb-2">Select Role</p>
-              <div className="relative z-2 w-full mb-6 group">
-                <button
+              <KGrid margin="md:mb-5 mb-0">
+                <KDropDown
+                  id="roleDropdownBtn"
+                  label="Select Role"
                   onClick={() => {
                     handleDropdownChange("role", !isDropdownOpen.role);
                   }}
-                  id="roleDropdownBtn"
-                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  type="button"
+                  isDropOpen={isDropdownOpen.role}
+                  value={roleList[dropdownData.role]?.title}
                 >
-                  {roleList[dropdownData.role]?.title}
-                  <svg
-                    className="w-2.5 h-2.5 ml-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
+                  {roleList.map((data, index) => (
+                    <li key={index}>
+                      <div
+                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                        onClick={() => {
+                          handleDropdownData("role", index);
+                          handleDropdownChange("role", false);
+                        }}
+                      >
+                        {data.title}
+                      </div>
+                    </li>
+                  ))}
+                </KDropDown>
+                {subRoleList.length > 0 ? (
+                  <KDropDown
+                    id="subRoleDropdownBtn"
+                    label="Select Sub-Role"
+                    onClick={() => {
+                      handleDropdownChange("subRole", !isDropdownOpen.subRole);
+                    }}
+                    isDropOpen={isDropdownOpen.subRole}
+                    value={dropdownData.subRole}
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="roleDropdown"
-                  name="roleDropdown"
-                  className={`${
-                    isDropdownOpen.role ? "absolute" : "hidden"
-                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
-                >
-                  <ul
-                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                    aria-labelledby="dropdownSearchButton"
-                  >
-                    {roleList.map((data, index) => (
+                    {subRoleList.map((data, index) => (
                       <li key={index}>
                         <div
                           className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
                           onClick={() => {
-                            handleDropdownData("role", index);
-                            handleDropdownChange("role", false);
+                            handleDropdownData("subRole", data);
+                            handleDropdownChange("subRole", false);
                           }}
                         >
-                          {data.title}
+                          {data}
                         </div>
                       </li>
                     ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Sub Role Dropdown */}
-
-              {subRoleList.length === 0 ? (
-                <></>
-              ) : (
-                <>
-                  <p className="text-sm text-gray-500 mb-2 mt-6">
-                    Select Sub-Role
-                  </p>
-                  <div className="relative z-2 w-full mb-6 group">
-                    <button
-                      onClick={() => {
-                        handleDropdownChange(
-                          "subRole",
-                          !isDropdownOpen.subRole
-                        );
-                      }}
-                      id="subRoleDropdownBtn"
-                      className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                      type="button"
-                    >
-                      {dropdownData.subRole}
-                      <svg
-                        className="w-2.5 h-2.5 ml-2.5"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m1 1 4 4 4-4"
-                        />
-                      </svg>
-                    </button>
-                    <div
-                      id="subRoleDropdown"
-                      name="subRoleDropdown"
-                      className={`${
-                        isDropdownOpen.subRole ? "absolute" : "hidden"
-                      } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
-                    >
-                      <ul
-                        className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                        aria-labelledby="dropdownSearchButton"
-                      >
-                        {subRoleList.map((data, index) => (
-                          <li key={index}>
-                            <div
-                              className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                              onClick={() => {
-                                handleDropdownData("subRole", data);
-                                handleDropdownChange("subRole", false);
-                              }}
-                            >
-                              {data}
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </>
-              )}
+                  </KDropDown>
+                ) : (
+                  <></>
+                )}
+              </KGrid>
 
               {/* Multi-select Post */}
-              <p className="text-sm text-gray-500 mb-2">Select Post</p>
+              <label className={`block mb-2 text-sm font-medium text-gray-900`}>
+                Select Post
+              </label>
               <Select
                 options={postList}
                 isDisabled={postList.length === 0}
@@ -617,9 +485,11 @@ function RegisterForm() {
               />
 
               {/* Multi-select Emplo */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
+              <label
+                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
+              >
                 Select Employment-Type
-              </p>
+              </label>
               <Select
                 options={employmentTypeList}
                 value={selectedEmploymentTypeList}
@@ -632,9 +502,11 @@ function RegisterForm() {
               />
 
               {/* Multi-select Speci */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
+              <label
+                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
+              >
                 Select Specialization
-              </p>
+              </label>
               <Select
                 options={speciList}
                 isMulti
@@ -647,9 +519,11 @@ function RegisterForm() {
               />
 
               {/* Multi-select work */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
+              <label
+                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
+              >
                 Select Work Setting
-              </p>
+              </label>
               <Select
                 options={workSettingList}
                 isDisabled={workSettingList.length === 0}
@@ -661,9 +535,11 @@ function RegisterForm() {
               />
 
               {/* Multi-select work */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
+              <label
+                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
+              >
                 Select Graduation Type
-              </p>
+              </label>
               <Select
                 options={graduationTypeList}
                 isDisabled={graduationTypeList.length === 0}
@@ -675,226 +551,108 @@ function RegisterForm() {
                 onChange={handleGraduationChange}
               />
 
-              {/* Graduation years */}
               {roleList[dropdownData.role]?.title === "Student" ? (
-                <div className="relative z-0 w-full mb-6 mt-6 group">
-                  <input
-                    type="text"
-                    name="graduationDate"
-                    id="graduationDate"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=""
-                    required
-                    value={graduationDate}
-                    onChange={(e) => {
-                      setgraduationDate(e.target.value);
-                    }}
-                  />
-                  <label
-                    htmlhtmlFor="graduationDate"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Graduation Date
-                  </label>
-                </div>
+                <KTextField
+                  id="graduationDate"
+                  name="graduationDate"
+                  label="Graduation Date"
+                  placeholder="Eg. 2019-2022"
+                  margin="mt-5"
+                  value={graduationDate}
+                  onChange={(e) => {
+                    setgraduationDate(e.target.value);
+                  }}
+                />
               ) : (
                 <></>
               )}
 
-              {/* experience Dropdown */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">
-                Select Experience
-              </p>
-              <div className="relative z-2 w-full mb-6 group">
-                <button
+              <KGrid margin="md:mb-5 mb-0 mt-5">
+                <KDropDown
+                  id="experienceDropdownBtn"
                   onClick={() => {
                     handleDropdownChange(
                       "experience",
                       !isDropdownOpen.experience
                     );
                   }}
-                  id="experienceDropdownBtn"
-                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  type="button"
+                  isDropOpen={isDropdownOpen.experience}
+                  label="Select Experience"
+                  value={experienceList[dropdownData.experience]}
                 >
-                  {experienceList[dropdownData.experience]}
-                  <svg
-                    className="w-2.5 h-2.5 ml-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="experienceDropdown"
-                  name="experienceDropdown"
-                  className={`${
-                    isDropdownOpen.experience ? "absolute" : "hidden"
-                  } z-10 bg-white rounded-lg shadow md:w-[230px] w-[65%] light:bg-gray-700 pt-5`}
-                >
-                  <ul
-                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                    aria-labelledby="dropdownSearchButton"
-                  >
-                    {experienceList.map((data, index) => (
-                      <li key={index}>
-                        <div
-                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                          onClick={() => {
-                            handleDropdownData("experience", index);
-                            handleDropdownChange("experience", false);
-                          }}
-                        >
-                          {data}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                  {experienceList.map((data, index) => (
+                    <li key={index}>
+                      <div
+                        className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                        onClick={() => {
+                          handleDropdownData("experience", index);
+                          handleDropdownChange("experience", false);
+                        }}
+                      >
+                        {data}
+                      </div>
+                    </li>
+                  ))}
+                </KDropDown>
 
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
+                <KTextField
                   name="city"
                   id="city"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
+                  label="City"
+                  placeholder="Enter your city"
                 />
-                <label
-                  htmlhtmlFor="city"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  City
-                </label>
-              </div>
+              </KGrid>
 
-              {/* state Dropdown */}
-              <p className="text-sm text-gray-500 mb-2 mt-6">Select State</p>
-              <div className="relative z-2 w-full mb-6 group">
-                <button
-                  onClick={() => {
-                    handleDropdownChange("state", !isDropdownOpen.state);
-                  }}
-                  id="stateDropdownBtn"
-                  className="inline-flex justify-between py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer items-center"
-                  type="button"
-                >
-                  {dropdownData.state}
-                  <svg
-                    className="w-2.5 h-2.5 ml-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="stateDropdown"
-                  name="stateDropdown"
-                  className={`${
-                    isDropdownOpen.state ? "absolute" : "hidden"
-                  } z-10 bg-white rounded-lg shadow w-[100%] light:bg-gray-700 pt-5 max-h-[200px] overflow-y-auto`}
-                >
-                  <ul
-                    className="px-3 pb-3 overflow-y-auto text-sm text-gray-700"
-                    aria-labelledby="dropdownSearchButton"
-                  >
-                    {stateList.map((data, index) => (
-                      <li key={index}>
-                        <div
-                          className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                          onClick={() => {
-                            handleDropdownData("state", data.stateName);
-                            handleDropdownChange("state", false);
-                          }}
-                        >
-                          {data.stateName}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <KDropDown
+                id="stateDropdownBtn"
+                onClick={() => {
+                  handleDropdownChange("state", !isDropdownOpen.state);
+                }}
+                label="Select State"
+                value={dropdownData.state}
+                isDropOpen={isDropdownOpen.state}
+              >
+                {stateList.map((data, index) => (
+                  <li key={index}>
+                    <div
+                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
+                      onClick={() => {
+                        handleDropdownData("state", data.stateName);
+                        handleDropdownChange("state", false);
+                      }}
+                    >
+                      {data.stateName}
+                    </div>
+                  </li>
+                ))}
+              </KDropDown>
 
-              <div className="relative z-0 w-full mb-6 mt-6 group">
-                <textarea
-                  type="text"
-                  name="address"
-                  id="address"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
-                />
-                <label
-                  htmlhtmlFor="address"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Address
-                </label>
-              </div>
+              <KTextArea
+                name="address"
+                id="address"
+                label="Address"
+                placeholder="Enter your address"
+              />
 
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="email"
+              <KGrid margin="md:mb-5 mb-0 mt-5">
+                <KTextField
                   name="email"
                   id="email"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
+                  label="E-mail"
+                  placeholder="Enter E-mail"
                   value={registerType === "Email" ? email : null}
                 />
-                <label
-                  htmlhtmlFor="email"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  E-mail
-                </label>
-              </div>
-
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
-                  maxLength={10}
+                <KTextField
                   name="phone"
                   id="phone"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none light:text-white light:border-gray-600 light:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                  required
+                  maxLength={10}
+                  label="Phone"
+                  placeholder="Enter Phone"
                   value={registerType === "Phone" ? phone : null}
                 />
-                <label
-                  htmlhtmlFor="phone"
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 light:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:light:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Phone
-                </label>
-              </div>
+              </KGrid>
 
-              <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-              >
-                Register
-              </button>
+              <KButton type="submit" label="Register" />
             </form>
           </div>
         </div>

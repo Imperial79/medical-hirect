@@ -39,10 +39,11 @@ export function KTextField({
   onChange,
   readOnly = false,
   spacing = "[0px]",
+  margin = "mb-5",
   actionElement,
 }) {
   return (
-    <div className="mb-5">
+    <div className={margin}>
       <label
         htmlFor={id}
         className={`${
@@ -114,7 +115,7 @@ export function KTextArea({
 
 export function KDropDown({
   id,
-  label,
+  label = "label",
   value,
   onClick,
   children,
