@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: "hirehelix-ba881.appspot.com",
   messagingSenderId: "260325872424",
   appId: "1:260325872424:web:8a0b354317a4d28e8cf61d",
-  measurementId: "G-CHF7PE1F3Y",
+  measurementId: "G-CHF7PE1F3Y"
 };
 
 // Initialize Firebase

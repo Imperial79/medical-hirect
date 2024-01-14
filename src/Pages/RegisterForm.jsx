@@ -11,6 +11,7 @@ import {
   KGrid,
   KTextArea,
   KTextField,
+  TextfieldLabel,
 } from "../components/components";
 
 function RegisterForm() {
@@ -18,20 +19,17 @@ function RegisterForm() {
   const location = useLocation();
   const navigator = useNavigate();
 
-  const otp = location.state.otp;
-  const phone = location.state.phone;
-  const email = location.state.email;
-  const guid = location.state.guid;
-  const registerType = location.state.type;
-  const [graduationDate, setgraduationDate] = useState("");
+  let otp = location.state?.otp;
+  let phone = location.state?.phone;
+  let email = location.state?.email;
+  let guid = location.state?.guid;
+  let registerType = location.state?.type;
 
   const [loading, setloading] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([]);
   const [roleList, setroleList] = useState([]);
   const [stateList, setStateList] = useState([]);
 
-  const [subRoleList, setSubRoleList] = useState(["Choose Sub Role"]);
+  const [subRoleList, setSubRoleList] = useState(["Select Sub-Role"]);
   // post multi
   const [postList, setpostList] = useState([]);
   const [selectedPostList, setselectedPostList] = useState([]);
@@ -105,7 +103,7 @@ function RegisterForm() {
       [dropdownName]: value,
     }));
     if (dropdownName === "role") {
-      handleDropdownData("subRole", "Choose Sub Role");
+      handleDropdownData("subRole", "Select Sub-Role");
       if (roleList[value].subRoles !== "NULL") {
         setSubRoleList(JSON.parse(roleList[value].subRoles));
       } else {
@@ -157,9 +155,18 @@ function RegisterForm() {
   // ---------------functions----------------->
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchRole();
-    fetchState();
+    if (location.state == null) {
+      navigator("/", { replace: true });
+    } else {
+      otp = location.state.otp;
+      phone = location.state.phone;
+      email = location.state.email;
+      guid = location.state.guid;
+      registerType = location.state.type;
+      window.scrollTo(0, 0);
+      fetchRole();
+      fetchState();
+    }
   }, []);
 
   async function fetchRole() {
@@ -177,6 +184,21 @@ function RegisterForm() {
   }
 
   async function registerUsingPhone() {
+    if (dropdownData.gender === "Select Gender") {
+      setAlert({
+        content: "Select Gender",
+        isDanger: true,
+      });
+      return;
+    }
+
+    if (subRoleList.length > 0 && dropdownData.subRole === "Select Sub-Role") {
+      setAlert({
+        content: "Select Sub-Role",
+        isDanger: true,
+      });
+      return;
+    }
     try {
       setloading(true);
       const formData = new FormData();
@@ -226,7 +248,10 @@ function RegisterForm() {
       formData.append("employmentType", JSON.stringify(emploList));
       formData.append("workSetting", JSON.stringify(workSettingList));
       formData.append("graduationType", JSON.stringify(gradTypeList));
-      formData.append("graduationDate", graduationDate);
+      formData.append(
+        "graduationDate",
+        _id("graduationDate") ? _id("graduationDate").value : ""
+      );
       formData.append("fcmToken", "");
 
       const response = await dbObject.post(
@@ -251,6 +276,22 @@ function RegisterForm() {
   }
 
   async function registerUsingEmail() {
+    if (dropdownData.gender === "Select Gender") {
+      setAlert({
+        content: "Select Gender",
+        isDanger: true,
+      });
+      return;
+    }
+
+    if (subRoleList.length > 0 && dropdownData.subRole === "Select Sub-Role") {
+      setAlert({
+        content: "Select Sub-Role",
+        isDanger: true,
+      });
+      return;
+    }
+
     try {
       setloading(true);
       const formData = new FormData();
@@ -287,7 +328,6 @@ function RegisterForm() {
       formData.append("email", email);
       formData.append("otp", otp);
       formData.append("experience", experienceList[dropdownData.experience]);
-      formData.append("specialization", JSON.stringify(speciList));
       formData.append("address", _id("address").value);
       formData.append("city", _id("city").value);
       formData.append("state", dropdownData.state);
@@ -297,10 +337,14 @@ function RegisterForm() {
         dropdownData.subRole === "Select Sub-Role" ? "" : dropdownData.subRole
       );
       formData.append("post", JSON.stringify(postList));
+      formData.append("specialization", JSON.stringify(speciList));
       formData.append("employmentType", JSON.stringify(emploList));
       formData.append("workSetting", JSON.stringify(workSettingList));
       formData.append("graduationType", JSON.stringify(gradTypeList));
-      formData.append("graduationDate", graduationDate);
+      formData.append(
+        "graduationDate",
+        _id("graduationDate") ? _id("graduationDate").value : ""
+      );
       formData.append("fcmToken", "");
 
       const response = await dbObject.post(
@@ -320,6 +364,7 @@ function RegisterForm() {
 
       setloading(false);
     } catch (error) {
+      console.log(error);
       setloading(false);
     }
   }
@@ -347,23 +392,44 @@ function RegisterForm() {
                 }
               }}
             >
-              <KGrid margin="md:mb-5 mb-0">
-                <KTextField
-                  name="firstName"
-                  id="firstName"
-                  label="First Name"
-                  placeholder="Enter your first name"
-                />
-                <KTextField
-                  name="lastName"
-                  id="lastName"
-                  label="Last Name"
-                  placeholder="Enter your last name"
-                />
+              <KGrid margin="md:mb-0 mb-0">
+                <div>
+                  <TextfieldLabel label="First Name" />
+                  <input
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    className="kTextField mb-5"
+                    placeholder="Enter your first name"
+                    required={true}
+                  />
+                </div>
+
+                <div>
+                  <TextfieldLabel label="Last Name" />
+                  <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    className="kTextField mb-5"
+                    placeholder="Enter your last name"
+                    required={true}
+                  />
+                </div>
               </KGrid>
 
-              <KGrid margin="md:mb-5 mb-0">
-                <KTextField type="date" name="dob" id="dob" label="DOB" />
+              <KGrid margin="md:mb-0 mb-0">
+                <div>
+                  <TextfieldLabel label="DOB" />
+                  <input
+                    type="date"
+                    name="dob"
+                    id="dob"
+                    className="kTextField mb-5"
+                    placeholder="Enter your date of birth"
+                    required={true}
+                  />
+                </div>
 
                 <KDropDown
                   id="genderDropdown"
@@ -376,7 +442,9 @@ function RegisterForm() {
                       ? "Male"
                       : dropdownData.gender === "F"
                       ? "Female"
-                      : "Others"
+                      : dropdownData.gender === "O"
+                      ? "Others"
+                      : dropdownData.gender
                   }
                   isDropOpen={isDropdownOpen.gender}
                 >
@@ -416,7 +484,7 @@ function RegisterForm() {
                 </KDropDown>
               </KGrid>
 
-              <KGrid margin="md:mb-5 mb-0">
+              <KGrid margin="md:mb-0 mb-0">
                 <KDropDown
                   id="roleDropdownBtn"
                   label="Select Role"
@@ -534,7 +602,7 @@ function RegisterForm() {
                 onChange={handleWorkChange}
               />
 
-              {/* Multi-select work */}
+              {/* Multi-select graduation */}
               <label
                 className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
               >
@@ -552,22 +620,22 @@ function RegisterForm() {
               />
 
               {roleList[dropdownData.role]?.title === "Student" ? (
-                <KTextField
-                  id="graduationDate"
-                  name="graduationDate"
-                  label="Graduation Date"
-                  placeholder="Eg. 2019-2022"
-                  margin="mt-5"
-                  value={graduationDate}
-                  onChange={(e) => {
-                    setgraduationDate(e.target.value);
-                  }}
-                />
+                <div className="mt-5">
+                  <TextfieldLabel label="Graduation Year" />
+                  <input
+                    type="text"
+                    name="graduationDate"
+                    id="graduationDate"
+                    className="kTextField mb-5"
+                    placeholder="Eg. 2019-2022"
+                    required={true}
+                  />
+                </div>
               ) : (
                 <></>
               )}
 
-              <KGrid margin="md:mb-5 mb-0 mt-5">
+              <KGrid margin="md:mb-0 mb-0 mt-5">
                 <KDropDown
                   id="experienceDropdownBtn"
                   onClick={() => {
@@ -595,12 +663,17 @@ function RegisterForm() {
                   ))}
                 </KDropDown>
 
-                <KTextField
-                  name="city"
-                  id="city"
-                  label="City"
-                  placeholder="Enter your city"
-                />
+                <div>
+                  <TextfieldLabel label="City" />
+                  <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    className="kTextField mb-5"
+                    placeholder="Enter your city"
+                    required={true}
+                  />
+                </div>
               </KGrid>
 
               <KDropDown
@@ -627,32 +700,80 @@ function RegisterForm() {
                 ))}
               </KDropDown>
 
-              <KTextArea
-                name="address"
-                id="address"
-                label="Address"
-                placeholder="Enter your address"
-              />
+              <div>
+                <TextfieldLabel label="Address" />
+                <textarea
+                  name="address"
+                  id="address"
+                  className="kTextField mb-5"
+                  placeholder="Enter your address"
+                  required={true}
+                ></textarea>
+              </div>
 
-              <KGrid margin="md:mb-5 mb-0 mt-5">
-                <KTextField
-                  name="email"
-                  id="email"
-                  label="E-mail"
-                  placeholder="Enter E-mail"
-                  value={registerType === "Email" ? email : null}
-                />
-                <KTextField
-                  name="phone"
-                  id="phone"
-                  maxLength={10}
-                  label="Phone"
-                  placeholder="Enter Phone"
-                  value={registerType === "Phone" ? phone : null}
-                />
+              <KGrid margin="md:mb-0 mb-0">
+                <div>
+                  <TextfieldLabel label="E-mail" />
+                  {registerType === "Email" ? (
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="kTextField mb-5"
+                      placeholder="Enter E-mail"
+                      value={email}
+                      readOnly={true}
+                      required={true}
+                    />
+                  ) : (
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="kTextField mb-5"
+                      placeholder="Enter E-mail"
+                      required={true}
+                    />
+                  )}
+                </div>
+
+                <div>
+                  <TextfieldLabel label="Phone" />
+                  {registerType === "Phone" ? (
+                    <input
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      maxLength={10}
+                      className="kTextField mb-5"
+                      placeholder="Enter Phone"
+                      value={phone}
+                      readOnly={true}
+                      required={true}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      pattern="^[0-9]{1,10}$"
+                      name="phone"
+                      id="phone"
+                      maxLength={10}
+                      className="kTextField mb-5"
+                      placeholder="Enter Phone"
+                      required={true}
+                    />
+                  )}
+                </div>
               </KGrid>
 
-              <KButton type="submit" label="Register" />
+              <button
+                type="submit"
+                className="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+              >
+                Register
+              </button>
+
+              {/* <KButton type="submit" label="Register" /> */}
             </form>
           </div>
         </div>

@@ -4,19 +4,16 @@ import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
 import googleLogo from "../assets/google.png";
 import { auth, googleProvider } from "../Helper/firebase-config";
-import { signInWithCredential, signInWithPopup, signOut } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
-import { KTextField } from "../components/components";
+import { TextfieldLabel } from "../components/components";
 import CircularProgressIndicator from "../components/CircularProgressIndicator";
 
 function LoginPage() {
-  const { setUser, setAlert } = useContext(Context);
+  const { _id, setUser, setAlert } = useContext(Context);
   const navigator = useNavigate();
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
   const [loading, setloading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -99,13 +96,12 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", phone);
+      formData.append("phone", _id("phone").value);
       const response = await dbObject.post(
         "/sms-service/send-otp.php",
         formData
       );
       if (!response.data.error) {
-        setIsOtpSent(true);
         startTimer();
 
         if (response.data.action == "Register") {
@@ -129,8 +125,8 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", phone);
-      formData.append("otp", otp);
+      formData.append("phone", _id("phone").value);
+      formData.append("otp", _id("otp").value);
       const response = await dbObject.post(
         "/sms-service/verify-otp.php",
         formData
@@ -141,8 +137,8 @@ function LoginPage() {
             replace: true,
             state: {
               type: "Phone",
-              phone: phone,
-              otp: otp,
+              phone: _id("phone").value,
+              otp: _id("otp").value,
               email: "",
               guid: "",
             },
@@ -161,9 +157,9 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", phone);
-      formData.append("otp", otp);
-      formData.append("fcmToken", "");
+      formData.append("phone", _id("phone").value);
+      formData.append("otp", _id("otp").value);
+      formData.append("fcmToken", null);
       const response = await dbObject.post(
         "/users/login-with-phone.php",
         formData
@@ -210,33 +206,32 @@ function LoginPage() {
               <h1 className="mt-10 text-[25px] font-semibold mx-auto text-center">
                 Welcome back!
               </h1>
-              <h1 className="text-[15px] text-gray-500 font-normal text-center">
+              <h1 className="text-[15px] text-gray-500 font-normal text-center mb-5">
                 Enter your details
               </h1>
-              <KTextField
-                label="Phone"
-                type="phone"
-                maxLength={10}
-                id={"phone"}
-                name={"phone"}
-                placeholder="Enter your phone number"
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
-              />
-              <KTextField
-                label="OTP"
-                type="text"
-                maxLength={5}
-                id={"otp"}
-                name={"otp"}
-                spacing="[10px]"
-                placeholder="XXXXX"
-                onChange={(e) => {
-                  setOtp(e.target.value);
-                }}
-              />
 
+              <TextfieldLabel label="Phone" />
+              <input
+                type="text"
+                pattern="^[0-9]{1,10}$"
+                name="phone"
+                id="phone"
+                maxLength={10}
+                className="kTextField mb-5"
+                placeholder="Enter your phone number"
+                required={true}
+              />
+              <TextfieldLabel label="OTP" />
+              <input
+                type="text"
+                pattern="^[0-9]{1,10}$"
+                maxLength={5}
+                id="otp"
+                name="otp"
+                className="kTextField tracking-[10px] mb-5"
+                placeholder="XXXXX"
+                required={true}
+              />
               {isTimerRunning ? (
                 <div className="flex items-center">
                   <CircularProgressIndicator size={5} margin="mr-2" />
@@ -259,12 +254,12 @@ function LoginPage() {
 
               <button
                 type="submit"
-                className="mt-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+                className="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
               >
                 Proceed
               </button>
 
-              <div className="relative my-4">
+              <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
@@ -278,7 +273,7 @@ function LoginPage() {
               <button
                 onClick={signInWithGoogle}
                 type="button"
-                className="mt-5 text-black bg-gray-200 hover:bg-black hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+                className=" text-black bg-gray-200 hover:bg-black hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
               >
                 <div className="flex justify-center gap-2">
                   <img src={googleLogo} alt="" className="h-5" />
