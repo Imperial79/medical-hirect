@@ -12,7 +12,7 @@ import logoSmall from "../assets/logo-transparent.png";
 import { Link } from "react-router-dom";
 
 function ManageResumes() {
-  const { setAlert } = useContext(Context);
+  const { showAlert } = useContext(Context);
   const [loading, setloading] = useState(false);
   const [resumeList, setresumeList] = useState([]);
   const [isUploadResumeModalOpen, setIsUploadResumeModalOpen] = useState(false);
@@ -42,16 +42,10 @@ function ManageResumes() {
 
       if (!response.data.error) {
         fetchResumes();
-        setAlert({
-          content: response.data.message,
-          isDanger: response.data.error,
-        });
+        showAlert(response.data.message, response.data.error);
       }
     } catch (error) {
-      setAlert({
-        content: "Resume cannot be deleted",
-        isDanger: true,
-      });
+      showAlert("Resume cannot be deleted", true);
     }
   }
   useEffect(() => {
@@ -120,7 +114,7 @@ function ManageResumes() {
       </div>
       <UploadResumeModal
         isModalOpen={isUploadResumeModalOpen}
-        setAlert={setAlert}
+        showAlert={showAlert}
         setLoading={setloading}
         toggleModal={() => {
           setIsUploadResumeModalOpen(!isUploadResumeModalOpen);
@@ -186,7 +180,7 @@ function UploadResumeModal({
   isModalOpen,
   toggleModal,
   setLoading,
-  setAlert,
+  showAlert,
   fetchResumes,
 }) {
   const [selectedResume, setselectedResume] = useState(null);
@@ -202,10 +196,7 @@ function UploadResumeModal({
         formData
       );
       if (!response.data.error) {
-        setAlert({
-          content: response.data.message,
-          isDanger: response.data.error,
-        });
+        showAlert(response.data.message, response.data.error);
         toggleModal();
         fetchResumes();
       }

@@ -6,7 +6,7 @@ export function KButton({
   type = "button",
   label = "Label",
   labelSize = "sm",
-  btnColor = "blue-700",
+  btnColor = "bg-blue-700",
   labelColor = "white",
   hoverColor = "blue-800",
   focusColor = "blue-300",
@@ -20,7 +20,7 @@ export function KButton({
       id={id}
       onClick={onClick}
       type={type}
-      className={`text-${labelColor} bg-${btnColor} hover:bg-${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:focus:ring-${btnColor} ${margin} ${className}`}
+      className={`text-${labelColor} ${btnColor} hover:${hoverColor} focus:ring-4 focus:outline-none focus:ring-${focusColor} font-medium rounded-${rounded} text-${labelSize} w-${width} sm:w-auto px-5 py-2.5 text-center light:focus:ring-${btnColor} ${margin} ${className}`}
     >
       {label}
     </button>
@@ -135,7 +135,9 @@ export function KDropDown({
     <div className={margin}>
       <label
         htmlFor={id}
-        className="block mb-2 text-sm font-medium text-gray-900"
+        className={`${
+          label === "" ? "hidden" : ""
+        } block mb-2 text-sm font-medium text-gray-900`}
       >
         {label}
       </label>

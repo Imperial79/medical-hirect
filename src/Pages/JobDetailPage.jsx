@@ -21,7 +21,7 @@ import logoSmall from "../assets/logo-transparent.png";
 import { KButton, KGrid } from "../components/components";
 
 function JobDetailPage() {
-  const { user, setAlert } = useContext(Context);
+  const { user, showAlert } = useContext(Context);
   const [loading, setloading] = useState(false);
   let query = new URLSearchParams(useLocation().search);
   const [vacancyData, setvacancyData] = useState({});
@@ -89,10 +89,7 @@ function JobDetailPage() {
 
       setisBookmarked(!isBookmarked);
 
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -265,7 +262,7 @@ function JobDetailPage() {
         isModalOpen={isApplyModalOpen}
         toggleModal={toggleApplyModal}
         setLoading={setloading}
-        setAlert={setAlert}
+        showAlert={showAlert}
         resumeList={resumeList}
         selectedResume={selectedResume}
         setselectedResume={setselectedResume}
@@ -340,7 +337,7 @@ function ApplyJobModal({
   isModalOpen,
   toggleModal,
   setLoading,
-  setAlert,
+  showAlert,
   resumeList,
   selectedResume,
   setselectedResume,
@@ -367,10 +364,7 @@ function ApplyJobModal({
         toggleModal();
         setisApplied(true);
       }
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -425,101 +419,6 @@ function ApplyJobModal({
           margin="mb-0"
         />
       </div>
-    </Modal>
-  );
-}
-
-function UploadResumeModal({ isModalOpen, toggleModal, setLoading, setAlert }) {
-  const [selectedResume, setselectedResume] = useState(null);
-
-  async function uploadResume() {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("mediaFile", selectedResume);
-      formData.append("resumeName", selectedResume.name);
-      const response = await dbObject.post(
-        "/resume/upload-resume.php",
-        formData
-      );
-      if (!response.data.error) {
-        setAlert({
-          content: response.data.message,
-          isDanger: response.data.error,
-        });
-        toggleModal();
-      }
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <Modal isOpen={isModalOpen} onClose={toggleModal}>
-      <h2
-        className="font-medium text-lg mb-4 flex justify-between items-center
-  "
-      >
-        Upload a resume
-        <span
-          onClick={toggleModal}
-          className="hover:bg-gray-100 p-2 rounded-full"
-        >
-          <img src={closeIcon} alt="close-icon" className="h-5" />
-        </span>
-      </h2>
-      <input
-        type="file"
-        name="selectedResume"
-        id="selectedResume"
-        accept=".pdf, .doc, .docx"
-        className="hidden"
-        onChange={(e) => {
-          setselectedResume(e.target.files[0]);
-        }}
-      />
-      {selectedResume === null ? (
-        <>
-          <div
-            onClick={() => {
-              document.getElementById("selectedResume").click();
-            }}
-            className="mx-auto p-5 w-[70px] h-[70px] bg-gray-50 cursor-pointer"
-          >
-            <img src={uploadIcon} alt="" />
-          </div>
-          <h3 className="mx-auto text-center text-sm mt-1">Select resume</h3>
-        </>
-      ) : (
-        <>
-          <div className="bg-gray-100 rounded-xl flex gap-1 items-center">
-            <div className="w-full flex p-5 gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
-              <img src={resumeIcon} alt="" className="h-6" />
-              <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
-                {selectedResume.name}
-              </h1>
-            </div>
-
-            <img
-              src={closeIcon}
-              alt="close-icon"
-              onClick={() => {
-                setselectedResume(null);
-              }}
-              className="h-6 rounded-full mr-5 object-contain cursor-pointer"
-            />
-          </div>
-        </>
-      )}
-
-      <button
-        type="button"
-        onClick={uploadResume}
-        className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center light:bg-blue-600 light:hover:bg-blue-700 light:focus:ring-blue-800"
-      >
-        Upload resume
-      </button>
     </Modal>
   );
 }

@@ -18,10 +18,10 @@ function Footer() {
           <div className="mx-auto w-full max-w-screen-xl">
             <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
               <div>
-                <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                <h2 className="mb-6 text-sm font-semibold text-white uppercase">
                   Hirehelix
                 </h2>
-                <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
                     <button
                       onClick={() => {
@@ -41,10 +41,10 @@ function Footer() {
                 </ul>
               </div>
               <div>
-                <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                <h2 className="mb-6 text-sm font-semibold text-white uppercase ">
                   Help center
                 </h2>
-                <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
                     <Link to="#" className="hover:underline">
                       X (Twitter)
@@ -58,10 +58,10 @@ function Footer() {
                 </ul>
               </div>
               <div>
-                <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                <h2 className="mb-6 text-sm font-semibold text-white uppercase ">
                   Legal
                 </h2>
-                <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
                     <Link
                       to="https://hirehelix.in/documents/privacy-policy.html"
@@ -83,10 +83,10 @@ function Footer() {
                 </ul>
               </div>
               <div>
-                <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                <h2 className="mb-6 text-sm font-semibold text-white uppercase ">
                   Download
                 </h2>
-                <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
                     <Link to="#" className="hover:underline">
                       iOS
@@ -102,7 +102,7 @@ function Footer() {
             </div>
           </div>
           <div className="px-4 py-6 bg-gray-700 md:flex md:items-center md:justify-between">
-            <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
+            <span className="text-sm text-gray-300 sm:text-center">
               © {new Date().getFullYear()} <Link to="">Hirehelix™</Link>. All
               Rights Reserved.
             </span>

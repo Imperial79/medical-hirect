@@ -120,10 +120,7 @@ function Navbar() {
                 </li>
               ) : (
                 <li>
-                  <Link
-                    to="/login"
-                    className="block py-2 pl-3 pr-4 text-blue-700 rounded font-semibold hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 hover:underline"
-                  >
+                  <Link to="/login" className="kTextButton">
                     Login
                   </Link>
                 </li>

@@ -13,7 +13,7 @@ import {
 } from "../components/components";
 
 function RegisterForm() {
-  const { _id, setAlert, setUser } = useContext(Context);
+  const { _id, showAlert, setUser } = useContext(Context);
   const location = useLocation();
   const navigator = useNavigate();
 
@@ -167,18 +167,12 @@ function RegisterForm() {
 
   async function registerUsingPhone() {
     if (_id("gender").value === "Select Gender") {
-      setAlert({
-        content: "Select Gender",
-        isDanger: true,
-      });
+      showAlert("Select Gender", true);
       return;
     }
 
     if (subRoleList.length > 0 && _id("subRole").value === "Select Sub-Role") {
-      setAlert({
-        content: "Select Sub-Role",
-        isDanger: true,
-      });
+      showAlert("Select Sub-Role", true);
       return;
     }
     try {
@@ -242,10 +236,7 @@ function RegisterForm() {
         setUser(response.data.response);
         navigator("/", { replace: true });
       } else {
-        setAlert({
-          content: response.data.message,
-          isDanger: true,
-        });
+        showAlert(response.data.message, true);
       }
 
       setloading(false);
@@ -256,18 +247,12 @@ function RegisterForm() {
 
   async function registerUsingEmail() {
     if (_id("gender").value === "Select Gender") {
-      setAlert({
-        content: "Select Gender",
-        isDanger: true,
-      });
+      showAlert("Select Gender", true);
       return;
     }
 
     if (subRoleList.length > 0 && _id("subRole").value === "Select Sub-Role") {
-      setAlert({
-        content: "Select Sub-Role",
-        isDanger: true,
-      });
+      showAlert("Select Sub-Role", true);
       return;
     }
 
@@ -332,10 +317,7 @@ function RegisterForm() {
         setUser(response.data.response);
         navigator("/", { replace: true });
       } else {
-        setAlert({
-          content: response.data.message,
-          isDanger: true,
-        });
+        showAlert(response.data.message, true);
       }
 
       setloading(false);

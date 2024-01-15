@@ -11,7 +11,7 @@ import {
 } from "../components/components";
 
 function ProfilePage() {
-  const { _id, setAlert, user } = useContext(Context);
+  const { _id, showAlert, user } = useContext(Context);
   const [imagePreview, setImagePreview] = useState(null);
   const [graduationDate, setgraduationDate] = useState("");
 
@@ -118,17 +118,11 @@ function ProfilePage() {
       const formData = new FormData();
       formData.append("mediaFile", _id("imageInput").files[0]);
       const response = await dbObject.post("/users/update-dp.php", formData);
-      setLoading(false);
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      setloading(false);
+      showAlert(response.data.message, response.data.error);
     } catch (error) {
       setloading(false);
-      setAlert({
-        content: "Sorry for inconvenience! Please try again.",
-        isDanger: true,
-      });
+      showAlert("Sorry from inconvenience! Please try again.", true);
     }
   }
   const handleImageChange = (event) => {
@@ -181,10 +175,7 @@ function ProfilePage() {
         formData
       );
 
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
 
       setloading(false);
     } catch (error) {

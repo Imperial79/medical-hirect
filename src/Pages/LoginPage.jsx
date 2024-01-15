@@ -12,7 +12,7 @@ import { KTextField, TextfieldLabel } from "../components/components";
 import CircularProgressIndicator from "../components/CircularProgressIndicator";
 
 function LoginPage() {
-  const { setUser, setAlert } = useContext(Context);
+  const { setUser, showAlert } = useContext(Context);
   const navigator = useNavigate();
   const [loading, setloading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -91,18 +91,10 @@ function LoginPage() {
             },
           });
         } else {
-          setAlert({
-            content: response.data.message,
-            isDanger: response.data.error,
-          });
+          showAlert(response.data.message, response.data.error);
         }
       }
-    } catch (error) {
-      setAlert({
-        content: error,
-        isDanger: true,
-      });
-    }
+    } catch (error) {}
   };
 
   async function sendOTP() {
@@ -124,10 +116,7 @@ function LoginPage() {
         }
       }
 
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -181,10 +170,7 @@ function LoginPage() {
         setUser(response.data.response);
         navigator("/", { replace: true });
       } else {
-        setAlert({
-          content: response.data.message,
-          isDanger: true,
-        });
+        showAlert(response.data.message, response.data.error);
       }
       setloading(false);
     } catch (error) {

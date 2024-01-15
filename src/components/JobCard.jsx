@@ -1,31 +1,10 @@
 import React from "react";
 import PillTag from "./PillTag";
-import { Link, useNavigate } from "react-router-dom";
-import save from "../assets/save.svg";
-import saveFilled from "../assets/save-filled.svg";
+import { Link } from "react-router-dom";
 import hospital from "../assets/hospital.svg";
 import location from "../assets/location.svg";
 
 function JobCard({ data }) {
-  const navigate = new useNavigate();
-  async function bookmarkVacancy() {
-    try {
-      setloading(true);
-      const formData = new FormData();
-      formData.append("vacancyId", vacancyId);
-      const response = await dbObject.post(
-        "/vacancy/bookmark-vacancy.php",
-        formData
-      );
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
-      setloading(false);
-    } catch (error) {
-      setloading(false);
-    }
-  }
   return (
     <Link to={`/job-detail?vacancy-id=${data.id}`}>
       <div className="bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">

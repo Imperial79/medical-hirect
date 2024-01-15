@@ -8,6 +8,7 @@ function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isScroll, setisScroll] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isAlertShow, setisAlertShow] = useState(false);
   const [alert, setAlert] = useState({
     content: "",
     isDanger: false,
@@ -29,6 +30,14 @@ function ContextProvider({ children }) {
     kycBackImage: "",
     fcmToken: "",
   });
+
+  const showAlert = (message, isDanger) => {
+    setisAlertShow(true);
+    setAlert({
+      content: message,
+      isDanger: isDanger,
+    });
+  };
 
   const navigator = useNavigate();
   const location = new useLocation();
@@ -66,6 +75,9 @@ function ContextProvider({ children }) {
         setsignupDetails,
         isScroll,
         setisScroll,
+        showAlert,
+        isAlertShow,
+        setisAlertShow,
       }}
     >
       {children}

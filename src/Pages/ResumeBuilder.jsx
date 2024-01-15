@@ -12,7 +12,7 @@ import { dbObject } from "../Helper/Constants";
 import { useNavigate } from "react-router-dom";
 
 function ResumeBuilder() {
-  const { user, setAlert } = useContext(Context);
+  const { user, showAlert } = useContext(Context);
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
   const [textfield, settextfield] = useState({
@@ -170,10 +170,7 @@ function ResumeBuilder() {
       if (!response.data.error) {
         navigate("/dashboard/resume", { replace: true });
       }
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -422,7 +419,7 @@ function ImagePicker({ userImage, setloading }) {
   const [imagePreview, setimagePreview] = useState(null);
   const [fileName, setfileName] = useState(null);
 
-  const { setAlert } = useContext(Context);
+  const { showAlert } = useContext(Context);
 
   async function uploadImage(imageFile) {
     try {
@@ -431,16 +428,10 @@ function ImagePicker({ userImage, setloading }) {
       formData.append("mediaFile", imageFile);
       const response = await dbObject.post("/users/update-dp.php", formData);
       setloading(false);
-      setAlert({
-        content: response.data.message,
-        isDanger: response.data.error,
-      });
+      showAlert(response.data.message, response.data.error);
     } catch (error) {
       setloading(false);
-      setAlert({
-        content: "Sorry for inconvenience! Please try again.",
-        isDanger: true,
-      });
+      showAlert("Sorry for inconvenience! Please try again.", true);
     }
   }
 

@@ -6,7 +6,7 @@ import jobFilter from "../assets/job-filter.svg";
 import { dbObject } from "../Helper/Constants";
 import filterIcon from "../assets/filter.svg";
 import { Context } from "../Helper/ContextProvider";
-import { KDropDown, KTextField } from "../components/components";
+import { KButton, KDropDown, KTextField } from "../components/components";
 import Scaffold from "../components/Scaffold";
 import noData from "../assets/no-data.svg";
 
@@ -19,20 +19,9 @@ function HomePage() {
   const [selectedRole, setselectedRole] = useState("1");
   const [selectedDistance, setselectedDistance] = useState("");
   const [pageNo, setpageNo] = useState(0);
-
+  const [citySearch, setCitySearch] = useState("");
+  const [searchKey, setSearchKey] = useState("");
   const openingsRef = useRef(null);
-
-  const [textField, setTextField] = useState({
-    city: "",
-    searchKey: "",
-  });
-  // Function to change input
-  const handleInputChange = (e) => {
-    setTextField({
-      ...textField,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   async function fetchRoles() {
     try {
@@ -48,8 +37,8 @@ function HomePage() {
       setLoading(true);
       const formData = new FormData();
       formData.append("pageNo", pageNo);
-      formData.append("searchKey", _id("searchKey").value);
-      formData.append("city", _id("city").value);
+      formData.append("searchKey", searchKey);
+      formData.append("city", citySearch);
       formData.append("state", _id("state").value);
       formData.append("distanceRange", selectedDistance);
       formData.append("roleId", selectedRole);
@@ -57,11 +46,13 @@ function HomePage() {
         "/vacancy/fetch-vacancies.php",
         formData
       );
+      console.log(response);
       if (!response.data.error) {
         setvacancyList(response.data.response);
       }
       setLoading(false);
     } catch (error) {
+      console.log(error);
       setLoading(false);
     }
   }
@@ -75,15 +66,25 @@ function HomePage() {
     } catch (error) {}
   }
 
+  async function clearFilter() {
+    setselectedRole("1");
+    setselectedDistance("");
+    setSearchKey("");
+    setCitySearch("");
+    _id("state").value = "Pan India";
+    setpageNo(0);
+    await fetchVacancies();
+  }
+
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     fetchRoles();
     fetchStates();
   }, []);
 
   useEffect(() => {
     fetchVacancies();
-  }, [selectedRole, pageNo]);
+  }, [selectedRole, pageNo, selectedDistance]);
 
   useEffect(() => {
     if (isScroll) {
@@ -113,13 +114,9 @@ function HomePage() {
         </div>
       </Hero>
       <div className="bg-gray-50 rounded-bl-lg rounded-br-lg md:max-w-[1000px] mx-5 md:mx-auto drop-shadow-xl">
-        <div className="grid md:grid-cols-2 md:gap-10">
-          <div className="p-4">
-            <img
-              className="md:h-full h-[200px] mx-auto"
-              src={jobFilter}
-              alt=""
-            />
+        <div className="grid md:grid-cols-2 md:gap-10 items-center">
+          <div className="p-4 max-h-[400px] max-w-[400px] mx-auto flex justify-center content-center">
+            <img className="h-full w-full" src={jobFilter} alt="filter-image" />
           </div>
           <div className="p-4 rounded-xl">
             <h2 className="mb-2 text-black">Filter by role</h2>
@@ -145,7 +142,7 @@ function HomePage() {
                 onClick={() => {
                   setselectedDistance("0-100");
                 }}
-              />{" "}
+              />
               <KOutlinedButton
                 id={0}
                 label="100 - 200 kms"
@@ -153,7 +150,7 @@ function HomePage() {
                 onClick={() => {
                   setselectedDistance("100-200");
                 }}
-              />{" "}
+              />
               <KOutlinedButton
                 id={0}
                 label="200 - 300 kms"
@@ -169,15 +166,22 @@ function HomePage() {
                 name="city"
                 id="city"
                 maxLength={10}
+                margin="mb-0"
                 placeholder="Search by city ..."
                 label="Search by city"
-                value={textField.city}
+                value={citySearch}
                 onChange={(e) => {
-                  handleInputChange(e);
+                  setCitySearch(e.target.value);
                 }}
               />
 
-              <KDropDown id="state" name="state" label="Search by state">
+              <KDropDown
+                id="state"
+                name="state"
+                label="Search by state"
+                margin="mb-0"
+                onChange={fetchVacancies}
+              >
                 {statesList.map((data, index) => (
                   <option key={index} value={data.stateName}>
                     {data.stateName}
@@ -188,30 +192,31 @@ function HomePage() {
           </div>
         </div>
 
-        <div class="flex rounded-md shadow-sm py-5 px-5 gap-2">
+        <div className="md:flex rounded-md shadow-sm pb-6 px-5 gap-2 mt-4">
           <input
             type="text"
             className="kTextField"
             name="searchKey"
             id="searchKey"
             placeholder="Search by tags, job profiles ..."
-            value={textField.searchKey}
+            value={searchKey}
             onChange={(e) => {
-              handleInputChange(e);
+              setSearchKey(e.target.value);
             }}
           />
-          <button
-            type="button"
-            class="flex-shrink-0 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Apply Filter
-          </button>
-          <button
-            type="button"
-            class="flex-shrink-0 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Clear Filter
-          </button>
+          <div className="grid grid-cols-2 flex-shrink-0 gap-2 mt-3 md:mt-0">
+            <KButton
+              onClick={fetchVacancies}
+              label="Apply Filter"
+              width="w-full"
+            />
+            <KButton
+              onClick={clearFilter}
+              label="Clear Filter"
+              btnColor="bg-yellow-500"
+              width="w-full"
+            />
+          </div>
         </div>
       </div>
       <h2
