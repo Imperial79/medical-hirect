@@ -157,19 +157,17 @@ function ProfilePage() {
       setloading(true);
       const formData = new FormData();
 
-      formData.append("bio", _id("bio").value);
-      formData.append("firstName", _id("firstName").value);
-      formData.append("lastName", _id("lastName").value);
-      formData.append("dob", _id("dob").value);
+      formData.append("bio", textField.bio);
+      formData.append("firstName", textField.firstName);
+      formData.append("lastName", textField.lastName);
+      formData.append("dob", textField.dob);
       formData.append("experience", dropdownData.experience);
       formData.append("gender", dropdownData.gender);
       formData.append("subRole", dropdownData.subRole);
       formData.append("specialization", user?.specialization);
       formData.append("post", user?.post);
-      formData.append("phone", phone);
-      formData.append("email", _id("email").value);
-      formData.append("address", _id("address").value);
-      formData.append("city", _id("city").value);
+      formData.append("address", textField.address);
+      formData.append("city", textField.city);
       formData.append("state", dropdownData.state);
       formData.append("roleId", roleList[dropdownData.role]?.id);
       formData.append("employmentType", user?.employmentType);

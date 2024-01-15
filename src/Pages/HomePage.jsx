@@ -2,11 +2,11 @@ import { useContext, useEffect, useRef, useState } from "react";
 import KOutlinedButton from "../components/kOutlinedButton";
 import JobCard from "../components/JobCard";
 import Hero from "../components/Hero";
-import trendingSearches from "../assets/trending-searches.svg";
+import jobFilter from "../assets/job-filter.svg";
 import { dbObject } from "../Helper/Constants";
 import filterIcon from "../assets/filter.svg";
 import { Context } from "../Helper/ContextProvider";
-import { KDropDown } from "../components/components";
+import { KDropDown, KTextField } from "../components/components";
 import Scaffold from "../components/Scaffold";
 import noData from "../assets/no-data.svg";
 
@@ -16,27 +16,31 @@ function HomePage() {
   const [rolesList, setRolesList] = useState([]);
   const [vacancyList, setvacancyList] = useState([]);
   const [statesList, setstatesList] = useState([]);
-  const [selectedState, setselectedState] = useState("Pan India");
-  const [isStateDropOpen, setisStateDropOpen] = useState(false);
   const [selectedRole, setselectedRole] = useState("1");
   const [selectedDistance, setselectedDistance] = useState("");
   const [pageNo, setpageNo] = useState(0);
 
   const openingsRef = useRef(null);
 
+  const [textField, setTextField] = useState({
+    city: "",
+    searchKey: "",
+  });
+  // Function to change input
+  const handleInputChange = (e) => {
+    setTextField({
+      ...textField,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   async function fetchRoles() {
     try {
-      // setLoading(true);
-
       const response = await dbObject.get("/role/fetch-roles.php");
       if (!response.data.error) {
         setRolesList(response.data.response);
-        // setselectedRole(response.data.response.id);
       }
-      // setLoading(false);
-    } catch (error) {
-      // setLoading(false);
-    }
+    } catch (error) {}
   }
 
   async function fetchVacancies() {
@@ -46,7 +50,7 @@ function HomePage() {
       formData.append("pageNo", pageNo);
       formData.append("searchKey", _id("searchKey").value);
       formData.append("city", _id("city").value);
-      formData.append("state", selectedState);
+      formData.append("state", _id("state").value);
       formData.append("distanceRange", selectedDistance);
       formData.append("roleId", selectedRole);
       const response = await dbObject.post(
@@ -72,7 +76,7 @@ function HomePage() {
   }
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     fetchRoles();
     fetchStates();
   }, []);
@@ -99,135 +103,117 @@ function HomePage() {
         subtitle="curated job openings for Physicians, Nurses, Doctors ..."
         buttonLabel="Search company"
       >
-        <div className="md:flex md:gap-4 items-center">
-          <div className="w-full">
-            <input
-              type="text"
-              id="searchKey"
-              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full block w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
-              placeholder="Search job titles, keywords, skills etc"
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              fetchVacancies();
-              setisScroll(true);
-            }}
-            className="md:w-auto w-full focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 light:focus:ring-yellow-900 whitespace-nowrap text-ellipsis"
-          >
-            Search
-          </button>
+        <div className="items-center">
+          <h1 className="font-semibold text-gray-700 text-center text-2xl">
+            Trending Job searches
+          </h1>
+          <p className="font-medium text-gray-400 text-center mt-2 text-sm">
+            Most frequent searches by healthcare job seekers like you
+          </p>
         </div>
       </Hero>
-
-      <div className="px-2">
-        <h1 className="font-semibold text-gray-700 text-center mt-10 text-2xl">
-          Trending Job searches
-        </h1>
-        <p className="font-medium text-gray-400 text-center mt-2 text-sm">
-          Most frequent searches by healthcare job seekers like you
-        </p>
-      </div>
-
-      <div className="mt-10 md:flex justify-center mx-auto items-center gap-10 md:w-[70%]">
-        <div className="p-4">
-          <img className="h-[300px] mx-auto" src={trendingSearches} alt="" />
-        </div>
-        <div className="p-4 rounded-xl">
-          <h2 className="mt-5 mb-2 text-black">Filter speciality</h2>
-          <div className="flex flex-wrap">
-            {rolesList.map((data, index) => (
-              <div key={index}>
-                <KOutlinedButton
-                  onClick={() => {
-                    setselectedRole(data.id);
-                  }}
-                  isActive={selectedRole == data.id}
-                  label={data.title}
-                />
-              </div>
-            ))}
-          </div>
-          <h2 className="mt-5 mb-2 text-black">Filter distance</h2>
-          <div className="flex flex-wrap">
-            <KOutlinedButton
-              id={0}
-              label="0 - 10 kms"
-              isActive={selectedDistance === "0-10"}
-              onClick={() => {
-                setselectedDistance("0-10");
-              }}
-            />{" "}
-            <KOutlinedButton
-              id={0}
-              label="11 - 20 kms"
-              isActive={selectedDistance === "11-20"}
-              onClick={() => {
-                setselectedDistance("11-20");
-              }}
-            />{" "}
-            <KOutlinedButton
-              id={0}
-              label="21 - 30 kms"
-              isActive={selectedDistance === "21-30"}
-              onClick={() => {
-                setselectedDistance("21-30");
-              }}
+      <div className="bg-gray-50 rounded-bl-lg rounded-br-lg md:max-w-[1000px] mx-5 md:mx-auto drop-shadow-xl">
+        <div className="grid md:grid-cols-2 md:gap-10">
+          <div className="p-4">
+            <img
+              className="md:h-full h-[200px] mx-auto"
+              src={jobFilter}
+              alt=""
             />
           </div>
-          <h2 className="mt-5 mb-2 text-black">Select city or state</h2>
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              id="city"
-              className="bg-white border border-gray-200 text-gray-900 text-sm rounded-full w-full p-2.5 light:bg-gray-700 light:placeholder-gray-400 light:text-white"
-              placeholder="Search city..."
-            />
-            <KDropDown
-              value={selectedState}
-              id="state"
-              isDropOpen={isStateDropOpen}
-              margin=""
-              onClick={() => {
-                setisStateDropOpen(!isStateDropOpen);
-              }}
-              rounded="full"
-            >
-              {statesList.map((data, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => {
-                    setselectedState(data.stateName);
-                    setisStateDropOpen(!isStateDropOpen);
-                  }}
-                  className="w-full text-start block px-4 py-2 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white"
-                >
-                  {data.stateName + ", " + data.abbr}
-                </button>
+          <div className="p-4 rounded-xl">
+            <h2 className="mb-2 text-black">Filter by role</h2>
+            <div className="flex flex-wrap">
+              {rolesList.map((data, index) => (
+                <div key={index}>
+                  <KOutlinedButton
+                    onClick={() => {
+                      setselectedRole(data.id);
+                    }}
+                    isActive={selectedRole == data.id}
+                    label={data.title}
+                  />
+                </div>
               ))}
-            </KDropDown>
-          </div>
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                fetchVacancies();
-                setisScroll(true);
-              }}
-              type="button"
-              className="mt-5 focus:outline-none text-center text-white bg-[#dc832d] hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 mb-2 md:ml-4 light:focus:ring-yellow-900 overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-2"
-            >
-              <span>
-                <img src={filterIcon} className="invert h-5" alt="" />
-              </span>
-              Filter
-            </button>
+            </div>
+            <h2 className="mt-5 mb-2 text-black">Filter by distance (km)</h2>
+            <div className="flex flex-wrap">
+              <KOutlinedButton
+                id={0}
+                label="0 - 100 kms"
+                isActive={selectedDistance === "0-100"}
+                onClick={() => {
+                  setselectedDistance("0-100");
+                }}
+              />{" "}
+              <KOutlinedButton
+                id={0}
+                label="100 - 200 kms"
+                isActive={selectedDistance === "100-200"}
+                onClick={() => {
+                  setselectedDistance("100-200");
+                }}
+              />{" "}
+              <KOutlinedButton
+                id={0}
+                label="200 - 300 kms"
+                isActive={selectedDistance === "200-300"}
+                onClick={() => {
+                  setselectedDistance("200-300");
+                }}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 mt-5">
+              <KTextField
+                name="city"
+                id="city"
+                maxLength={10}
+                placeholder="Search by city ..."
+                label="Search by city"
+                value={textField.city}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              />
+
+              <KDropDown id="state" name="state" label="Search by state">
+                {statesList.map((data, index) => (
+                  <option key={index} value={data.stateName}>
+                    {data.stateName}
+                  </option>
+                ))}
+              </KDropDown>
+            </div>
           </div>
         </div>
-      </div>
 
+        <div class="flex rounded-md shadow-sm py-5 px-5 gap-2">
+          <input
+            type="text"
+            className="kTextField"
+            name="searchKey"
+            id="searchKey"
+            placeholder="Search by tags, job profiles ..."
+            value={textField.searchKey}
+            onChange={(e) => {
+              handleInputChange(e);
+            }}
+          />
+          <button
+            type="button"
+            class="flex-shrink-0 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Apply Filter
+          </button>
+          <button
+            type="button"
+            class="flex-shrink-0 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Clear Filter
+          </button>
+        </div>
+      </div>
       <h2
         ref={openingsRef}
         className="my-10 font-medium text-gray-700 text-center text-xl"

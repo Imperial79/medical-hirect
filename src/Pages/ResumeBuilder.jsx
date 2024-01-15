@@ -43,12 +43,14 @@ function ResumeBuilder() {
       });
       setexpertiseList(
         JSON.parse(
-          user?.expertiseDescription === "" ? "[]" : user?.expertiseDescription
+          user?.expertiseDescription === null
+            ? "[]"
+            : user?.expertiseDescription
         )
       );
       seteducationDataList(
         JSON.parse(
-          user?.educationDescription === ""
+          user?.educationDescription === null
             ? JSON.stringify([
                 {
                   courseName: "",
@@ -61,7 +63,7 @@ function ResumeBuilder() {
       );
       setworkDataList(
         JSON.parse(
-          user?.workDescription === ""
+          user?.workDescription === null
             ? JSON.stringify([
                 {
                   companyName: "",
@@ -113,13 +115,7 @@ function ResumeBuilder() {
     ]);
   };
   const addExpertiseForm = () => {
-    setexpertiseList([
-      ...expertiseList,
-      // {
-      //   expertise: "",
-      // },
-      "",
-    ]);
+    setexpertiseList([...expertiseList, ""]);
   };
   const addWorkForm = () => {
     setworkDataList([

@@ -8,17 +8,30 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
-import { TextfieldLabel } from "../components/components";
+import { KTextField, TextfieldLabel } from "../components/components";
 import CircularProgressIndicator from "../components/CircularProgressIndicator";
 
 function LoginPage() {
-  const { _id, setUser, setAlert } = useContext(Context);
+  const { setUser, setAlert } = useContext(Context);
   const navigator = useNavigate();
   const [loading, setloading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
   const [timer, setTimer] = useState(60); // Initial timer value in seconds
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const [textField, setTextField] = useState({
+    phone: "",
+    otp: "",
+  });
+
+  // Function to change input
+  const handleInputChange = (e) => {
+    setTextField({
+      ...textField,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   // Function to start the timer
   const startTimer = () => {
@@ -96,7 +109,7 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", _id("phone").value);
+      formData.append("phone", textField.phone);
       const response = await dbObject.post(
         "/sms-service/send-otp.php",
         formData
@@ -125,8 +138,8 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", _id("phone").value);
-      formData.append("otp", _id("otp").value);
+      formData.append("phone", textField.phone);
+      formData.append("otp", textField.otp);
       const response = await dbObject.post(
         "/sms-service/verify-otp.php",
         formData
@@ -137,8 +150,8 @@ function LoginPage() {
             replace: true,
             state: {
               type: "Phone",
-              phone: _id("phone").value,
-              otp: _id("otp").value,
+              phone: textField.phone,
+              otp: textField.otp,
               email: "",
               guid: "",
             },
@@ -157,9 +170,9 @@ function LoginPage() {
     try {
       setloading(true);
       const formData = new FormData();
-      formData.append("phone", _id("phone").value);
-      formData.append("otp", _id("otp").value);
-      formData.append("fcmToken", null);
+      formData.append("phone", textField.phone);
+      formData.append("otp", textField.otp);
+      formData.append("fcmToken", "");
       const response = await dbObject.post(
         "/users/login-with-phone.php",
         formData
@@ -167,7 +180,6 @@ function LoginPage() {
       if (!response.data.error) {
         setUser(response.data.response);
         navigator("/", { replace: true });
-        // history.replace("/");
       } else {
         setAlert({
           content: response.data.message,
@@ -210,28 +222,33 @@ function LoginPage() {
                 Enter your details
               </h1>
 
-              <TextfieldLabel label="Phone" />
-              <input
-                type="text"
+              <KTextField
                 pattern="^[0-9]{1,10}$"
                 name="phone"
                 id="phone"
                 maxLength={10}
-                className="kTextField mb-5"
                 placeholder="Enter your phone number"
-                required={true}
+                label="Phone"
+                value={textField.phone}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
               />
-              <TextfieldLabel label="OTP" />
-              <input
-                type="text"
+
+              <KTextField
                 pattern="^[0-9]{1,10}$"
-                maxLength={5}
-                id="otp"
                 name="otp"
-                className="kTextField tracking-[10px] mb-5"
+                id="otp"
+                maxLength={5}
                 placeholder="XXXXX"
-                required={true}
+                label="OTP"
+                spacing="[10px]"
+                value={textField.otp}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
               />
+
               {isTimerRunning ? (
                 <div className="flex items-center">
                   <CircularProgressIndicator size={5} margin="mr-2" />
