@@ -4,12 +4,13 @@ import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
 import googleLogo from "../assets/google.png";
 import { auth, googleProvider } from "../Helper/firebase-config";
-import { signInWithPopup, signOut } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
 import { KTextField, TextfieldLabel } from "../components/components";
 import CircularProgressIndicator from "../components/CircularProgressIndicator";
+import { GoogleLogin } from "@react-oauth/google";
 
 function LoginPage() {
   const { setUser, showAlert } = useContext(Context);
@@ -63,7 +64,10 @@ function LoginPage() {
   const signInWithGoogle = async () => {
     try {
       await signOut(auth);
-      let data = await signInWithPopup(auth, googleProvider);
+      let data = await signInWithRedirect(auth, googleProvider);
+      console.log("In Try");
+      // let data = await signInWithPopup(auth, googleProvider);
+      console.log(data);
       const formData = new FormData();
       formData.append("email", data?.user?.email);
       formData.append("guid", data?.user?.uid);
@@ -94,7 +98,9 @@ function LoginPage() {
           showAlert(response.data.message, response.data.error);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error Here");
+    }
   };
 
   async function sendOTP() {
@@ -272,7 +278,11 @@ function LoginPage() {
                   </span>
                 </div>
               </div>
-
+              <GoogleLogin onSuccess={(response) => {
+                console.log(response);
+              }} onError={(response) => {
+                console.log(response);
+              }} />
               <button
                 onClick={signInWithGoogle}
                 type="button"
