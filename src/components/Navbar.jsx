@@ -76,7 +76,7 @@ function Navbar() {
                     navigator("/");
                     setisScroll(true);
                   }}
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
+                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 w-full text-start"
                 >
                   Search Job Profile
                 </button>
@@ -120,7 +120,10 @@ function Navbar() {
                 </li>
               ) : (
                 <li>
-                  <Link to="/login" className="kTextButton">
+                  <Link
+                    to="/login"
+                    className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
+                  >
                     Login
                   </Link>
                 </li>

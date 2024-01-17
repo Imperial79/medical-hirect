@@ -113,13 +113,14 @@ function HomePage() {
           </p>
         </div>
       </Hero>
+      {/* Filter Section  */}
       <div className="bg-gray-50 rounded-bl-lg rounded-br-lg md:max-w-[1000px] mx-5 md:mx-auto drop-shadow-xl">
         <div className="grid md:grid-cols-2 md:gap-10 items-center">
           <div className="p-4 max-h-[400px] max-w-[400px] mx-auto flex justify-center content-center">
             <img className="h-full w-full" src={jobFilter} alt="filter-image" />
           </div>
           <div className="p-4 rounded-xl">
-            <h2 className="mb-2 text-black">Filter by role</h2>
+            <h2 className="mb-2 text-black text-sm">Filter by Role</h2>
             <div className="flex flex-wrap">
               {rolesList.map((data, index) => (
                 <div key={index}>
@@ -133,7 +134,9 @@ function HomePage() {
                 </div>
               ))}
             </div>
-            <h2 className="mt-5 mb-2 text-black">Filter by distance (km)</h2>
+            <h2 className="mt-5 mb-2 text-black text-sm">
+              Filter by distance (km)
+            </h2>
             <div className="flex flex-wrap">
               <KOutlinedButton
                 id={0}
@@ -219,68 +222,77 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <h2
-        ref={openingsRef}
-        className="my-10 font-medium text-gray-700 text-center text-xl"
-      >
-        Recent Openings
-      </h2>
+      <div className="px-0 md:px-5">
+        <h2
+          ref={openingsRef}
+          className="my-10 font-medium text-gray-700 text-center text-xl"
+        >
+          Recent Openings
+        </h2>
 
-      {vacancyList.length !== 0 ? (
-        vacancyList.map((data, index) => (
-          <div key={index}>
-            <JobCard data={data} />
-          </div>
-        ))
-      ) : (
-        <div className="flex flex-col gap-10">
-          <img src={noData} alt="no-data" className="mx-auto h-48 w-4h-48" />
-          <h1 className="text-2xl text-gray-400 font-bold mx-auto text-center">
-            Sorry! No data found
-          </h1>
-        </div>
-      )}
-
-      <nav
-        className="flex items-center flex-column flex-wrap md:flex-row justify-around py-4"
-        aria-label="Table navigation"
-      >
-        <span className="text-sm font-normal text-gray-500 light:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-          Showing{" "}
-          <span className="font-semibold text-gray-900 light:text-white">
-            {vacancyList.length}
-          </span>{" "}
-          of Page
-          <span className="font-semibold text-gray-900 light:text-white">
-            {" "}
-            {pageNo + 1}
-          </span>
-        </span>
-        <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-          <li>
-            <button
-              onClick={() => {
-                if (pageNo > 0) {
-                  setpageNo(pageNo - 1);
-                }
-              }}
-              className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+        {vacancyList.length !== 0 ? (
+          <>
+            {vacancyList.map((data, index) => (
+              <div key={index}>
+                <JobCard data={data} />
+              </div>
+            ))}
+            <nav
+              className="flex items-center flex-column flex-wrap md:flex-row justify-around p-4"
+              aria-label="Table navigation"
             >
-              Previous
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                setpageNo(pageNo + 1);
-              }}
-              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
+              <span className="text-sm font-normal text-gray-500 light:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+                Showing{" "}
+                <span className="font-semibold text-gray-900 light:text-white">
+                  {vacancyList.length}
+                </span>{" "}
+                of Page
+                <span className="font-semibold text-gray-900 light:text-white">
+                  {" "}
+                  {pageNo + 1}
+                </span>
+              </span>
+              <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                <li>
+                  <button
+                    onClick={() => {
+                      if (pageNo > 0) {
+                        setpageNo(pageNo - 1);
+                      }
+                    }}
+                    className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Previous
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      setpageNo(pageNo + 1);
+                    }}
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col gap-10 mb-5">
+              <img
+                src={noData}
+                alt="no-data"
+                className="mx-auto h-48 w-4h-48"
+              />
+              <h1 className="text-2xl text-gray-400 font-bold mx-auto text-center">
+                Sorry! No data found
+              </h1>
+            </div>
+          </>
+        )}
+      </div>
     </Scaffold>
   );
 }

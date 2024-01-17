@@ -72,9 +72,6 @@ function LoginPage() {
 
       signInWithPopup(auth, googleProvider)
         .then(async (result) => {
-          // const credential = GoogleAuthProvider.credentialFromResult(result);
-          // const token = credential.accessToken;
-
           const user = result.user;
           console.log(user.email);
           console.log(user.uid);

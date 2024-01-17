@@ -104,30 +104,62 @@ function JobDetailPage() {
   return (
     <Scaffold isLoading={loading}>
       <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 text-black">
-        <div className="lg:w-[70%] md:w-[80%] w-full mx-auto">
-          <div className="justify-start">
-            <div className="flex mt-[17px] items-center justify-between">
-              <div className="md:h-28 h-20">
-                <img
-                  src={vacancyData.companyImage}
-                  alt="recruiter-image"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-
-              <button
-                onClick={bookmarkVacancy}
-                className="md:hidden flex gap-2 items-center"
-              >
-                <img
-                  src={isBookmarked ? saveFilled : save}
-                  alt="save-button"
-                  className="ml-10 h-5"
-                />
-              </button>
+        <div className="max-w-4xl w-full mx-auto bg-white rounded-xl drop-shadow-2xl z-20">
+          <div className="flex mt-[17px] items-center justify-between">
+            <div className="h-[200px] w-full rounded-t-xl overflow-hidden">
+              <img
+                src={vacancyData.companyImage}
+                alt="recruiter-image"
+                className="w-full h-full object-cover"
+              />
             </div>
-
-            <div className="flex mt-10 items-center justify-between">
+          </div>
+          <div className="p-5">
+            <button
+              onClick={bookmarkVacancy}
+              className={`flex gap-2 items-center rounded-full px-3 py-1.5 text-[12px] font-medium ${
+                isBookmarked
+                  ? "bg-transparent text-black"
+                  : "bg-black text-white border"
+              }`}
+            >
+              {isBookmarked ? (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-3 h-3"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Saved
+                </>
+              ) : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-3 h-3"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                    />
+                  </svg>
+                  Save
+                </>
+              )}
+            </button>
+            <div className="flex items-center justify-between">
               <h1 className="md:w-[60%] text-blue-900 font-medium md:text-[25px] text-[17px]">
                 {vacancyData.roleTitle} | {vacancyData.subRole} |{" "}
                 {vacancyData.companyName}
@@ -144,7 +176,6 @@ function JobDetailPage() {
                 />
               </button>
             </div>
-
             <div className="mt-2 items-center text-gray-700 text-[15px] md:text-[17px]">
               <div className="lg:grid md:grid lg:grid-cols-2 md:grid-cols-2">
                 <>
@@ -258,6 +289,7 @@ function JobDetailPage() {
           </div>
         </div>
       </div>
+
       <ApplyJobModal
         isModalOpen={isApplyModalOpen}
         toggleModal={toggleApplyModal}

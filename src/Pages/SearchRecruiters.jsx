@@ -72,7 +72,7 @@ function SearchRecruiters() {
             <input
               type="text"
               id="searchKey"
-              className="kTextField w-full md:col-span-2"
+              className="kTextField w-full md:col-span-2 mb-2 md:mb-0"
               placeholder="Search job titles, keywords, skills etc"
               onChange={(e) => {
                 setsearchKey(e.target.value);
@@ -81,13 +81,13 @@ function SearchRecruiters() {
             <input
               type="text"
               id="city"
-              className="kTextField w-full md:col-span-2"
+              className="kTextField w-full md:col-span-2 mb-2 md:mb-0"
               placeholder="Search using city..."
               onChange={(e) => {
                 setcity(e.target.value);
               }}
             />
-            <div className="w-full">
+            <div className="w-full mb-2 md:mb-0">
               <KDropDown
                 id="state"
                 name="state"
@@ -118,7 +118,7 @@ function SearchRecruiters() {
           </div>
         </form>
       </Hero>
-      <div className="mt-10 pb-10 md:px-20 px-5 text-black">
+      <div className="mt-10 pb-10 md:px-20 text-black grid md:grid-cols-3 grid-cols-1 gap-3">
         {recruiterList.map((data, index) => (
           <div key={index}>
             <HospitalCard data={data} />
@@ -127,7 +127,7 @@ function SearchRecruiters() {
       </div>
 
       <nav
-        className="flex items-center flex-column flex-wrap md:flex-row justify-around py-4"
+        className="flex items-center flex-column flex-wrap md:flex-row justify-around p-5"
         aria-label="Table navigation"
       >
         <span className="text-sm font-normal text-gray-500 light:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
