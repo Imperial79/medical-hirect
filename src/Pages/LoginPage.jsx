@@ -4,13 +4,18 @@ import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
 import googleLogo from "../assets/google.png";
 import { auth, googleProvider } from "../Helper/firebase-config";
-import { signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getRedirectResult,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+} from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
-import { KTextField, TextfieldLabel } from "../components/components";
+import { KTextField } from "../components/components";
 import CircularProgressIndicator from "../components/CircularProgressIndicator";
-import { GoogleLogin } from "@react-oauth/google";
 
 function LoginPage() {
   const { setUser, showAlert } = useContext(Context);
@@ -64,40 +69,51 @@ function LoginPage() {
   const signInWithGoogle = async () => {
     try {
       await signOut(auth);
-      let data = await signInWithRedirect(auth, googleProvider);
-      console.log("In Try");
-      // let data = await signInWithPopup(auth, googleProvider);
-      console.log(data);
-      const formData = new FormData();
-      formData.append("email", data?.user?.email);
-      formData.append("guid", data?.user?.uid);
-      formData.append("fcmToken", "");
 
-      const response = await dbObject.post(
-        "/users/login-with-google.php",
-        formData
-      );
-      if (!response.data.error) {
-        setUser(response.data.response);
-        navigator("/", {
-          replace: true,
+      signInWithPopup(auth, googleProvider)
+        .then(async (result) => {
+          // const credential = GoogleAuthProvider.credentialFromResult(result);
+          // const token = credential.accessToken;
+
+          const user = result.user;
+          console.log(user.email);
+          console.log(user.uid);
+
+          const formData = new FormData();
+          formData.append("email", user.email);
+          formData.append("guid", user.uid);
+          formData.append("fcmToken", "");
+
+          const response = await dbObject.post(
+            "/users/login-with-google.php",
+            formData
+          );
+
+          if (!response.data.error) {
+            setUser(response.data.response);
+            navigator("/", {
+              replace: true,
+            });
+          } else {
+            if (response.data.action === "Register") {
+              navigator("/register", {
+                replace: true,
+                state: {
+                  type: "Email",
+                  phone: "",
+                  otp: "",
+                  email: user.email,
+                  guid: user.uid,
+                },
+              });
+            } else {
+              showAlert(response.data.message, response.data.error);
+            }
+          }
+        })
+        .catch((error) => {
+          showAlert(error.message, true);
         });
-      } else {
-        if (response.data.action === "Register") {
-          navigator("/register", {
-            replace: true,
-            state: {
-              type: "Email",
-              phone: "",
-              otp: "",
-              email: data?.user.email,
-              guid: data?.user.uid,
-            },
-          });
-        } else {
-          showAlert(response.data.message, response.data.error);
-        }
-      }
     } catch (error) {
       console.log("Error Here");
     }
@@ -278,11 +294,14 @@ function LoginPage() {
                   </span>
                 </div>
               </div>
-              <GoogleLogin onSuccess={(response) => {
-                console.log(response);
-              }} onError={(response) => {
-                console.log(response);
-              }} />
+              {/* <GoogleLogin
+                onSuccess={(response) => {
+                  console.log(response);
+                }}
+                onError={(response) => {
+                  console.log(response);
+                }}
+              /> */}
               <button
                 onClick={signInWithGoogle}
                 type="button"
