@@ -11,6 +11,10 @@
   @apply shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
 }
 
+.kProductCard {
+  @apply bg-white border p-5 rounded-lg hover:drop-shadow-xl transition
+}
+
 :root {
   /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   font-family: 'Poppins', sans-serif;
@@ -55,6 +59,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
   cursor: pointer;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 

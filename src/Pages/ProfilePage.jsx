@@ -16,7 +16,6 @@ function ProfilePage() {
   const [graduationDate, setgraduationDate] = useState("");
 
   const [loading, setloading] = useState(false);
-  const [roleList, setroleList] = useState([]);
   const [stateList, setStateList] = useState([]);
 
   const [dropdownData, setDropdownData] = useState({
@@ -27,26 +26,23 @@ function ProfilePage() {
     experience: "0",
   });
 
-  const [isDropdownOpen, setDropdownOpen] = useState({
-    gender: false,
-    role: false,
-    subRole: false,
-    state: false,
-    experience: false,
-  });
-
   const [textField, setTextField] = useState({
     bio: user != null ? user.bio : "",
     firstName: user != null ? user.firstName : "",
     lastName: user != null ? user.lastName : "",
+    gender: user != null ? user.gender : "",
     dob: user != null ? user.dob : "",
     role: user != null ? user.roleTitle : "",
     subRole: user != null ? user.subRole : "",
     city: user != null ? user.city : "",
+    state: user != null ? user.state : "",
+    experience: user != null ? user.experience : "",
     address: user != null ? user.address : "",
     email: user != null ? user.email : "",
     phone: user != null ? user.phone : "",
+    graduationDate: user != null ? user.graduationDate : "",
     post: JSON.parse(user !== null ? user?.post : "[]"),
+
     employmentType: JSON.parse(user !== null ? user?.employmentType : "[]"),
     specialization: JSON.parse(user !== null ? user?.specialization : "[]"),
     workSetting: JSON.parse(user !== null ? user?.workSetting : "[]"),
@@ -58,13 +54,17 @@ function ProfilePage() {
       bio: user != null ? user.bio : "",
       firstName: user != null ? user.firstName : "",
       lastName: user != null ? user.lastName : "",
+      gender: user != null ? user.gender : "",
       dob: user != null ? user.dob : "",
       role: user != null ? user.roleTitle : "",
       subRole: user != null ? user.subRole : "",
       city: user != null ? user.city : "",
+      state: user != null ? user.state : "",
+      experience: user != null ? user.experience : "",
       address: user != null ? user.address : "",
       email: user != null ? user.email : "",
       phone: user != null ? user.phone : "",
+      graduationDate: user != null ? user.graduationDate : "",
       post: JSON.parse(user !== null ? user?.post : "[]"),
       employmentType: JSON.parse(user !== null ? user?.employmentType : "[]"),
       specialization: JSON.parse(user !== null ? user?.specialization : "[]"),
@@ -74,28 +74,7 @@ function ProfilePage() {
 
     setgraduationDate(user != null ? user.graduationDate : "");
     setImagePreview(user?.image ?? null);
-    setDropdownData({
-      gender: user?.gender,
-      role: user?.roleId,
-      experience: user?.experience,
-      state: user?.state,
-      subRole: user?.subRole,
-    });
   }, [user]);
-
-  const handleDropdownChange = (dropdownName, value) => {
-    setDropdownOpen((prevValues) => ({
-      ...prevValues,
-      [dropdownName]: value,
-    }));
-  };
-
-  const handleDropdownData = (dropdownName, value) => {
-    setDropdownData((prevValues) => ({
-      ...prevValues,
-      [dropdownName]: value,
-    }));
-  };
 
   const handleInputChange = (e) => {
     setTextField({
@@ -108,7 +87,6 @@ function ProfilePage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchRole();
     fetchState();
   }, []);
 
@@ -132,13 +110,6 @@ function ProfilePage() {
     }
   };
 
-  async function fetchRole() {
-    const response = await dbObject.get("/role/fetch-roles.php");
-    if (!response.data.error) {
-      setroleList(response.data.response);
-    }
-  }
-
   async function fetchState() {
     const response = await dbObject.get("/states/fetch-states.php");
     if (!response.data.error) {
@@ -151,24 +122,22 @@ function ProfilePage() {
       setloading(true);
       const formData = new FormData();
 
-      formData.append("bio", textField.bio);
       formData.append("firstName", textField.firstName);
       formData.append("lastName", textField.lastName);
       formData.append("dob", textField.dob);
-      formData.append("experience", dropdownData.experience);
-      formData.append("gender", dropdownData.gender);
-      formData.append("subRole", dropdownData.subRole);
+      formData.append("experience", textField.experience);
       formData.append("specialization", user?.specialization);
+      formData.append("gender", textField.gender);
+      formData.append("subRole", textField.subRole);
       formData.append("post", user?.post);
-      formData.append("address", textField.address);
-      formData.append("city", textField.city);
-      formData.append("state", dropdownData.state);
-      formData.append("roleId", roleList[dropdownData.role]?.id);
+      formData.append("bio", textField.bio);
       formData.append("employmentType", user?.employmentType);
       formData.append("workSetting", user?.workSetting);
       formData.append("graduationType", user?.graduationType);
-      formData.append("graduationDate", graduationDate);
-      formData.append("fcmToken", "");
+      formData.append("graduationDate", textField.graduationDate);
+      formData.append("address", textField.address);
+      formData.append("city", textField.city);
+      formData.append("state", textField.state);
 
       const response = await dbObject.post(
         "/users/update-profile.php",
@@ -236,7 +205,7 @@ function ProfilePage() {
               />
             </KGrid>
 
-            <div className="relative z-0 w-full mb-6 group">
+            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
               <KTextField
                 label="DOB"
                 type="date"
@@ -248,85 +217,47 @@ function ProfilePage() {
                   handleInputChange(e);
                 }}
               />
-            </div>
-
-            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
-              {/* Gender Drop */}
-
               <KDropDown
                 id="gender"
+                name="gender"
                 label="Gender"
-                onClick={() => {
-                  handleDropdownChange("gender", !isDropdownOpen.gender);
+                value={textField.gender}
+                onChange={(e) => {
+                  handleInputChange(e);
                 }}
-                isDropOpen={isDropdownOpen.gender}
-                value={
-                  dropdownData.gender === "M"
-                    ? "Male"
-                    : dropdownData.gender === "F"
-                    ? "Female"
-                    : "Others"
-                }
               >
-                <li>
-                  <div
-                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                    onClick={() => {
-                      handleDropdownData("gender", "M");
-                      handleDropdownChange("gender", false);
-                    }}
-                  >
-                    Male
-                  </div>
-                </li>
-                <li>
-                  <div
-                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                    onClick={() => {
-                      handleDropdownData("gender", "F");
-                      handleDropdownChange("gender", !isDropdownOpen.gender);
-                    }}
-                  >
-                    Female
-                  </div>
-                </li>
-                <li>
-                  <div
-                    className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                    onClick={() => {
-                      handleDropdownData("gender", "O");
-                      handleDropdownChange("gender", !isDropdownOpen.gender);
-                    }}
-                  >
-                    Others
-                  </div>
-                </li>
+                <option key={1} value={"M"}>
+                  Male
+                </option>
+                <option key={2} value={"F"}>
+                  Female
+                </option>
+                <option key={3} value={"O"}>
+                  Others
+                </option>
               </KDropDown>
+            </KGrid>
 
-              {/* Role Textfield */}
+            <KGrid crossAxisCount={2} gap={5} margin="mb-0">
               <KTextField
-                type="text"
                 name="role"
                 id="role"
                 label="Role"
                 placeholder="role"
                 readOnly={true}
                 value={textField.role}
+              />
+              <KTextField
+                name="subRole"
+                id="subRole"
+                label="Sub-Role"
+                placeholder="Subrole"
+                value={textField.subRole}
                 onChange={(e) => {
                   handleInputChange(e);
                 }}
               />
             </KGrid>
-
-            {/* Subrole textfield */}
-            <KTextField
-              name="subRole"
-              id="subRole"
-              label="Sub-Role"
-              placeholder="Subrole"
-              readOnly={true}
-              value={textField.subRole}
-            />
 
             {/* Multi-select Post */}
             <MultiSelectedData
@@ -365,9 +296,9 @@ function ProfilePage() {
                 name="graduationDate"
                 id="graduationDate"
                 placeholder=""
-                value={graduationDate}
+                value={textField.graduationDate}
                 onChange={(e) => {
-                  setgraduationDate(e.target.value);
+                  handleInputChange(e);
                 }}
               />
             ) : (
@@ -376,6 +307,21 @@ function ProfilePage() {
 
             <KGrid crossAxisCount={2} gap={5} margin="mb-0">
               <KDropDown
+                id="experience"
+                name="experience"
+                label="Select Experience"
+                value={textField.experience}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              >
+                {experienceList.map((data, index) => (
+                  <option key={index} value={data}>
+                    {data}
+                  </option>
+                ))}
+              </KDropDown>
+              {/* <KDropDown
                 label="Select Experience"
                 id="experience"
                 name="experience"
@@ -404,7 +350,7 @@ function ProfilePage() {
                     </div>
                   </li>
                 ))}
-              </KDropDown>
+              </KDropDown> */}
               <KTextField
                 label="City"
                 name="city"
@@ -419,26 +365,18 @@ function ProfilePage() {
 
             <KGrid margin="mb-0" alignment="start">
               <KDropDown
-                label="Select State"
                 id="state"
-                isDropOpen={isDropdownOpen.state}
-                onClick={() => {
-                  handleDropdownChange("state", !isDropdownOpen.state);
+                name="state"
+                label="Select State"
+                value={textField.state}
+                onChange={(e) => {
+                  handleInputChange(e);
                 }}
-                value={dropdownData.state}
               >
                 {stateList.map((data, index) => (
-                  <li key={index}>
-                    <div
-                      className="flex cursor-pointer items-center pl-2 rounded hover:bg-gray-100 py-2"
-                      onClick={() => {
-                        handleDropdownData("state", data.stateName);
-                        handleDropdownChange("state", !isDropdownOpen.state);
-                      }}
-                    >
-                      {data.stateName}
-                    </div>
-                  </li>
+                  <option key={index} value={data.stateName}>
+                    {data.stateName}
+                  </option>
                 ))}
               </KDropDown>
 

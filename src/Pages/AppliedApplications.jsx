@@ -38,7 +38,7 @@ function AppliedApplications() {
 
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20">
+      <div className="pt-20 max-w-5xl mx-auto">
         <h1 className="mt-5 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-black mb-10">
           Applied Applications
         </h1>
@@ -64,78 +64,63 @@ export default AppliedApplications;
 function AppliedCard({ data }) {
   return (
     <Link to={`/job-detail?vacancy-id=${data.vacancyId}`}>
-      <div className="text-black bg-white border p-5 md:mx-auto mx-5 md:w-[80%] rounded-lg md:flex items-center mb-7 hover:drop-shadow-xl transition duration-400">
-        <div className="md:mr-10 flex justify-between items-center mb-4 md:mb-0">
-          <div className="h-[100px] w-[100px] mx-auto">
-            <img
-              src={data.companyImage}
-              alt="CompanyImage"
-              className="w-full h-full"
-            />
-          </div>
+      <div className="kProductCard text-black">
+        <h2 className="text-blue-700 font-medium text-[15px]">
+          {data.roleTitle}
+          {data.subRole && <span> | {data.subRole}</span>}
+        </h2>
+
+        <div className="flex items-center mb-5 mt-2 gap-2">
+          <img src={hospitalIcon} alt="" className="h-3" />
+          <p className="font-normal text-[12px]">{data.companyName}</p>
         </div>
 
+        <p className="text-[12px] text-gray-500 font-medium mt-2 mb-1">
+          Job requirements
+        </p>
+        <h2 className="text-start text-gray-500 text-[13px] max2lines mb-5">
+          {data.requirements}
+        </h2>
+
+        <div className="inline-flex flex-wrap items-center gap-3">
+          <div className="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-2 text-[10px] font-medium">
+            CTC
+            <div className="bg-blue-700 rounded-full px-3 py-1 text-white font-medium">
+              {data.salary}
+            </div>
+          </div>
+          <div className="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-2 text-[10px] font-medium">
+            Experience
+            <div className="bg-blue-700 rounded-full px-3 py-1 text-white font-medium">
+              {data.experience}
+            </div>
+          </div>
+          <div
+            className={`${
+              data.status === "In-Review"
+                ? "bg-purple-100 text-purple-700"
+                : data.status === "Rejected"
+                ? "bg-red-100 text-red-700"
+                : data.status === "Applied"
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-green-100 text-green-700"
+            }  rounded-full px-3 py-1 flex items-center gap-2 text-[10px] font-medium`}
+          >
+            {data.status}
+          </div>
+        </div>
         <div>
-          <div className="flex justify-between">
-            <h2 className="text-blue-900 font-medium md:text-[20px] text-[20px]">
-              {data.roleTitle} | {data.subRole}
-            </h2>
-          </div>
-
-          <div className="mt-2 md:flex gap-5 items-center text-gray-700">
-            <div className="flex items-center md:mb-0 mb-2">
-              <img src={hospitalIcon} alt="" className="h-4" />
-              <p className="ml-2 font-normal text-[15px] md:text-[15px]">
-                {data.companyName}
-              </p>
-            </div>
-          </div>
-
-          <h2 className="text-start text-gray-500 mt-4 text-[15px] md:text-[15px] max2lines mb-2">
-            {data.requirements}
-          </h2>
-
-          <div className="inline-flex flex-wrap items-center gap-5 my-5">
-            <div className="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-2 text-sm font-medium">
-              CTC
-              <div className="bg-blue-700 rounded-full px-3 py-1 text-white font-medium">
-                {data.salary}
-              </div>
-            </div>
-            <div className="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-2 text-sm font-medium">
-              Experience
-              <div className="bg-blue-700 rounded-full px-3 py-1 text-white font-medium">
-                {data.experience}
-              </div>
-            </div>
-            <div
-              className={`${
-                data.status === "In-Review"
-                  ? "bg-purple-100 text-purple-700"
-                  : data.status === "Rejected"
-                  ? "bg-red-100 text-red-700"
-                  : data.status === "Applied"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-green-100 text-green-700"
-              }  rounded-full px-3 py-1 flex items-center gap-2 text-sm font-medium`}
-            >
-              {data.status}
-            </div>
-          </div>
-
-          <div>
-            <div className="inline-flex items-center gap-2">
-              <img
-                src={data.optedResumeBuilder == "true" ? logoSmall : resumeIcon}
-                alt=""
-                className="h-5 w-5"
-              />
-              <p className="text-sm text-gray-500">
-                {data.optedResumeBuilder == "true"
-                  ? "Hirehelix Resume"
-                  : data.resumeName}
-              </p>
-            </div>
+          <div className="inline-flex items-center gap-2 mt-5 bg-gray-100 px-2 py-1 rounded-lg border">
+            <img
+              src={data.optedResumeBuilder == "true" ? logoSmall : resumeIcon}
+              alt="resume-logo"
+              className="h-5 w-5"
+            />
+            <p className="text-[11px] font-medium text-gray-500">
+              {data.optedResumeBuilder == "true"
+                ? "Hirehelix Resume"
+                : data.resumeName}
+            </p>
           </div>
         </div>
       </div>

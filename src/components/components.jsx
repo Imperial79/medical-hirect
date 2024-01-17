@@ -41,7 +41,7 @@ export function KTextField({
   type = "text",
   id = "",
   name = id,
-  pattern = "",
+  pattern = null,
   placeholder = "placeholder",
   required = true,
   value,
@@ -130,6 +130,7 @@ export function KDropDown({
   children,
   onChange,
   margin = "mb-5",
+  value = "",
 }) {
   return (
     <div className={margin}>
@@ -145,6 +146,7 @@ export function KDropDown({
       <select
         id={id}
         name={name}
+        value={value}
         onChange={onChange}
         className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 inline-flex items-center justify-between w-full text-nowrap"
       >

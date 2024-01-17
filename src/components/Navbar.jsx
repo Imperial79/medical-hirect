@@ -31,9 +31,11 @@ function Navbar() {
             <img src={logo} className="w-32 mr-3" alt="Flowbite Logo" />
           </Link>
           <div className="flex md:order-2">
-            <Link to="https://recruiter.hirehelix.in" target="_blank">
-              <KButton label="Post Job" />
-            </Link>
+            {!user && (
+              <Link to="https://recruiter.hirehelix.in" target="_blank">
+                <KButton label="Post Job" />
+              </Link>
+            )}
 
             <button
               data-collapse-toggle="navbar-sticky"
@@ -98,16 +100,16 @@ function Navbar() {
                     onClick={() => {
                       setisProfileDropOpen(!isProfileDropOpen);
                     }}
-                    className="inline-flex items-center gap-2 cursor-pointer select-none bg-gray-100 rounded-full px-3 py-1.5 hover:bg-gray-200"
+                    className="flex items-center gap-2 cursor-pointer select-none bg-gray-100 rounded-full px-2 py-2 hover:bg-gray-200"
                   >
-                    <div className="bg-gray-300 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2">
+                    <div className="bg-gray-300 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2 w-8 h-8">
                       <img
-                        className="w-8 h-8 rounded-full flex-shrink-0"
+                        className="w-full h-full rounded-full flex-shrink-0 object-cover"
                         src={user.image}
                         alt="user photo"
                       />
                     </div>
-                    <p className="text-black text-sm">
+                    <p className="text-black text-sm flex-1">
                       {user?.firstName}'s Profile
                     </p>
                   </button>

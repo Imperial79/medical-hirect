@@ -55,29 +55,17 @@ function ManageResumes() {
   return (
     <Scaffold isLoading={loading}>
       <div className="py-20 text-black md:max-w-3xl md:mx-auto mx-5">
-        <h1 className="mt-5 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-black mb-10">
+        <h1 className="mt-5 md:text-[30px] text-[30px] text-center font-semibold md:font-medium text-black mb-5">
           Manage Resumes
         </h1>
-        <button
-          onClick={() => {
-            setIsUploadResumeModalOpen(true);
-          }}
-          className="w-full"
-        >
-          <div className="cursor-pointer p-10 bg-gray-100 text-black justify-center flex items-center gap-5 rounded-xl hover:invert font-medium md:w-auto">
-            <img src={uploadIcon} alt="upload" className="h-7" />
-            Upload a resume
-          </div>
-        </button>
 
-        <p className="mt-10">Resume created by Hirehelix</p>
         <Link
           to="/dashboard/resume"
-          className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all"
+          className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between hover:bg-gray-50 hover:drop-shadow-none transition-all"
         >
-          <div className="inline-flex gap-3">
+          <div className="flex gap-3 items-center">
             <img src={logoSmall} alt="" className="h-6" />
-            <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+            <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis text-sm">
               Hirehelix Resume
             </h1>
           </div>
@@ -98,19 +86,11 @@ function ManageResumes() {
           </svg>
         </Link>
 
-        <h1 className="my-5 text-black">Uploaded resumes</h1>
-
-        {resumeList.length > 0 ? (
-          resumeList.map((data, index) => (
-            <div key={index}>
-              <ResumeCard data={data} onDelete={deleteResume} />
-            </div>
-          ))
-        ) : (
-          <div className="h-[600px] w-[600px] mx-auto">
-            <img src={noDataIcon} alt="no-data" className="object-contain" />
+        {resumeList.map((data, index) => (
+          <div key={index}>
+            <ResumeCard data={data} onDelete={deleteResume} />
           </div>
-        )}
+        ))}
       </div>
       <UploadResumeModal
         isModalOpen={isUploadResumeModalOpen}
@@ -121,18 +101,35 @@ function ManageResumes() {
         }}
         fetchResumes={fetchResumes}
       />
+
+      <UploadResumeBtn
+        onClick={() => {
+          setIsUploadResumeModalOpen(true);
+        }}
+      />
     </Scaffold>
   );
 }
 
 export default ManageResumes;
 
+function UploadResumeBtn({ onClick }) {
+  return (
+    <button onClick={onClick} className="w-full">
+      <div className="py-3 px-5 bg-black text-white rounded-full fixed bottom-0 right-0 flex gap-2 items-center text-sm m-5 hover:bg-gray-700 shadow drop-shadow-2xl hover:drop-shadow-none">
+        <img src={uploadIcon} alt="upload" className="h-5 w-5 invert" />
+        Upload a resume
+      </div>
+    </button>
+  );
+}
+
 function ResumeCard({ data, onDelete }) {
   return (
     <div className="bg-white drop-shadow-md p-5 w-full rounded-lg flex justify-between mt-5 hover:bg-gray-50 hover:drop-shadow-none transition-all">
-      <div className="w-full flex gap-2 overflow-hidden whitespace-nowrap text-ellipsis">
+      <div className="w-full flex gap-3 overflow-hidden whitespace-nowrap text-ellipsis items-center">
         <img src={resumeIcon} alt="" className="h-6" />
-        <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+        <h1 className="overflow-hidden whitespace-nowrap text-overflow-ellipsis text-sm">
           {data.resumeName}
         </h1>
       </div>

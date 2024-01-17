@@ -23,7 +23,7 @@ function JobCard({ data }) {
               className="kTextButton font-medium tracking-wider"
             >
               {data.roleTitle}
-              {data.subRole && <sapn> | {data.subRole}</sapn>}
+              {data.subRole && <span> | {data.subRole}</span>}
             </Link>
 
             <div className="inline-flex items-center gap-1 text-[12px]">

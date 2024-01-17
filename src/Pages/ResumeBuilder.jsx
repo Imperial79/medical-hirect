@@ -185,6 +185,7 @@ function ResumeBuilder() {
           subHeading="This will help the recruiters to quickly analyze your qualifications"
           onSubmit={(e) => {
             e.preventDefault();
+            createResume();
           }}
         >
           <h1 className="text-[25px] font-semibold mb-5">Create your resume</h1>
@@ -195,7 +196,6 @@ function ResumeBuilder() {
               label="Firstname"
               id="firstName"
               placeholder="Eg. John"
-              required={true}
               value={textfield?.firstName}
               onChange={(e) => {
                 handleInputChange(e);
@@ -205,7 +205,6 @@ function ResumeBuilder() {
               label="Lastname"
               id="lastName"
               placeholder="Eg. Doe"
-              required={true}
               value={textfield?.lastName}
               onChange={(e) => {
                 handleInputChange(e);
@@ -251,7 +250,6 @@ function ResumeBuilder() {
               type="text"
               id="profileLink"
               placeholder="Eg. linkedin profile link"
-              required={true}
               value={textfield.profileLink}
               onChange={(e) => {
                 handleInputChange(e);
@@ -267,7 +265,6 @@ function ResumeBuilder() {
             id="subRole"
             label="Sub-Role"
             type="text"
-            required={true}
             placeholder="Your speciality"
             value={textfield.subRole}
             onChange={(e) => {
@@ -369,10 +366,8 @@ function ResumeBuilder() {
           </div>
           <br />
           <KButton
+            type="submit"
             id="createResume"
-            onClick={() => {
-              createResume();
-            }}
             margin="mt-5"
             label="Create Resume"
           />
@@ -561,7 +556,6 @@ function EducationForm({
           id="courseName"
           name="companyName"
           placeholder="Enter name of the course"
-          required={true}
           onChange={(e) => {
             handleInputChange(index, e);
           }}
@@ -573,7 +567,6 @@ function EducationForm({
           id="year"
           name="year"
           placeholder="Course duration (Eg. 2012-2015)"
-          required={true}
           onChange={(e) => {
             handleInputChange(index, e);
           }}
