@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import location from "../assets/location.svg";
-import job from "../assets/job.svg";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 
 function HospitalCard({ data }) {
   const { user } = useContext(Context);
-  const [isFollowing, setisFollowing] = useState(false);
+  const [isFollowing, setisFollowing] = useState(data.isFollowing === "true");
 
   async function follow() {
     try {
@@ -90,6 +89,7 @@ function HospitalCard({ data }) {
           About Hospital
         </p>
         <p className="text-sm max2lines mb-2">{data.bio}</p>
+
         {user && <FollowButton follow={follow} isFollowing={isFollowing} />}
       </div>
     </>

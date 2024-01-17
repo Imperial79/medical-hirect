@@ -106,7 +106,7 @@ function JobDetailPage() {
       <div className="pt-20 pb-10 lg:px-20 md:px-5 px-5 text-black">
         <div className="max-w-4xl w-full mx-auto bg-white rounded-xl drop-shadow-2xl z-20">
           <div className="flex mt-[17px] items-center justify-between">
-            <div className="h-[200px] w-full rounded-t-xl overflow-hidden">
+            <div className="md:h-[400px] h-[200px] w-full rounded-t-xl overflow-hidden brightness-50">
               <img
                 src={vacancyData.companyImage}
                 alt="recruiter-image"
@@ -115,67 +115,18 @@ function JobDetailPage() {
             </div>
           </div>
           <div className="p-5">
-            <button
-              onClick={bookmarkVacancy}
-              className={`flex gap-2 items-center rounded-full px-3 py-1.5 text-[12px] font-medium ${
-                isBookmarked
-                  ? "bg-transparent text-black"
-                  : "bg-black text-white border"
-              }`}
-            >
-              {isBookmarked ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-3 h-3"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Saved
-                </>
-              ) : (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-3 h-3"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                    />
-                  </svg>
-                  Save
-                </>
-              )}
-            </button>
-            <div className="flex items-center justify-between">
-              <h1 className="md:w-[60%] text-blue-900 font-medium md:text-[25px] text-[17px]">
-                {vacancyData.roleTitle} | {vacancyData.subRole} |{" "}
-                {vacancyData.companyName}
-              </h1>
-              <button
-                type="button"
-                onClick={bookmarkVacancy}
-                className="hidden md:block rounded-full p-3 hover:bg-gray-100 transition-all"
-              >
-                <img
-                  src={isBookmarked ? saveFilled : save}
-                  alt=""
-                  className="h-5"
-                />
-              </button>
-            </div>
+            <SaveButton
+              bookmarkVacancy={bookmarkVacancy}
+              isBookmarked={isBookmarked}
+            />
+
+            <h1 className="text-black font-medium text-lg mt-5">
+              <span className="text-blue-700 font-semibold">
+                {vacancyData.roleTitle}
+              </span>{" "}
+              | {vacancyData.subRole} | {vacancyData.companyName}
+            </h1>
+
             <div className="mt-2 items-center text-gray-700 text-[15px] md:text-[17px]">
               <div className="lg:grid md:grid lg:grid-cols-2 md:grid-cols-2">
                 <>
@@ -253,7 +204,7 @@ function JobDetailPage() {
                 content={vacancyData.requirements}
               />
               <DescriptionCard
-                title="Preffered Point of Contact"
+                title="Preferred Point of Contact"
                 content={vacancyData.ppoc}
               />
               <DescriptionCard
@@ -306,6 +257,55 @@ function JobDetailPage() {
 }
 
 export default JobDetailPage;
+
+function SaveButton({ bookmarkVacancy, isBookmarked }) {
+  return (
+    <button
+      onClick={bookmarkVacancy}
+      className={`flex gap-2 items-center rounded-full px-3 py-1.5 text-[12px] font-medium ${
+        isBookmarked
+          ? "bg-transparent text-black"
+          : "bg-black text-white border"
+      }`}
+    >
+      {isBookmarked ? (
+        <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-3 h-3"
+          >
+            <path
+              fillRule="evenodd"
+              d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Saved
+        </>
+      ) : (
+        <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={3}
+            stroke="currentColor"
+            className="w-3 h-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+            />
+          </svg>
+          Save
+        </>
+      )}
+    </button>
+  );
+}
 
 function StatsCard({ label, content }) {
   return (
