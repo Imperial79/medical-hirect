@@ -44,7 +44,7 @@ function ResumeBuilder() {
       setexpertiseList(
         JSON.parse(
           user?.expertiseDescription === null
-            ? "[]"
+            ? '[""]'
             : user?.expertiseDescription
         )
       );

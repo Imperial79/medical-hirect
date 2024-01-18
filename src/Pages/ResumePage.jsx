@@ -60,10 +60,11 @@ function ResumePage() {
                 onClick={() => {
                   navigate("/dashboard/resume-builder", { replace: true });
                 }}
-                className="float-right justify-end text-white bg-white/10 px-3 py-1 rounded-full hover:bg-white hover:text-black"
+                className="mb-10 justify-end text-white bg-white/10 px-3 py-1 rounded-full hover:bg-white hover:text-black"
               >
                 Edit Resume
               </button>
+
               <div className="md:flex gap-10 items-start w-full">
                 <div className="mx-auto md:mb-0 mb-5 md:w-1/6 w-[100px]">
                   <img
@@ -261,11 +262,11 @@ function FormCard({ header, children }) {
     <>
       <div className="mx-5 text-black md:max-w-[900px] lg:mx-auto content-center">
         <div className="border border-gray-200 rounded-xl bg-white">
-          <div className="w-full object-contain bg-blue-950 overflow-hidden rounded-t-xl relative p-10">
+          <div className="w-full object-contain bg-blue-950 overflow-hidden rounded-t-xl relative md:p-10 p-7">
             {header}
           </div>
 
-          <div className="md:p-7 p-5 md:m-14 m-5">{children}</div>
+          <div className="md:p-7 p-3 md:m-14 m-5">{children}</div>
           <p className="m-5 inline-flex items-center gap-2">
             Created by <img src={logo} alt="logo" className="w-32" />
           </p>

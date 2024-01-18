@@ -218,7 +218,7 @@ function JobDetailPage() {
               <Link
                 to={vacancyData.attachment}
                 target="_blank"
-                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all md:text-lg text-[12px]"
+                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all text-[15px]"
               >
                 <img
                   src={attachmentIcon}
@@ -327,7 +327,7 @@ function DescriptionCard({ title, content }) {
   return (
     <>
       <h1 className="mt-5 font-medium text-[17px]">{title}</h1>
-      <h2 className="mt-3 md:text-[15px] text-sm bg-gray-50 border border-gray-200 p-5 rounded-xl">
+      <h2 className="mt-3 md:text-[15px] text-sm bg-gray-50 border border-gray-200 px-3 py-2 rounded-xl">
         <TextWithLineBreaks text={content} />
       </h2>
     </>
