@@ -4,7 +4,6 @@ import JobCard from "../components/JobCard";
 import Hero from "../components/Hero";
 import jobFilter from "../assets/job-filter.svg";
 import { dbObject } from "../Helper/Constants";
-import filterIcon from "../assets/filter.svg";
 import { Context } from "../Helper/ContextProvider";
 import { KButton, KDropDown, KTextField } from "../components/components";
 import Scaffold from "../components/Scaffold";
@@ -103,22 +102,22 @@ function HomePage() {
         buttonLabel="Search company"
       >
         <div className="items-center">
-          <h1 className="font-semibold text-gray-700 text-center text-2xl">
+          <h1 className="font-semibold text-gray-700 text-center md:text-2xl text-lg tracking-wide">
             Trending Job searches
           </h1>
-          <p className="font-medium text-gray-400 text-center mt-2 text-sm">
+          <p className="font-medium text-gray-400 text-center mt-2 md:text-sm text-[10px]">
             Most frequent searches by healthcare job seekers like you
           </p>
         </div>
       </Hero>
-      {/* Filter Section  */}
-      <div className="bg-gray-50 rounded-bl-lg rounded-br-lg md:max-w-[1000px] mx-5 md:mx-auto drop-shadow-xl">
+
+      <div className="bg-gray-50 rounded-bl-lg rounded-br-lg md:max-w-[1000px] mx-5 md:mx-auto drop-shadow-xl p-5">
         <div className="grid md:grid-cols-2 md:gap-10 items-center">
-          <div className="p-4 max-h-[400px] max-w-[400px] mx-auto flex justify-center content-center">
+          <div className=" max-h-[400px] max-w-[400px] mx-auto flex justify-center content-center">
             <img className="h-full w-full" src={jobFilter} alt="filter-image" />
           </div>
-          <div className="p-4 rounded-xl">
-            <h2 className="mb-2 text-black text-sm">Filter by Role</h2>
+          <div className="rounded-xl">
+            <label className="kLabel mt-5">Filter by Role</label>
             <div className="flex flex-wrap">
               {rolesList.map((data, index) => (
                 <div key={index}>
@@ -132,9 +131,8 @@ function HomePage() {
                 </div>
               ))}
             </div>
-            <h2 className="mt-5 mb-2 text-black text-sm">
-              Filter by distance (km)
-            </h2>
+
+            <label className="kLabel mt-5">Filter by distance (km)</label>
             <div className="flex flex-wrap">
               <KOutlinedButton
                 id={0}
@@ -193,7 +191,7 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="md:flex rounded-md shadow-sm pb-6 px-5 gap-2 mt-4">
+        <div className="md:flex shadow-sm gap-2 mt-4">
           <input
             type="text"
             className="kTextField"

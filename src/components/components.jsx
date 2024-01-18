@@ -27,14 +27,6 @@ export function KButton({
   );
 }
 
-export function TextfieldLabel({ label }) {
-  return (
-    <label className="block mb-2 text-sm font-medium text-gray-900">
-      {label}
-    </label>
-  );
-}
-
 export function KTextField({
   label = "label",
   maxLength,
@@ -53,12 +45,7 @@ export function KTextField({
 }) {
   return (
     <div className={margin}>
-      <label
-        htmlFor={id}
-        className={`${
-          label === "" ? "hidden" : ""
-        } block mb-2 text-sm font-medium text-gray-900`}
-      >
+      <label htmlFor={id} className={`${label === "" ? "hidden" : ""} kLabel`}>
         {label}
       </label>
       <div className="flex items-center">
@@ -100,10 +87,7 @@ export function KTextArea({
 }) {
   return (
     <div className="mb-5">
-      <label
-        htmlFor={id}
-        className="block mb-2 text-sm font-medium text-gray-900 "
-      >
+      <label htmlFor={id} className="kLabel">
         {label}
       </label>
       <textarea
@@ -128,18 +112,13 @@ export function KDropDown({
   name,
   label = "label",
   children,
-  onChange,
+  onChange = undefined,
   margin = "mb-5",
-  value = "",
+  value = undefined,
 }) {
   return (
     <div className={margin}>
-      <label
-        htmlFor={id}
-        className={`${
-          label === "" ? "hidden" : ""
-        } block mb-2 text-sm font-medium text-gray-900`}
-      >
+      <label htmlFor={id} className={`${label === "" ? "hidden" : ""} kLabel`}>
         {label}
       </label>
 
@@ -148,7 +127,7 @@ export function KDropDown({
         name={name}
         value={value}
         onChange={onChange}
-        className="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 inline-flex items-center justify-between w-full text-nowrap"
+        className="kTextField"
       >
         {children}
       </select>

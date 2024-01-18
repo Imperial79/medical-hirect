@@ -328,15 +328,18 @@ function RegisterForm() {
 
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20 md:pb-10 text-black">
-        <div className="items-start bg-[#f8f8f8] p-2 rounded-[20px] lg:w-[80%] md:w-[99%] md:mx-auto m-5 md:flex">
+      <div className="md:pt-20 pt-12 md:pb-10 text-black">
+        <div className="items-start bg-[#f8f8f8] p-2 rounded-[20px] max-w-6xl md:mx-auto md:m-5 mx-2 my-5 md:flex">
           <img
             src={doctor}
-            alt=""
-            className="lg:w-[30%] md:w-[30%] my-20 mx-20 hidden md:block"
+            alt="register-image"
+            className="lg:w-[30%] md:w-[30%] my-10 mx-10 hidden md:block"
           />
-          <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center md:w-full">
-            <h1 className="text-[20px] mb-4">Register as a job finder</h1>
+          <div className="bg-white rounded-[20px] md:py-10 px-5 md:px-10 py-5 items-center justify-center md:w-full">
+            <h1 className="font-semibold text-2xl text-center">Register</h1>
+            <p className="md:text-[20px] text-sm tracking-wide mb-10 text-center md:mt-2 mt-1">
+              as a job finder
+            </p>
 
             <form
               method="POST"
@@ -433,9 +436,7 @@ function RegisterForm() {
               </KGrid>
 
               {/* Multi-select Post */}
-              <label className={`block mb-2 text-sm font-medium text-gray-900`}>
-                Select Post
-              </label>
+              <label className="kLabel">Select Post</label>
               <Select
                 options={postList}
                 isDisabled={postList.length === 0}
@@ -448,11 +449,7 @@ function RegisterForm() {
               />
 
               {/* Multi-select Emplo */}
-              <label
-                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
-              >
-                Select Employment-Type
-              </label>
+              <label className="kLabel mt-5">Select Employment-Type</label>
               <Select
                 options={employmentTypeList}
                 value={selectedEmploymentTypeList}
@@ -465,11 +462,7 @@ function RegisterForm() {
               />
 
               {/* Multi-select Speci */}
-              <label
-                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
-              >
-                Select Specialization
-              </label>
+              <label className="kLabel mt-5">Select Specialization</label>
               <Select
                 options={speciList}
                 isMulti
@@ -482,11 +475,7 @@ function RegisterForm() {
               />
 
               {/* Multi-select work */}
-              <label
-                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
-              >
-                Select Work Setting
-              </label>
+              <label className="kLabel mt-5">Select Work Setting</label>
               <Select
                 options={workSettingList}
                 isDisabled={workSettingList.length === 0}
@@ -498,11 +487,7 @@ function RegisterForm() {
               />
 
               {/* Multi-select graduation */}
-              <label
-                className={`mt-5 block mb-2 text-sm font-medium text-gray-900`}
-              >
-                Select Graduation Type
-              </label>
+              <label className="kLabel mt-5">Select Graduation Type</label>
               <Select
                 options={graduationTypeList}
                 isDisabled={graduationTypeList.length === 0}

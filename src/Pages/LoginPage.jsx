@@ -189,14 +189,14 @@ function LoginPage() {
 
   return (
     <Scaffold isLoading={loading}>
-      <div className="pt-20 md:px-10 p-5 text-black">
-        <div className="bg-[#f8f8f8] p-2 rounded-[20px] lg:max-w-[900px] md:w-full w-[100%] mx-auto md:flex">
+      <div className="pt-20 md:px-10 px-2 py-5 text-black">
+        <div className="bg-[#f8f8f8] md:p-2 rounded-[20px] lg:max-w-[900px] md:w-full w-[100%] mx-auto md:flex">
           <img
             src={doctor}
             className="md:w-1/2 w-0 md:m-10 m-0 hidden md:block"
           />
 
-          <div className="bg-white rounded-[20px] py-10 px-10 items-center justify-center lg:w-1/2 md:w-1/2 w-full">
+          <div className="bg-white rounded-[20px] py-5 px-5 items-center justify-center lg:w-1/2 md:w-1/2 w-full">
             <form
               method="POST"
               onSubmit={(e) => {
