@@ -322,7 +322,6 @@ function RegisterForm() {
 
       setloading(false);
     } catch (error) {
-      console.log(error);
       setloading(false);
     }
   }

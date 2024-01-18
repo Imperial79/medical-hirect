@@ -4,13 +4,7 @@ import doctor from "../assets/doctor.svg";
 import logo from "../assets/logo.jpg";
 import googleLogo from "../assets/google.png";
 import { auth, googleProvider } from "../Helper/firebase-config";
-import {
-  GoogleAuthProvider,
-  getRedirectResult,
-  signInWithPopup,
-  signInWithRedirect,
-  signOut,
-} from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { dbObject } from "../Helper/Constants";
 import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
@@ -73,8 +67,6 @@ function LoginPage() {
       signInWithPopup(auth, googleProvider)
         .then(async (result) => {
           const user = result.user;
-          console.log(user.email);
-          console.log(user.uid);
 
           const formData = new FormData();
           formData.append("email", user.email);
@@ -111,9 +103,7 @@ function LoginPage() {
         .catch((error) => {
           showAlert(error.message, true);
         });
-    } catch (error) {
-      console.log("Error Here");
-    }
+    } catch (error) {}
   };
 
   async function sendOTP() {
@@ -291,14 +281,6 @@ function LoginPage() {
                   </span>
                 </div>
               </div>
-              {/* <GoogleLogin
-                onSuccess={(response) => {
-                  console.log(response);
-                }}
-                onError={(response) => {
-                  console.log(response);
-                }}
-              /> */}
               <button
                 onClick={signInWithGoogle}
                 type="button"

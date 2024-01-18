@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import job from "../assets/job.svg";
 import hospital from "../assets/hospital.svg";
 import hashTag from "../assets/hash-tag.svg";
-import save from "../assets/save.svg";
-import saveFilled from "../assets/save-filled.svg";
 import date from "../assets/date.svg";
 import location from "../assets/location.svg";
 import openLinkIcon from "../assets/openLink.svg";
@@ -16,9 +13,8 @@ import { Context } from "../Helper/ContextProvider";
 import Scaffold from "../components/Scaffold";
 import PillTag from "../components/PillTag";
 import Modal from "../components/Modal";
-import uploadIcon from "../assets/upload.svg";
 import logoSmall from "../assets/logo-transparent.png";
-import { KButton, KGrid } from "../components/components";
+import { KButton } from "../components/components";
 
 function JobDetailPage() {
   const { user, showAlert } = useContext(Context);
@@ -222,7 +218,7 @@ function JobDetailPage() {
               <Link
                 to={vacancyData.attachment}
                 target="_blank"
-                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all"
+                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all md:text-lg text-[12px]"
               >
                 <img
                   src={attachmentIcon}
@@ -309,9 +305,11 @@ function SaveButton({ bookmarkVacancy, isBookmarked }) {
 
 function StatsCard({ label, content }) {
   return (
-    <div className="px-5 py-2 bg-blue-50 border border-blue-400 rounded-xl text-center">
-      <h1 className="font-semibold md:text-xl text-lg">{content}</h1>
-      <h3 className="md:text-xl text-sm">{label}</h3>
+    <div className="px-[10px] py-2 bg-blue-50 border border-blue-400 rounded-xl text-center overflow-hidden">
+      <h1 className="font-semibold md:text-xl text-sm  truncate ...">
+        {content}
+      </h1>
+      <h3 className="md:text-xl text-[10px] truncate ...">{label}</h3>
     </div>
   );
 }

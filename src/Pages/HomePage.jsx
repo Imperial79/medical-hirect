@@ -46,13 +46,11 @@ function HomePage() {
         "/vacancy/fetch-vacancies.php",
         formData
       );
-      console.log(response);
       if (!response.data.error) {
         setvacancyList(response.data.response);
       }
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
     }
   }
