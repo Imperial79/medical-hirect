@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import hospital from "../assets/hospital.svg";
 import hashTag from "../assets/hash-tag.svg";
 import date from "../assets/date.svg";
@@ -24,7 +24,9 @@ function JobDetailPage() {
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [resumeList, setresumeList] = useState([]);
   const [selectedResume, setselectedResume] = useState(0);
-  const vacancyId = query.get("vacancy-id");
+  const params = useParams();
+  // const vacancyId = match.params.vacancy_id;
+  const vacancyId = params.vacancy_id;
   const [isBookmarked, setisBookmarked] = useState(false);
   const [isApplied, setisApplied] = useState(false);
   const navigator = useNavigate();
