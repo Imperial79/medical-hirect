@@ -19,7 +19,7 @@ import { KButton } from "../components/components";
 function JobDetailPage() {
   const { user, showAlert } = useContext(Context);
   const [loading, setloading] = useState(false);
-  let query = new URLSearchParams(useLocation().search);
+  // let query = new URLSearchParams(useLocation().search);
   const [vacancyData, setvacancyData] = useState({});
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [resumeList, setresumeList] = useState([]);

@@ -5,9 +5,11 @@ import hospital from "../assets/hospital.svg";
 import location from "../assets/location.svg";
 
 function JobCard({ data }) {
+  const title = `${data.roleTitle} ${data.subRole}`;
+  const slugTitle = title.replace(" ", "-");
   return (
     <div className="bg-white text-black border p-5 md:mx-auto mx-5 max-w-5xl rounded-lg mb-5 hover:drop-shadow-xl transition duration-400">
-      <Link to={`/job-detail/${data.id}`}>
+      <Link to={`/job-detail/${slugTitle}/${data.id}`}>
         {/* <Link to={`/job-detail?vacancy-id=${data.id}`}> */}
         <div className="flex items-start gap-3">
           <div className="h-[100px] w-[100px] overflow-hidden rounded-lg flex-shrink-0">

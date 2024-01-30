@@ -28,7 +28,10 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/job-detail/:vacancy_id" element={<JobDetailPage />} />
+            <Route
+              path="/job-detail/:title/:vacancy_id"
+              element={<JobDetailPage />}
+            />
             <Route path="/jobs-recruiter" element={<SearchRecruiters />} />
             <Route path="/about-recruiter" element={<AboutRecruiter />} />
             <Route path="/dashboard/profile" element={<ProfilePage />} />
