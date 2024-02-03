@@ -20,14 +20,10 @@ function JobCard({ data }) {
             />
           </div>
           <div className="flex flex-col gap-1">
-            <Link
-              to={data.website}
-              target="_blank"
-              className="kTextButton font-medium tracking-wider"
-            >
+            <div className="kTextButton font-medium tracking-wider">
               {data.roleTitle}
               {data.subRole && <span> | {data.subRole}</span>}
-            </Link>
+            </div>
 
             <div className="inline-flex items-center gap-1 text-[12px]">
               <svg

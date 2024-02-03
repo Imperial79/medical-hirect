@@ -25,6 +25,7 @@ function App() {
           <Alert />
           <Navbar />
           <Routes>
+
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterForm />} />
@@ -53,6 +54,7 @@ function App() {
               element={<ResumeBuilder />}
             />
             <Route path="/dashboard/resume" element={<ResumePage />} />
+            <Route path="*" element={<HomePage />} />
           </Routes>
           <Footer />
         </ContextProvider>
