@@ -118,9 +118,14 @@ export function KDropDown({
 }) {
   return (
     <div className={margin}>
-      <label htmlFor={id} className={`${label === "" ? "hidden" : ""} kLabel`}>
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={id}
+          className={`${label === "" ? "hidden" : ""} kLabel`}
+        >
+          {label}
+        </label>
+      )}
 
       <select
         id={id}

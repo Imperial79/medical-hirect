@@ -10,7 +10,7 @@ function SearchRecruiters() {
   const [pageNo, setpageNo] = useState(0);
   const [searchKey, setsearchKey] = useState("");
   const [city, setcity] = useState("");
-  const [state, setstate] = useState("Pan India");
+  const [selectedState, setSelectedState] = useState("Pan India");
 
   const [stateList, setstateList] = useState([]);
   const [recruiterList, setrecruiterList] = useState([]);
@@ -31,7 +31,7 @@ function SearchRecruiters() {
       formData.append("pageNo", pageNo);
       formData.append("searchKey", searchKey);
       formData.append("city", city);
-      formData.append("state", state);
+      formData.append("state", selectedState);
       const response = await dbObject.post(
         "/recruiters/fetch-recruiters.php",
         formData
@@ -53,7 +53,7 @@ function SearchRecruiters() {
 
   useEffect(() => {
     fetchRecruitersList();
-  }, [pageNo, state]);
+  }, [pageNo, selectedState]);
 
   return (
     <Scaffold isLoading={loading}>
@@ -93,8 +93,9 @@ function SearchRecruiters() {
                 name="state"
                 label=""
                 margin="mb-0"
-                onChange={() => {
-                  setstate(data.stateName);
+                value={selectedState}
+                onChange={(e) => {
+                  setSelectedState(e.target.value);
                 }}
               >
                 {stateList.map((data, index) => (

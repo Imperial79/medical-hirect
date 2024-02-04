@@ -88,12 +88,20 @@ function Footer() {
                 </h2>
                 <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
-                    <Link to="#" className="hover:underline">
+                    <Link
+                      to="https://apps.apple.com/us/app/hirehelix/id6476025143"
+                      target="_blank"
+                      className="hover:underline"
+                    >
                       iOS
                     </Link>
                   </li>
                   <li className="mb-4">
-                    <Link to="#" className="hover:underline">
+                    <Link
+                      to="https://play.google.com/store/apps/details?id=com.jobs.hirehelix&hl=en_IN&gl=US"
+                      target="_blank"
+                      className="hover:underline"
+                    >
                       Android
                     </Link>
                   </li>
@@ -103,8 +111,9 @@ function Footer() {
           </div>
           <div className="px-4 py-6 bg-gray-700 md:flex md:items-center md:justify-between">
             <span className="text-sm text-gray-300 sm:text-center">
-              © {new Date().getFullYear()} <Link to="">Hirehelix™</Link>. All
-              Rights Reserved.
+              © {new Date().getFullYear()}{" "}
+              <Link to="https://hirehelix.in">Hirehelix™</Link>. All Rights
+              Reserved.
             </span>
           </div>
         </footer>

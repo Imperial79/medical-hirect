@@ -15,6 +15,7 @@ function HomePage() {
   const [rolesList, setRolesList] = useState([]);
   const [vacancyList, setvacancyList] = useState([]);
   const [statesList, setstatesList] = useState([]);
+  const [selectedState, setSelectedState] = useState("Pan India");
   const [selectedRole, setselectedRole] = useState("1");
   const [selectedDistance, setselectedDistance] = useState("");
   const [pageNo, setpageNo] = useState(0);
@@ -38,7 +39,7 @@ function HomePage() {
       formData.append("pageNo", pageNo);
       formData.append("searchKey", searchKey);
       formData.append("city", citySearch);
-      formData.append("state", _id("state").value);
+      formData.append("state", selectedState);
       formData.append("distanceRange", selectedDistance);
       formData.append("roleId", selectedRole);
       const response = await dbObject.post(
@@ -68,7 +69,7 @@ function HomePage() {
     setselectedDistance("");
     setSearchKey("");
     setCitySearch("");
-    _id("state").value = "Pan India";
+    setSelectedState("Pan India");
     setpageNo(0);
     await fetchVacancies();
   }
@@ -81,7 +82,7 @@ function HomePage() {
 
   useEffect(() => {
     fetchVacancies();
-  }, [selectedRole, pageNo, selectedDistance]);
+  }, [selectedRole, pageNo, selectedDistance, selectedState]);
 
   useEffect(() => {
     if (isScroll) {
@@ -173,13 +174,15 @@ function HomePage() {
                   setCitySearch(e.target.value);
                 }}
               />
-
               <KDropDown
                 id="state"
                 name="state"
                 label="Search by state"
                 margin="mb-0"
-                onChange={fetchVacancies}
+                onChange={(e) => {
+                  setSelectedState(e.target.value);
+                }}
+                value={selectedState}
               >
                 {statesList.map((data, index) => (
                   <option key={index} value={data.stateName}>
