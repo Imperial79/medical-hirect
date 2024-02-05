@@ -25,6 +25,16 @@ function Footer() {
                   <li className="mb-4">
                     <button
                       onClick={() => {
+                        navigate("/about-contact");
+                      }}
+                      className="hover:underline"
+                    >
+                      About & Contact
+                    </button>
+                  </li>
+                  <li className="mb-4">
+                    <button
+                      onClick={() => {
                         navigate("/");
                         setisScroll(true);
                       }}
@@ -42,7 +52,7 @@ function Footer() {
               </div>
               <div>
                 <h2 className="mb-6 text-sm font-semibold text-white uppercase ">
-                  Help center
+                  Follow us on
                 </h2>
                 <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
