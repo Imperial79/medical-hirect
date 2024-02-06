@@ -32,12 +32,13 @@ function ResumePage() {
         setresumeData(response.data.response);
 
         setexpertiseList(
-          JSON.parse(response.data.response.expertiseDescription)
+          JSON.parse(response.data.response.expertiseDescription ?? "[]")
         );
+
         seteducationList(
-          JSON.parse(response.data.response.educationDescription)
+          JSON.parse(response.data.response.educationDescription ?? "[]")
         );
-        setworkList(JSON.parse(response.data.response.workDescription));
+        setworkList(JSON.parse(response.data.response.workDescription ?? "[]"));
       }
       setloading(false);
     } catch (error) {
