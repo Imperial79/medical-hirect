@@ -99,6 +99,15 @@ function Footer() {
                       Terms &amp; Conditions
                     </Link>
                   </li>
+                  <li className="mb-4">
+                    <Link
+                      to="https://hirehelix.in/documents/refund-policy.html"
+                      target="_blank"
+                      className="hover:underline"
+                    >
+                      Refund Policy
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div>
