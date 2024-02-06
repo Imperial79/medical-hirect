@@ -16,6 +16,7 @@ import AppliedApplications from "./Pages/AppliedApplications";
 import ManageResumes from "./Pages/ManageResumes";
 import ResumeBuilder from "./Pages/ResumeBuilder";
 import ResumePage from "./Pages/ResumePage";
+import AboutContactPage from "./Pages/AboutContactPage";
 
 function App() {
   return (
@@ -25,10 +26,10 @@ function App() {
           <Alert />
           <Navbar />
           <Routes>
-
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterForm />} />
+            <Route path="/about-contact" element={<AboutContactPage />} />
             <Route
               path="/job-detail/:title/:vacancy_id"
               element={<JobDetailPage />}

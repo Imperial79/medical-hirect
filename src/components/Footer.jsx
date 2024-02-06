@@ -26,6 +26,7 @@ function Footer() {
                     <button
                       onClick={() => {
                         navigate("/about-contact");
+                        setisScroll(true);
                       }}
                       className="hover:underline"
                     >
