@@ -216,24 +216,31 @@ function JobDetailPage() {
                   </div>
                 ))}
               </div>
-              <h1 className="mt-5 font-medium text-[17px]">Attachment</h1>
-              <Link
-                to={vacancyData.attachment}
-                target="_blank"
-                className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all text-[15px]"
-              >
-                <img
-                  src={attachmentIcon}
-                  alt="attachment-icon"
-                  className="h-5 group-hover:invert"
-                />
-                {vacancyData.attachmentName}
-                <img
-                  src={openLinkIcon}
-                  alt="openLink-icon"
-                  className="group-hover:invert-0 invert h-5"
-                />
-              </Link>
+              {vacancyData.attachmentName != "" &&
+              vacancyData.attachment != "" ? (
+                <>
+                  <h1 className="mt-5 font-medium text-[17px]">Attachment</h1>
+                  <Link
+                    to={vacancyData.attachment}
+                    target="_blank"
+                    className="group hover:bg-black hover:text-white mt-3 bg-gray-50 p-5 rounded-xl font-medium inline-flex items-center gap-5 transition-all text-[15px]"
+                  >
+                    <img
+                      src={attachmentIcon}
+                      alt="attachment-icon"
+                      className="h-5 group-hover:invert"
+                    />
+                    {vacancyData.attachmentName}
+                    <img
+                      src={openLinkIcon}
+                      alt="openLink-icon"
+                      className="group-hover:invert-0 invert h-5"
+                    />
+                  </Link>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

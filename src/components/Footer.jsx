@@ -56,12 +56,20 @@ function Footer() {
                 </h2>
                 <ul className="text-gray-400 font-medium">
                   <li className="mb-4">
-                    <Link to="#" className="hover:underline">
+                    <Link
+                      to="https://x.com/Hire_helix?t=_MNfVnAiMMwvGYOWtHkm4w&s=08"
+                      target="_blank"
+                      className="hover:underline"
+                    >
                       X (Twitter)
                     </Link>
                   </li>
                   <li className="mb-4">
-                    <Link to="#" className="hover:underline">
+                    <Link
+                      to="https://www.facebook.com/profile.php?id=61555990510206&mibextid=ZbWKwL"
+                      target="_blank"
+                      className="hover:underline"
+                    >
                       Facebook
                     </Link>
                   </li>
