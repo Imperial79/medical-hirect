@@ -19,80 +19,74 @@ function HospitalCard({ data }) {
   }
 
   return (
-    <>
-      <div className="bg-white border p-5 md:mx-auto mx-5 max-w-5xl rounded-lg hover:drop-shadow-xl">
-        <div className="flex gap-3 items-start">
-          <div className="h-[100px] w-[100px] overflow-hidden rounded-lg flex-shrink-0">
-            <img
-              src={data.image}
-              alt="CompanyImage"
-              className="h-full w-full"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <Link
-              to={data.website}
-              target="_blank"
-              className="kTextButton font-medium tracking-wider"
-            >
-              {data.companyName}
-            </Link>
-
-            <div className="inline-flex items-center gap-2">
-              <img src={location} alt="location-icon" className="h-3 w-3" />
-              <p className="text-[12px]">
-                {data.city}, {data.state}
-              </p>
-            </div>
-
-            <div className="inline-flex items-center gap-1 text-[12px]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-3 h-3"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-
-              <span className="font-medium">Point of Contact:</span>
-              {data.pocName}
-            </div>
-
-            <div className="inline-flex items-center gap-1 text-[12px]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-3 h-3"
-              >
-                <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
-                <path
-                  fillRule="evenodd"
-                  d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-
-              <span className="font-medium">Since:</span>
-              {new Date(data.date).toLocaleDateString()}
-            </div>
-          </div>
+    <div className="bg-white border p-5 mb-[20px] rounded-lg hover:drop-shadow-xl transition-all duration-200 text-black">
+      <div className="flex gap-3 items-start">
+        <div className="h-[100px] w-[100px] overflow-hidden rounded-lg flex-shrink-0">
+          <img src={data.image} alt="CompanyImage" className="h-full w-full" />
         </div>
 
-        <p className="text-[10px] text-gray-500 font-medium mt-2">
-          About Hospital
-        </p>
-        <p className="text-sm max2lines mb-2">{data.bio}</p>
+        <div className="flex flex-col gap-1 min-w-[100px]">
+          <Link
+            to={data.website}
+            target="_blank"
+            className="kTextButton font-medium tracking-[.5px]"
+          >
+            <p className="break-words">{data.companyName}</p>
+          </Link>
 
-        {user && <FollowButton follow={follow} isFollowing={isFollowing} />}
+          <div className="inline-flex items-center gap-2">
+            <img src={location} alt="location-icon" className="h-3 w-3" />
+            <p className="text-[12px]">
+              {data.city}, {data.state}
+            </p>
+          </div>
+
+          <div className="inline-flex items-center gap-1 text-[12px]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-3 h-3"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                clipRule="evenodd"
+              />
+            </svg>
+
+            <span className="font-medium">Point of Contact:</span>
+            {data.pocName}
+          </div>
+
+          <div className="inline-flex items-center gap-1 text-[12px]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-3 h-3"
+            >
+              <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+              <path
+                fillRule="evenodd"
+                d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                clipRule="evenodd"
+              />
+            </svg>
+
+            <span className="font-medium">Since:</span>
+            {new Date(data.date).toLocaleDateString()}
+          </div>
+        </div>
       </div>
-    </>
+      {data.bio.length > 5 && (
+        <>
+          <p className="text-[12px] text-black font-semibold mt-2">About</p>
+          <p className="text-sm max2lines mb-2">{data.bio}</p>
+        </>
+      )}
+      {user && <FollowButton follow={follow} isFollowing={isFollowing} />}
+    </div>
   );
 }
 

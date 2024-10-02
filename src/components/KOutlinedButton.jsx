@@ -6,10 +6,10 @@ function KOutlinedButton({ label, onClick, isActive }) {
       <button
         type="button"
         onClick={onClick}
-        className={` ${
+        className={`py-2 px-4 text-[12px] rounded-full mr-2 mb-2 ${
           isActive
-            ? "bg-blue-500 text-white border border-blue-500 hover:bg-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-            : "text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            ? "bg-blue-500 text-white border border-blue-500 hover:bg-blue-900 font-medium"
+            : "text-blue-500 border border-blue-200 hover:bg-blue-100 hover:text-blue-500"
         }`}
       >
         {label}

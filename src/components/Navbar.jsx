@@ -10,7 +10,7 @@ import CircularProgressIndicator from "./CircularProgressIndicator";
 import { KButton } from "./components";
 
 function Navbar() {
-  const { user, setUser, setisScroll, authLoading } = useContext(Context);
+  const { user, setUser, authLoading } = useContext(Context);
   const [isNavMenuOpen, setisNavMenuOpen] = useState(false);
   const [isProfileDropOpen, setisProfileDropOpen] = useState(false);
   const navigator = useNavigate();
@@ -77,9 +77,8 @@ function Navbar() {
                   onClick={() => {
                     setisNavMenuOpen(false);
                     navigator("/");
-                    setisScroll(true);
                   }}
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 w-full text-start"
+                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 w-full text-start text-[.9rem]"
                 >
                   Search Job Profile
                 </button>
@@ -90,7 +89,7 @@ function Navbar() {
                     setisNavMenuOpen(false);
                     navigator("/jobs-recruiter");
                   }}
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700"
+                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:light:hover:text-blue-500 light:text-white light:hover:bg-gray-700 light:hover:text-white md:light:hover:bg-transparent light:border-gray-700 text-[.9rem]"
                 >
                   Search Recruiters
                 </button>
@@ -104,16 +103,16 @@ function Navbar() {
                     onClick={() => {
                       setisProfileDropOpen(!isProfileDropOpen);
                     }}
-                    className="flex items-center gap-2 cursor-pointer select-none bg-gray-100 rounded-full px-2 py-2 hover:bg-gray-200"
+                    className="flex items-center gap-2 cursor-pointer select-none rounded-full px-2 py-2 hover:bg-blue-50"
                   >
-                    <div className="bg-gray-300 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2 w-8 h-8">
+                    <div className="bg-gray-300 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 light:focus:ring-gray-600 md:ml-0 ml-2 w-[22px] h-[22px]">
                       <img
                         className="w-full h-full rounded-full flex-shrink-0 object-cover"
                         src={user.image}
                         alt="user photo"
                       />
                     </div>
-                    <p className="text-black text-sm flex-1">
+                    <p className="text-black text-[.9rem] flex-1 hover:text-blue-700">
                       {user?.firstName}'s Profile
                     </p>
                   </button>

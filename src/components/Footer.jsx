@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Context } from "../Helper/ContextProvider";
 
 function Footer() {
-  const { setisScroll } = useContext(Context);
   const navigate = useNavigate();
   const location = useLocation();
   let showFooter = true;
@@ -26,7 +25,6 @@ function Footer() {
                     <button
                       onClick={() => {
                         navigate("/about-contact");
-                        setisScroll(true);
                       }}
                       className="hover:underline"
                     >
@@ -37,7 +35,6 @@ function Footer() {
                     <button
                       onClick={() => {
                         navigate("/");
-                        setisScroll(true);
                       }}
                       className="hover:underline"
                     >

@@ -6,7 +6,6 @@ export const Context = React.createContext();
 
 function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isScroll, setisScroll] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [isAlertShow, setisAlertShow] = useState(false);
   const [alert, setAlert] = useState({
@@ -73,8 +72,6 @@ function ContextProvider({ children }) {
         authLoading,
         signupDetails,
         setsignupDetails,
-        isScroll,
-        setisScroll,
         showAlert,
         isAlertShow,
         setisAlertShow,

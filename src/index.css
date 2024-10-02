@@ -16,7 +16,7 @@
 }
 
 .kLabel {
-  @apply block mb-2 font-medium text-gray-900 md:text-sm text-[12px] whitespace-nowrap truncate overflow-hidden
+  @apply block font-medium text-gray-900 md:text-sm text-[12px] whitespace-nowrap truncate overflow-hidden;
 }
 
 :root {
@@ -86,3 +86,6 @@ select:-webkit-autofill:focus {
 
 
 }
+
+
+

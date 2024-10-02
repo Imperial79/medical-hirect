@@ -45,7 +45,10 @@ export function KTextField({
 }) {
   return (
     <div className={margin}>
-      <label htmlFor={id} className={`${label === "" ? "hidden" : ""} kLabel`}>
+      <label
+        htmlFor={id}
+        className={`${label === "" ? "hidden" : ""} kLabel mb-2`}
+      >
         {label}
       </label>
       <div className="flex items-center">
@@ -121,7 +124,7 @@ export function KDropDown({
       {label && (
         <label
           htmlFor={id}
-          className={`${label === "" ? "hidden" : ""} kLabel`}
+          className={`${label === "" ? "hidden" : ""} kLabel mb-2`}
         >
           {label}
         </label>

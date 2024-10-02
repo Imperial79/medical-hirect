@@ -4,6 +4,7 @@ import HospitalCard from "../components/HospitalCard";
 import { dbObject } from "../Helper/Constants";
 import Scaffold from "../components/Scaffold";
 import { KDropDown } from "../components/components";
+import MasonryLayout from "../components/MasonryLayout.jsx";
 
 function SearchRecruiters() {
   const [loading, setloading] = useState(false);
@@ -119,14 +120,16 @@ function SearchRecruiters() {
           </div>
         </form>
       </Hero>
-      <div className="mt-10 pb-10 md:px-20 text-black grid md:grid-cols-3 grid-cols-1 gap-3">
-        {recruiterList.map((data, index) => (
-          <div key={index}>
-            <HospitalCard data={data} />
-          </div>
-        ))}
-      </div>
 
+      <div className="mx-10 my-10">
+        <MasonryLayout>
+          {recruiterList.map((data, index) => (
+            <div key={index}>
+              <HospitalCard data={data} />
+            </div>
+          ))}
+        </MasonryLayout>
+      </div>
       <nav
         className="flex items-center flex-column flex-wrap md:flex-row justify-around p-5"
         aria-label="Table navigation"
